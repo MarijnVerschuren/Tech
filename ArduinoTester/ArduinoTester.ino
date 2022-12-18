@@ -31,7 +31,7 @@ void loop() {
     if (state != mask) {
       Serial.print("ERROR IN PORT_");
       Serial.print(port_names[i]);
-      Serial.print(" PIN ERROR: ");
+      Serial.print(" AT PIN: ");
       Serial.print(state ^ mask, BIN);
       Serial.print("\n");
       error = 1;
