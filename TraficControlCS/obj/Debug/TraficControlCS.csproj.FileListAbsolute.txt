@@ -1,0 +1,8 @@
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\bin\Debug\TraficControlCS.exe.config
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\bin\Debug\TraficControlCS.exe
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\bin\Debug\TraficControlCS.pdb
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\obj\Debug\TraficControlCS.csproj.AssemblyReference.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\obj\Debug\TraficControlCS.csproj.SuggestedBindingRedirects.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\obj\Debug\TraficControlCS.csproj.CoreCompileInputs.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\obj\Debug\TraficControlCS.exe
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\TraficControlCS\obj\Debug\TraficControlCS.pdb
