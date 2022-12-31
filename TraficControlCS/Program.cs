@@ -42,6 +42,8 @@ namespace TraficControlCS {
 			Trafic_Light b = new Trafic_Light();
 			UInt32 last_transition = 0;
 
+			Console.WriteLine("   Press '<-' or '->' to switch");
+			Console.WriteLine("   manually or wait 10 seconds");
 			while (true) {  // draw loop
 				// variable initialization
 				// made var for now (decreasing precision) because c# is just unwieldy...
@@ -64,8 +66,8 @@ namespace TraficControlCS {
 				} else { while (Console.KeyAvailable) { Console.ReadKey(false); } }
 
 				// updating and drawing
-				a.update();	a.draw(8,	2);
-				b.update();	b.draw(22,	2);
+				a.update();	a.draw(8,	3);
+				b.update();	b.draw(22,	3);
 
 				// auto toggle timer
 				if (now - last_transition > 10000) {
