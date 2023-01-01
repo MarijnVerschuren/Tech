@@ -1,0 +1,8 @@
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\bin\Debug\RemoteControlTransmitter.exe.config
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\bin\Debug\RemoteControlTransmitter.exe
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\bin\Debug\RemoteControlTransmitter.pdb
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\obj\Debug\RemoteControlTransmitter.csproj.AssemblyReference.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\obj\Debug\RemoteControlTransmitter.csproj.SuggestedBindingRedirects.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\obj\Debug\RemoteControlTransmitter.csproj.CoreCompileInputs.cache
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\obj\Debug\RemoteControlTransmitter.exe
+C:\Users\marij\OneDrive\Documenten\GitHub\Tech\RemoteControl\RemoteControlTransmitter\obj\Debug\RemoteControlTransmitter.pdb

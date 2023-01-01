@@ -1,7 +1,7 @@
 constexpr uint8_t led_count = 1;
-constexpr uint8_t pins[][] = {
-  {3, 2, 5, 4}  // gnd, r, g, b (of led 1)
-}
+constexpr uint8_t pins[1][4] = {
+  {3, 2, 4, 5}  // gnd, r, g, b (of led 1)
+};
 
 struct {
   uint8_t id;
@@ -24,13 +24,13 @@ void setup() {
 
   while (Serial.available() < 4) {
     input.id = led_count - 1;  // max id
-    Serial.write(&input, 4);
+    Serial.write((char*)&input, 4);
     delay(200);  // send "handshake" 5x per second
   }
 }
 
 void loop() {
-  if (Serial.available() > 4) { Serial.read(&input, 4); }
+  if (Serial.available() > 3) { Serial.readBytes((char*)&input, 4); }
   if (!(input.id < led_count)) { return; }
   analogWrite(pins[input.id][1], input.r);
   analogWrite(pins[input.id][2], input.g);
