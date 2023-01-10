@@ -25,6 +25,11 @@ namespace TraficControlCS {
 		private static extern IntPtr GetConsoleWindow();
 
 
+		static private Trafic_Light trafic_light_a = new Trafic_Light();
+		static private Trafic_Light trafic_light_b = new Trafic_Light();
+		static private Trafic_State state_a = trafic_light_a.get_state();
+		static private Trafic_State state_b = trafic_light_b.get_state();
+
 		static int Main(string[] args) {
 			IntPtr handle = GetConsoleWindow();
 			if (handle == IntPtr.Zero) { return -1; }  // error no console handle
@@ -38,8 +43,6 @@ namespace TraficControlCS {
 			Console.BufferHeight =  Console.WindowHeight =  16;
 			Console.CursorVisible = false;  // hide cursor
 
-			Trafic_Light a = new Trafic_Light();
-			Trafic_Light b = new Trafic_Light();
 			UInt32 last_transition = 0;
 
 			Console.WriteLine("   Press '<-' or '->' to switch");
@@ -48,34 +51,37 @@ namespace TraficControlCS {
 				// variable initialization
 				// made var for now (decreasing precision) because c# is just unwieldy...
 				UInt32 now = (UInt32)DateTimeOffset.Now.ToUnixTimeMilliseconds();
-				Trafic_State state_a = a.get_state();
-				Trafic_State state_b = b.get_state();
+				state_a = trafic_light_a.get_state();
+				state_b = trafic_light_b.get_state();
 
 				// input handleing 
-				if (Console.KeyAvailable && state_a == a.get_transition_state() && state_b == b.get_transition_state()) {
+				if (Console.KeyAvailable &&
+					state_a == trafic_light_a.get_transition_state() &&
+					state_b == trafic_light_b.get_transition_state()) {
 					switch (Console.ReadKey(true).Key) {
 						case ConsoleKey.LeftArrow:
-							a.start_state_transition(Trafic_State.GREEN);
-							b.start_state_transition(Trafic_State.RED);
+							trafic_light_a.start_state_transition(Trafic_State.GREEN);
+							trafic_light_b.start_state_transition(Trafic_State.RED);
 							last_transition = now; break;
 						case ConsoleKey.RightArrow:
-							a.start_state_transition(Trafic_State.RED);
-							b.start_state_transition(Trafic_State.GREEN);
+							trafic_light_a.start_state_transition(Trafic_State.RED);
+							trafic_light_b.start_state_transition(Trafic_State.GREEN);
 							last_transition = now; break;
 					}  //  else clear inputs so none stack up during transition
 				} else { while (Console.KeyAvailable) { Console.ReadKey(false); } }
 
 				// updating and drawing
-				a.update();	a.draw(8,	3);
-				b.update();	b.draw(22,	3);
+				trafic_light_a.update(); trafic_light_a.draw(8, 3);
+				trafic_light_b.update(); trafic_light_b.draw(22, 3);
 
 				// auto toggle timer
 				if (now - last_transition > 10000) {
 					last_transition = now;
 					if (state_a == state_b) { continue; }  // filter valid states
-					if ((state_a == Trafic_State.GREEN || state_a == Trafic_State.RED) && (state_b == Trafic_State.GREEN || state_b == Trafic_State.RED)) {
-						a.start_state_transition(state_b);
-						b.start_state_transition(state_a);
+					if ((state_a == Trafic_State.GREEN || state_a == Trafic_State.RED) &&
+						(state_b == Trafic_State.GREEN || state_b == Trafic_State.RED)) {
+						trafic_light_a.start_state_transition(state_b);
+						trafic_light_b.start_state_transition(state_a);
 					}
 				}
 			}

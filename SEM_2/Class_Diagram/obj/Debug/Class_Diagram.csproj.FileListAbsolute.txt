@@ -1,6 +1,0 @@
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/bin/Debug/Class_Diagram.exe
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/bin/Debug/Class_Diagram.pdb
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/obj/Debug/Class_Diagram.csproj.AssemblyReference.cache
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/obj/Debug/Class_Diagram.csproj.CoreCompileInputs.cache
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/obj/Debug/Class_Diagram.exe
-/home/marijn/Github/Tech/SEM_2/Class_Diagram/obj/Debug/Class_Diagram.pdb
