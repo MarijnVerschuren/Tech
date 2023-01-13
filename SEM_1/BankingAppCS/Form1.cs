@@ -42,12 +42,15 @@ namespace BankingAppCS {
 			catch {
 				label5.Text = "Input a valid number.";
 				return Double.NaN;
+			} if (ammount < 0) {
+				label5.Text = "Input a positive number.";
+				return Double.NaN;
 			} return ammount;
 		} 
 
 		private void update() {
-			label6.Text = bank.get_account(ibans[0]).get_balance().ToString();
-			label7.Text = bank.get_account(ibans[1]).get_balance().ToString();
+			label6.Text = bank.get_account(ibans[0]).balance.ToString();
+			label7.Text = bank.get_account(ibans[1]).balance.ToString();
 		}
 
 		private void button1_Click(object sender, EventArgs e) {

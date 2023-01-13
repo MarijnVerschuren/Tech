@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace BankingAppCS {
 	internal class Account {
-		protected private String iban;
-		protected private Double balance;
-
+		public String iban {
+			get;
+			private set;
+		}
+		public Double balance {
+			get;
+			private set;
+		}
 		public Account(String iban, Double balance) {
 			this.iban = iban;
 			this.balance = balance;
@@ -16,9 +21,6 @@ namespace BankingAppCS {
 
 		static public Account operator +(Account self, Double ammount) { self.balance = Math.Round(self.balance + ammount, 6); return self; }
 		static public Account operator -(Account self, Double ammount) { self.balance = Math.Round(self.balance - ammount, 6); return self; }
-
-		public double get_balance() { return balance; }
-		public String get_iban() { return iban; }
 	}
 
 	internal class Banking {
@@ -37,7 +39,7 @@ namespace BankingAppCS {
 			String number, iban;
 			do {
 				number = LongRandom(0, 9999999999).ToString();
-				iban = "NL29RABO" + '0' * (10 - number.Length) + number;
+				iban = "NL29RABO" + ('0' * (10 - number.Length)) + number;
 			} while (get_account(iban) != null);
 			return iban;
 		}
@@ -45,7 +47,7 @@ namespace BankingAppCS {
 
 		public Account get_account(String iban) {  // this is the slow method 
 			foreach (Account acc in accounts) {
-				if (acc.get_iban() == iban) { return acc; }
+				if (acc.iban == iban) { return acc; }
 			} return null;
 		}
 
