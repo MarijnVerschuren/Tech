@@ -1,0 +1,3 @@
+/home/marijn/Github/Tech/SEM_3/embedded/untitled/cmake-build-debug/CMakeFiles/untitled.dir
+/home/marijn/Github/Tech/SEM_3/embedded/untitled/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/marijn/Github/Tech/SEM_3/embedded/untitled/cmake-build-debug/CMakeFiles/rebuild_cache.dir
