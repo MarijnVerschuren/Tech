@@ -72,6 +72,14 @@ void uint_sort(uint32_t* arr, uint32_t len) {	// O(n)
 	}
 }
 
+/* Split uint sort:
+ *  let our data type be an uint32_t
+ *  we will devide this data into 4 'digits' of base256 so 8 bits
+ *	then we will apply uint_sort four times from least to most significant digit
+ *	because we do not want to calculate the max value at each step we are going to be allocating a (256 * uint64_t => 2Kib) workspace to store the count lookup table (this is reused each digit)
+ *	to isolate digit:									"(val >> (digit_n * 8)) & 0xff"
+ *	trick to keep track of index in the result array:	"count[n + 1] += count[n]"			(this calculates the accumalative size (check if this is usable))
+ * */
 
 int main(uint32_t argc, const char** argv) {
 	uint32_t len = 0;
