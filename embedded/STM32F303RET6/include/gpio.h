@@ -1,10 +1,17 @@
 //
 // Created by marijn on 2/13/23.
 //
-
 #ifndef STM32F303RET6_GPIO_H
 #define STM32F303RET6_GPIO_H
 #include "main.h"
+
+
+/*!< A */
+#define LED_PIN 5
+#define LED_GPIO_PORT GPIOA
+/*!< C */
+#define BTN_PIN 13
+#define BTN_GPIO_PORT GPIOC
 
 
 typedef enum {
@@ -25,22 +32,17 @@ typedef enum {
 	GPIO_reserved =		0x11
 } GPIO_PULL_TypeDef;
 
-// A
-#define LED_PIN 5
-#define LED_GPIO_PORT GPIOA
-// C
-#define BTN_PIN 13
-#define BTN_GPIO_PORT GPIOC
-
-// init
+/*!< misc */
+uint8_t port_to_int(GPIO_TypeDef* port);
+/*!< init */
 void GPIO_init(void);
 void set_pin_mode(uint8_t pin, GPIO_TypeDef* port, GPIO_MODE_TypeDef mode);
 void set_pin_config(uint8_t pin, GPIO_TypeDef* port, GPIO_SPEED_TypeDef speed, GPIO_PULL_TypeDef pull);
 void pin_init(uint8_t pin, GPIO_TypeDef* port, GPIO_MODE_TypeDef mode, GPIO_SPEED_TypeDef speed, GPIO_PULL_TypeDef pull);
-// output
+/*!< output */
 void write_pin(uint8_t pin, GPIO_TypeDef* port, uint8_t data);
 void toggle_pin(uint8_t pin, GPIO_TypeDef* port);
-// input
+/*!< input */
 uint8_t read_pin(uint8_t pin, GPIO_TypeDef* port);
 
 #endif //STM32F303RET6_GPIO_H
