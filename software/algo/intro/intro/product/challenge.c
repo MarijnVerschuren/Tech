@@ -1,6 +1,6 @@
 #include "challenge.h"
 
-
+#include "stdio.h"
 
 
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
@@ -51,15 +51,15 @@ int ComputeDifferenceBetweenMaxAndMinSumOfKElements_0(
 	  uint64_t min_sum = 0, max_sum = 0;
 	  uint32_t min_sum_size = 0, max_sum_size = 0;
 	  uint32_t current_count;
-	  for (uint32_t i = 0; i < m && (min_sum_size != k || max_sum_size != k); i++) {	// find the min and max sums: O(n)
+	  for (uint32_t i = 0; i < m && (min_sum_size < k || max_sum_size < k); i++) {	// find the min and max sums: O(n)
 		  current_count = MIN(n_count[i], k - min_sum_size);							// calculate how many times the number i can be added to the min sum
 		  if (current_count) {
 			  min_sum += i * current_count;
 			  min_sum_size += current_count;
 		  }
-		  current_count = MIN(n_count[m-i], k - max_sum_size);						// calculate how many times the number i can be added to the max sum
+		  current_count = MIN(n_count[m-i-1], k - max_sum_size);						// calculate how many times the number i can be added to the max sum
 		  if (current_count) {
-			  max_sum += ((m-i)+1) * current_count;									// +1 because we are indexing from the end of the count lookup table
+			  max_sum += (m-i-1) * current_count;									// +1 because we are indexing from the end of the count lookup table
 			  max_sum_size += current_count;
 		  }
 	  }

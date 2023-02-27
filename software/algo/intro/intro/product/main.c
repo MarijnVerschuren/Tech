@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +23,7 @@ int main(int argc, char* argv[])
 	
     uint32_t k = 0;
     scanf("%u", &k);
-    
+
     if (selectedAssignment == 1)
     {
         uint32_t smallestNumber = 0;
@@ -64,3 +63,6 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+
+// 1 - passed
+//

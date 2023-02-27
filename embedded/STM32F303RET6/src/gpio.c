@@ -13,6 +13,12 @@ void GPIO_init(void) {
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;  // enable the peripheral clock for gpio port A
 	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;  // enable the peripheral clock for gpio port C
 }
+void lock_pin_config(uint8_t pin, GPIO_TypeDef* port) {
+	port->OTYPER &= ~(1 << pin);
+}
+void unlock_pin_config(uint8_t pin, GPIO_TypeDef* port) {
+	port->OTYPER |= 1 << pin;
+}
 void set_pin_mode(uint8_t pin, GPIO_TypeDef* port, GPIO_MODE_TypeDef mode) {
 	port->MODER |= (mode << (pin << 1u));
 }
