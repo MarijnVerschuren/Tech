@@ -10,9 +10,9 @@ void EXTI_init(void) {
 
 void enable_EXTI(uint8_t EXTI_line, GPIO_TypeDef* EXTI_port, uint8_t falling_edge, uint8_t rising_edge) {
 	EXTI_line &= 0xfu;  // only allow values upto 15
-	uint8_t pos = (EXTI_line & 0x3u);
-	SYSCFG->EXTICR[EXTI_line >> 2u] &= ~(0xfu << (pos << 2));
-	SYSCFG->EXTICR[EXTI_line >> 2u] |= (0xfu & port_to_int(EXTI_port)) << (pos << 2);
+	uint8_t pos = (EXTI_line & 0x3u);  // index in the register [0:3]
+	SYSCFG->EXTICR[EXTI_line >> 2u] &= ~(0xfu << (pos << 2));  // clear EXTI port in the register
+	SYSCFG->EXTICR[EXTI_line >> 2u] |= (0xfu & port_to_int(EXTI_port)) << (pos << 2);  // set EXTI port in the register
 	// set triggers
 	EXTI->FTSR |= ((falling_edge & 1u) << EXTI_line);
 	EXTI->RTSR |= ((rising_edge & 1u) << EXTI_line);

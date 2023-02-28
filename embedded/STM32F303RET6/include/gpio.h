@@ -14,6 +14,7 @@
 #define BTN_GPIO_PORT GPIOC
 
 
+
 typedef enum {
 	GPIO_input =		0b00,
 	GPIO_output =		0b01,
@@ -34,8 +35,9 @@ typedef enum {
 
 /*!< misc */
 uint8_t port_to_int(GPIO_TypeDef* port);
-/*!< init */
-void GPIO_init(void);
+/*!< init / disable */
+void GPIO_port_init(GPIO_TypeDef* port);
+void GPIO_port_disable(GPIO_TypeDef* port);
 void set_pin_mode(uint8_t pin, GPIO_TypeDef* port, GPIO_MODE_TypeDef mode);
 void set_pin_config(uint8_t pin, GPIO_TypeDef* port, GPIO_SPEED_TypeDef speed, GPIO_PULL_TypeDef pull);
 void pin_init(uint8_t pin, GPIO_TypeDef* port, GPIO_MODE_TypeDef mode, GPIO_SPEED_TypeDef speed, GPIO_PULL_TypeDef pull);

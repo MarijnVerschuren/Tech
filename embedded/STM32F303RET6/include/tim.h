@@ -6,7 +6,14 @@
 #include "main.h"
 
 
-// TODO: reimplement this using timers
-void ms_delay(uint32_t ms);
+/*!< misc */
+uint8_t tim_to_int(TIM_TypeDef* tim);
+/*!< init / disable */
+void TIM_init(TIM_TypeDef* tim, uint16_t prescaler, uint32_t limit, uint8_t update_interrupt);
+void TIM_disable(TIM_TypeDef* tim);
+/*!< actions */
+void TIM_start(TIM_TypeDef* tim);
+void TIM_stop(TIM_TypeDef* tim);
+
 
 #endif //STM32F303RET6_TIM_H

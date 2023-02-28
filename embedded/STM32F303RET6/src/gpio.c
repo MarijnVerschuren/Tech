@@ -8,10 +8,26 @@
 uint8_t port_to_int(GPIO_TypeDef* port) {
 	return ((uint32_t)(port - AHB2PERIPH_BASE) >> 10u) & 0xfu;
 }
-/*!< init */
-void GPIO_init(void) {
-	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;  // enable the peripheral clock for gpio port A
-	RCC->AHBENR |= RCC_AHBENR_GPIOCEN;  // enable the peripheral clock for gpio port C
+/*!< init / disable */
+void GPIO_port_init(GPIO_TypeDef* port) {
+	if (port == GPIOA) { RCC->AHBENR |= RCC_AHBENR_GPIOAEN; return; }
+	if (port == GPIOB) { RCC->AHBENR |= RCC_AHBENR_GPIOBEN; return; }
+	if (port == GPIOC) { RCC->AHBENR |= RCC_AHBENR_GPIOCEN; return; }
+	if (port == GPIOD) { RCC->AHBENR |= RCC_AHBENR_GPIODEN; return; }
+	if (port == GPIOE) { RCC->AHBENR |= RCC_AHBENR_GPIOEEN; return; }
+	if (port == GPIOF) { RCC->AHBENR |= RCC_AHBENR_GPIOFEN; return; }
+	if (port == GPIOG) { RCC->AHBENR |= RCC_AHBENR_GPIOGEN; return; }
+	if (port == GPIOH) { RCC->AHBENR |= RCC_AHBENR_GPIOHEN; return; }
+}
+void GPIO_port_disable(GPIO_TypeDef* port) {
+	if (port == GPIOA) { RCC->AHBENR &= ~RCC_AHBENR_GPIOAEN; return; }
+	if (port == GPIOB) { RCC->AHBENR &= ~RCC_AHBENR_GPIOBEN; return; }
+	if (port == GPIOC) { RCC->AHBENR &= ~RCC_AHBENR_GPIOCEN; return; }
+	if (port == GPIOD) { RCC->AHBENR &= ~RCC_AHBENR_GPIODEN; return; }
+	if (port == GPIOE) { RCC->AHBENR &= ~RCC_AHBENR_GPIOEEN; return; }
+	if (port == GPIOF) { RCC->AHBENR &= ~RCC_AHBENR_GPIOFEN; return; }
+	if (port == GPIOG) { RCC->AHBENR &= ~RCC_AHBENR_GPIOGEN; return; }
+	if (port == GPIOH) { RCC->AHBENR &= ~RCC_AHBENR_GPIOHEN; return; }
 }
 void lock_pin_config(uint8_t pin, GPIO_TypeDef* port) {
 	port->OTYPER &= ~(1 << pin);
