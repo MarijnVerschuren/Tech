@@ -1,6 +1,12 @@
 #include <iostream>
 
+#include "../inc/cantcoap.h"
+#include <arpa/inet.h>
+#include "../inc/dbg.h"
+
+
 int main() {
-	std::cout << "Hello, World!" << std::endl;
+	CoapPDU conn = CoapPDU();
+	std::cout << conn.getOptions()->optionNumber << std::endl;
 	return 0;
 }
