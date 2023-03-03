@@ -27,7 +27,6 @@ int FindSmallestNumberThatIsRepeatedKTimes(
     if (m > 100000) { return -1; }									// no value in "arr" can be higher than 100000
     m++;															// m is incremented by one so that the count lookup table can hold the 100000 values
 	
-		// use sizeof
     uint32_t* n_count = calloc(m, sizeof(uint32_t));								// initialized array to count occurances for each number in "arr"
     for (uint32_t i = 0; i < len; i++) { n_count[arr[i]]++; }		// counting occurances of the numbers in "arr": O(n)
     for (uint32_t i = 0; i < m; i++) {
@@ -190,7 +189,7 @@ void countingSort(uint32_t* array, uint32_t size, uint32_t place) {
   }
   uint32_t count[max + 1];
 
-  for (uint32_t i = 0; i < max; ++i)
+  for (uint32_t i = 0; i <= max; ++i)
     count[i] = 0;
 
   // Calculate count of elements
@@ -198,7 +197,7 @@ void countingSort(uint32_t* array, uint32_t size, uint32_t place) {
     count[(array[i] / place) % 10]++;
     
   // Calculate cumulative count
-  for (uint32_t i = 1; i < 10; i++)
+  for (uint32_t i = 1; i <= max; i++)
     count[i] += count[i - 1];
 
   // Place the elements in sorted order
@@ -216,7 +215,7 @@ void radixsort(uint32_t* array, uint32_t size) {
   // Get maximum element
   uint32_t max = arr_max(array, size);
   // Apply counting sort to sort elements based on place value.
-  for (uint32_t place = 1; max / place > 0; place *= 10)
+  for (uint32_t place = 1; max >= place; place *= 10)
     countingSort(array, size, place);
 }
 
@@ -232,7 +231,7 @@ int ComputeDifferenceBetweenMaxAndMinSumOfKElements_1(
 		// quicksort O(n^2)
 		quickSort(arr, 0, len - 1);
 		for (uint32_t i = 0; i < len; i++) {
-			printf("%u", arr[i]);
+			printf("%u ", arr[i]);
 		}
 		return 0;
 }
@@ -243,7 +242,7 @@ int ComputeDifferenceBetweenMaxAndMinSumOfKElements_2(
 		// merge sort O(n log n)
 		mergeSort(arr, 0, len - 1);
 		for (uint32_t i = 0; i < len; i++) {
-			printf("%u", arr[i]);
+			printf("%u ", arr[i]);
 		}
 		return 0;
 }
@@ -254,7 +253,7 @@ int ComputeDifferenceBetweenMaxAndMinSumOfKElements_3(
 	  	// radix sort O(nk)
 		radixsort(arr, len);
 		for (uint32_t i = 0; i < len; i++) {
-			printf("%u", arr[i]);
+			printf("%u ", arr[i]);
 		}
 		return 0;
 }
