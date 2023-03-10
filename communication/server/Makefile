@@ -1,20 +1,17 @@
-CPPFLAGS=-I inc/
-# Uncomment this to enable debug output and symbols
-#CPPFLAGS+=-DDEBUG -O0 -g
-
-CFLAGS=-Wall -std=c99
-CXXFLAGS=-Wall -std=c++23
+GLOBAL_FLAGS = -I inc/ -Wall -O0
+C_FLAGS = -std=c99
+CPP_FLAGS = -std=c++23
 
 default: int/nethelper.o staticlib main
 
-main: src/main.cpp bin/libcantcoap.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -fsanitize=address $< -o $@ int/cantcoap.o
+main:
+	$(CXX) $(GLOBAL_FLAGS) $(CXXFLAGS) -fsanitize=address src/main.cpp int/cantcoap.o int/nethelper.o -o $@
 
 int/cantcoap.o: src/cantcoap.cpp inc/cantcoap.h
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@
+	$(CXX) $(GLOBAL_FLAGS) $(CXXFLAGS) $< -c -o $@
 
 int/nethelper.o: src/nethelper.c inc/nethelper.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -c -o $@
+	$(CC) $(GLOBAL_FLAGS) $(CFLAGS) -c $< -c -o $@
 
 staticlib: bin/libcantcoap.a
 
