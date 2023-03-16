@@ -21,12 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a894f449-d9ad-4ea5-b1fb-8734e30b9caf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../software/design/pound_lock/.poundlock_class_diagram.vpp.lck" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../software/design/pound_lock/pound_lock.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/design/pound_lock/pound_lock.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../software/design/pound_lock/poundlock_class_diagram.vpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/design/pound_lock/poundlock_class_diagram.vpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,14 +93,14 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="127.0.0.1 5683" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="server" TARGET_NAME="default" CONFIG_NAME="default" version="1" RUN_PATH="$PROJECT_DIR$/main">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -123,6 +118,8 @@
       <workItem from="1677855127212" duration="53000" />
       <workItem from="1677855212663" duration="540000" />
       <workItem from="1678437661054" duration="7522000" />
+      <workItem from="1678704529256" duration="2000" />
+      <workItem from="1678710120014" duration="599000" />
     </task>
     <servers />
   </component>
