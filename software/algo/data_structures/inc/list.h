@@ -10,6 +10,7 @@
 
 /*!< types */
 typedef void (*free_func)(void*);
+typedef uint8_t (*cmp_func)(void*, void*);
 
 typedef struct {
 	void* data;
@@ -43,8 +44,9 @@ void del_list(List* list);
 /*!< indexing, setting and finding */
 const void* const list_index(List* list, uint64_t index);	// result is readonly
 List_Error list_get(List* list, uint64_t index, void* ret);	// result is read-write
-// TODO: setters
-// TODO: find/rfind
+List_Error list_set(List* list, uint64_t index, void* data);
+uint64_t list_find(List* list, void* data, cmp_func cmp);
+uint64_t list_rfind(List* list, void* data, cmp_func cmp);
 
 /*!< addition and removal */
 void list_append(List* list, void* data);
@@ -54,6 +56,8 @@ List_Error list_remove(List* list, uint64_t index);
 
 /*!< splitting and merging */
 List* split_list(List* list, uint64_t index);
-// TODO: merge
+List_Error extend_list(List* dst, List* src);
+List_Error merge_list(List* dst, List* src, uint64_t index);
+
 
 #endif //DATA_STRUCTURES_LIST_H

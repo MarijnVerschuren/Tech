@@ -10,6 +10,13 @@ static void del_node(Node* node, free_func func) {
 	func(node->data);
 	free(node);
 }
+static Node* get_node(List* list, uint64_t index) {
+	if (index >= list->length) { return nullptr; }
+	// selecting node and returning its data pointer as readonly
+	Node* node = list->head;
+	while (index--) { node = node->next; }
+	return node;
+}
 
 /*!< creation and deletion */
 List* new_list(uint64_t data_size) {
@@ -29,10 +36,9 @@ void del_list(List* list) {
 
 /*!< indexing and finding */
 const void* const list_index(List* list, uint64_t index) {
-	if (index >= list->length) { return nullptr; }
-	// selecting node and returning its data pointer as readonly
-	Node* node = list->head;
-	while (index--) { node = node->next; }
+	// select node and returning its data
+	Node* node = get_node(list, index);
+	if (!node) { return nullptr; }
 	return node->data;
 }
 List_Error list_get(List* list, uint64_t index, void* ret) {
@@ -42,6 +48,13 @@ List_Error list_get(List* list, uint64_t index, void* ret) {
 	if (!data) { return index_error; }
 	memcpy(ret, data, list->data_size);
 	return ok;
+}
+List_Error list_set(List* list, uint64_t index, void* data) {
+
+}
+uint64_t list_find(List* list, void* data, cmp_func cmp) {
+}
+uint64_t list_rfind(List* list, void* data, cmp_func cmp) {
 }
 
 /*!< functions */
@@ -63,10 +76,9 @@ void list_append(List* list, void* data) {
 	list->length++;
 }
 List_Error list_insert(List* list, void* data, uint64_t index) {
-	if (index >= list->length) { return index_error; }
 	// select node
-	Node* node = list->head;
-	while (index--) { node = node->next; }
+	Node* node = get_node(list, index);
+	if (!node) { return index_error; }
 	// creating node, linking it and updating length
 	Node* prev = node->prev;
 	Node* new = malloc(sizeof(Node));
@@ -93,11 +105,11 @@ List_Error list_pop(List* list) {
 	return ok;
 }
 List_Error list_remove(List* list, uint64_t index) {
+	// special cases
 	if (index >= list->length)			{ return index_error; }
 	else if (index == list->length - 1)	{ return list_pop(list); }
 	// select node to remove
-	Node* node = list->head;
-	while (index--) { node = node->next; }
+	Node* node = get_node(list, index);
 	// fix both neighboring nodes
 	Node* prev = node->prev;
 	Node* next = node->next;
@@ -112,15 +124,14 @@ List_Error list_remove(List* list, uint64_t index) {
 
 /*!< splitting and merging */
 List* split_list(List* list, uint64_t index) {
-	if (index >= list->length) { return nullptr; }
+	// select node to split on
+	Node* node = get_node(list, index);
+	if (!node) { return nullptr; }
 	// update lengths
 	List* ret = new_list(list->data_size);
 	set_list_free_func(ret, list->func);
 	ret->length = list->length - index;
 	list->length = index;
-	// select node to split on
-	Node* node = list->head;
-	while (index--) { node = node->next; }
 	// fix ends of list
 	ret->head = node;
 	ret->tail = list->tail;
@@ -128,4 +139,8 @@ List* split_list(List* list, uint64_t index) {
 	list->tail->next = nullptr;
 	ret->head->prev = nullptr;
 	return ret;
+}
+List_Error extend_list(List* dst, List* src) {
+}
+List_Error merge_list(List* dst, List* src, uint64_t index) {
 }
