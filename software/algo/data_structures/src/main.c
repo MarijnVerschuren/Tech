@@ -23,9 +23,7 @@ void print_str_nodes(List* list) {
 	}
 }
 
-
-
-int main() {
+void list_test(void) {
 	List* list = new_list(sizeof(const char*));
 	// strings are defined in the binary so do not have to be freed
 	// but the ability to define your custom data deletion function is added to the list
@@ -60,6 +58,31 @@ int main() {
 
 	print_str_list(list);
 	print_str_list(list2);
+
+	extend_list(list2, list);
+
+	print_str_list(list2);
+
+	list_set(list2, 2, &text_2);
+
+	print_str_list(list2);
+
+	list_append(list2, &text_0);
+	list_append(list2, &text_0);
+	list_append(list2, &text_0);
+
+	print_str_list(list2);
+
+	list = split_list(list2, 3);
+	merge_list(list, list2, 1);
+
+	print_str_list(list);
+}
+
+
+
+int main(void) {
+	//list_test();
 
 	return 0;
 }

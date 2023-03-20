@@ -30,7 +30,7 @@ void set_list_free_func(List* list, free_func func) {
 }
 void del_list(List* list) {
 	// delete list and nodes recursively
-	del_node(list->head, list->func);
+	if (list->head) { del_node(list->head, list->func); }
 	free(list);
 }
 
@@ -50,15 +50,28 @@ List_Error list_get(List* list, uint64_t index, void* ret) {
 	return ok;
 }
 List_Error list_set(List* list, uint64_t index, void* data) {
-
+	Node* node = get_node(list, index);
+	if (!node) { return index_error; }
+	memcpy(node->data, data, list->data_size);
+	return ok;
 }
 uint64_t list_find(List* list, void* data, cmp_func cmp) {
+	Node* node = list->head;
+	uint64_t i = 0;
+	for (; i < list->length && !cmp(node->data, data); i++) {
+		node = node->next;
+	} return i;
 }
 uint64_t list_rfind(List* list, void* data, cmp_func cmp) {
+	Node* node = list->head;
+	uint64_t i = list->length;
+	for (; i && !cmp(node->data, data); i--) {
+		node = node->next;
+	} return i;
 }
 
 /*!< functions */
-void list_append(List* list, void* data) {
+List_Error list_append(List* list, void* data) {
 	// creating node
 	Node* node = calloc(1, sizeof(Node));
 	node->data = malloc(list->data_size);
@@ -74,6 +87,7 @@ void list_append(List* list, void* data) {
 	node->prev = list->tail;
 	list->tail = node;
 	list->length++;
+	return ok;
 }
 List_Error list_insert(List* list, void* data, uint64_t index) {
 	// select node
@@ -141,6 +155,25 @@ List* split_list(List* list, uint64_t index) {
 	return ret;
 }
 List_Error extend_list(List* dst, List* src) {
+	Node* end = dst->tail;
+	dst->tail = src->tail;
+	src->head->prev = end;
+	end->next = src->head;
+	dst->length += src->length;
+	src->head = nullptr;
+	del_list(src);
+	return ok;
 }
 List_Error merge_list(List* dst, List* src, uint64_t index) {
+	Node* next = get_node(dst, index);
+	if (!next) { return index_error; }
+	Node* prev = next->prev;
+	prev->next = src->head;
+	src->head->prev = prev;
+	next->prev = src->tail;
+	src->tail->next = next;
+	dst->length += src->length;
+	src->head = nullptr;
+	del_list(src);
+	return ok;
 }

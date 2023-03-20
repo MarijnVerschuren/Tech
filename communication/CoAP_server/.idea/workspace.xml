@@ -20,8 +20,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a894f449-d9ad-4ea5-b1fb-8734e30b9caf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../software/design/pound_lock/pound_lock.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/design/pound_lock/pound_lock.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../CoAP_server.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../software/algo/data_structures/inc/queue.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../software/algo/data_structures/src/queue.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../software/design/pound_lock/.~lock.pound_lock.docx#" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/bin/libcantcoap.a" beforeDir="false" afterPath="$PROJECT_DIR$/bin/libcantcoap.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/cantcoap-master.zip" beforeDir="false" afterPath="$PROJECT_DIR$/cantcoap-master.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/inc/cantcoap.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/cantcoap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/inc/dbg.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/dbg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/inc/nethelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/nethelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/inc/sysdep.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/sysdep.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/inc/uthash.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/uthash.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/int/cantcoap.o" beforeDir="false" afterPath="$PROJECT_DIR$/int/cantcoap.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/int/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/int/main.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/int/nethelper.o" beforeDir="false" afterPath="$PROJECT_DIR$/int/nethelper.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/cantcoap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/cantcoap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../server/src/nethelper.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/nethelper.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../software/algo/data_structures/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/algo/data_structures/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../software/algo/data_structures/bin/main" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/algo/data_structures/bin/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../software/algo/data_structures/inc/list.h" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/algo/data_structures/inc/list.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../software/algo/data_structures/src/list.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/algo/data_structures/src/list.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../software/algo/data_structures/src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../software/algo/data_structures/src/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,12 +118,7 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="main" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="127.0.0.1 5683" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="server" TARGET_NAME="default" CONFIG_NAME="default" version="1" RUN_PATH="$PROJECT_DIR$/main">
+    <configuration name="main" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="127.0.0.1 5683" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CoAP_server" TARGET_NAME="default" CONFIG_NAME="default" version="1" RUN_PATH="$PROJECT_DIR$/main">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -120,6 +140,7 @@
       <workItem from="1678437661054" duration="7522000" />
       <workItem from="1678704529256" duration="2000" />
       <workItem from="1678710120014" duration="599000" />
+      <workItem from="1679043074266" duration="5182000" />
     </task>
     <servers />
   </component>

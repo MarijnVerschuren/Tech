@@ -49,15 +49,15 @@ uint64_t list_find(List* list, void* data, cmp_func cmp);
 uint64_t list_rfind(List* list, void* data, cmp_func cmp);
 
 /*!< addition and removal */
-void list_append(List* list, void* data);
+List_Error list_append(List* list, void* data);
 List_Error list_insert(List* list, void* data, uint64_t index);
 List_Error list_pop(List* list);
 List_Error list_remove(List* list, uint64_t index);
 
 /*!< splitting and merging */
 List* split_list(List* list, uint64_t index);
-List_Error extend_list(List* dst, List* src);
-List_Error merge_list(List* dst, List* src, uint64_t index);
+List_Error extend_list(List* dst, List* src);					// deletes src
+List_Error merge_list(List* dst, List* src, uint64_t index);	// deletes src
 
 
 #endif //DATA_STRUCTURES_LIST_H
