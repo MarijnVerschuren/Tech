@@ -21,10 +21,10 @@
 
 
 int main(int argc, char** argv);
-int gTestCallback(CoapPDU *request, int sockfd, struct sockaddr_storage* recvFrom);
+int gTestCallback(CoapPDU *request, int sockfd, sockaddr_storage* recvFrom);
 
 
-typedef int (*ResourceCallback)(CoapPDU *pdu, int sockfd, struct sockaddr_storage* recvFrom);
+typedef int (*ResourceCallback)(CoapPDU *pdu, int sockfd, sockaddr_storage* recvFrom);
 
 // using uthash for the URI hash table. Each entry contains a callback handler.
 struct URIHashEntry {
@@ -46,7 +46,7 @@ const uint32_t gNumResources = 1;
 
 
 
-int gTestCallback(CoapPDU *request, int sockfd, struct sockaddr_storage* recvFrom) {
+int gTestCallback(CoapPDU *request, int sockfd, sockaddr_storage* recvFrom) {
 	socklen_t addrLen = sizeof(sockaddr_in);
 	if(recvFrom->ss_family==AF_INET6) {
 		addrLen = sizeof(sockaddr_in6);
@@ -167,10 +167,10 @@ int main(int argc, char **argv) {
 	int recvURILen = 0;
 
 	// storage for handling receive address
-	struct sockaddr_storage recvAddr;
+	sockaddr_storage recvAddr;
 	socklen_t recvAddrLen = sizeof(sockaddr_storage);
-	struct sockaddr_in* v4Addr;
-	struct sockaddr_in6* v6Addr;
+	sockaddr_in* v4Addr;
+	sockaddr_in6* v6Addr;
 	char straddr[INET6_ADDRSTRLEN];
 
 	// reuse the same PDU
