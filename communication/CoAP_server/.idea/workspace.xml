@@ -20,16 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a894f449-d9ad-4ea5-b1fb-8734e30b9caf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/HTTP_server.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../HTTP_server/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../software/design/microwave/.~lock.doc.odt#" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../HTTP_server/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../HTTP_server/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +88,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/marijn/Github/Tech/communication/server/Makefile&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/marijn/Github/EEPROM_Programmer&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;MakefileSettings&quot;
   }
 }</component>
@@ -133,7 +125,11 @@
       <workItem from="1678704529256" duration="2000" />
       <workItem from="1678710120014" duration="599000" />
       <workItem from="1679043074266" duration="9384000" />
-      <workItem from="1679319568957" duration="1928000" />
+      <workItem from="1679319568957" duration="4154000" />
+      <workItem from="1679355857130" duration="1358000" />
+      <workItem from="1679392407302" duration="4523000" />
+      <workItem from="1679481069790" duration="1487000" />
+      <workItem from="1679660433861" duration="17000" />
     </task>
     <servers />
   </component>

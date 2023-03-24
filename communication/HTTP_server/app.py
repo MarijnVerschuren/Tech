@@ -5,7 +5,7 @@ import sys
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST", "PUT", "DELETE", "HEAD"])
 def hello_world():  # put application's code here
     return bytes([i for i in range(0, 256)])
 
