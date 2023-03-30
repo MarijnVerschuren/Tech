@@ -1,0 +1,1 @@
+In this module we make a start with software design. You have already seen class diagrams, use case diagrams, sequence diagrams and state diagrams. We will now go into the process behind *creating* a design.

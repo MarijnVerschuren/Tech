@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a894f449-d9ad-4ea5-b1fb-8734e30b9caf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../HTTP_server/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../HTTP_server/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +92,7 @@
   }
 }</component>
   <component name="RunManager" selected="Makefile Application.host">
-    <configuration name="host" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="145.93.85.248 5683" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CoAP_server" TARGET_NAME="default" CONFIG_NAME="default" version="1" RUN_PATH="$PROJECT_DIR$/main">
+    <configuration name="host" type="CLionNativeAppRunConfigurationType" PROGRAM_PARAMS="145.93.85.248 5684" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CoAP_server" TARGET_NAME="default" CONFIG_NAME="default" version="1" RUN_PATH="$PROJECT_DIR$/main">
       <method v="2">
         <option name="CLION.COMPOUND.BUILD" enabled="true" />
       </method>
@@ -130,6 +129,7 @@
       <workItem from="1679392407302" duration="4523000" />
       <workItem from="1679481069790" duration="1487000" />
       <workItem from="1679660433861" duration="17000" />
+      <workItem from="1679661366959" duration="133000" />
     </task>
     <servers />
   </component>

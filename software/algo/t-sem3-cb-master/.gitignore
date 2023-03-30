@@ -1,0 +1,6 @@
+# Git ignore file
+**/.DS_Store
+
+*/*/build/*.html
+build/
+project/1_Project1_Washing_Machine/~$oject 1 - System Design Smart Waching Machine.docx

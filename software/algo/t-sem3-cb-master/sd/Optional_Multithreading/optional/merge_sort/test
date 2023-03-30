@@ -1,0 +1,7 @@
+./mergeSort < in
+	if cmp correct.txt "out_alg"
+	then
+		echo "Test for "out_alg" successful"
+	else
+		echo "Test for "out_alg" failed"
+	fi
