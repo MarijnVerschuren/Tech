@@ -29,6 +29,7 @@ int mystack_push(StackMeta_t *stack, void* obj) {
 	if (!new) { return -1; }
 	new->next = next;
 	new->obj = malloc(stack->objsize);
+	if (!new->obj) { return -1; }
 	memcpy(new->obj, obj, stack->objsize);
 	stack->stack = new;
 	stack->numelem++;
@@ -38,6 +39,7 @@ int mystack_push(StackMeta_t *stack, void* obj) {
 int mystack_pop(StackMeta_t *stack, void* obj) {
 	if (!stack || !obj) { return -1; }
 	StackObject_t* pop = stack->stack;
+	if (!pop) { return -1; }
 	StackObject_t* next = pop->next;
 	memcpy(obj, pop->obj, stack->objsize);
 	free(pop->obj); free(pop);
@@ -47,7 +49,7 @@ int mystack_pop(StackMeta_t *stack, void* obj) {
 }
 
 
-static void destroy_chain(StackObject_t* obj) {
+static void destroy_chain(StackObject_t* obj) {  // use pop instead
 	if (!obj) { return; }
 	if (obj->next) {
 		destroy_chain(obj->next);
@@ -55,6 +57,7 @@ static void destroy_chain(StackObject_t* obj) {
 	}
 	free(obj->obj);
 }
+
 
 void mystack_destroy(StackMeta_t *stack) {
 	if (!stack) { return; }
