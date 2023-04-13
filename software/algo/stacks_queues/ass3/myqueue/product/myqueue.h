@@ -1,8 +1,14 @@
 #ifndef __MYQUE__
 #define __MYQUE__
+typedef struct queueObject {
+	void* obj;
+	struct queueObject *next;
+	struct queueObject *prev;
+} QueueObject_t;
+
 typedef struct queueMeta {
-	StackMeta_t *stack_in;
-	StackMeta_t *stack_out;
+	QueueObject_t *stack_in;
+	QueueObject_t *stack_out;
 	int item_size;
 } QueueMeta_t;
 

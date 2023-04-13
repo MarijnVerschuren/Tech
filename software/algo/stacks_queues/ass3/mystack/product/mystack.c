@@ -37,11 +37,11 @@ int mystack_push(StackMeta_t *stack, void* obj) {
 }
 
 int mystack_pop(StackMeta_t *stack, void* obj) {
-	if (!stack || !obj) { return -1; }
+	if (!stack) { return -1; }
 	StackObject_t* pop = stack->stack;
 	if (!pop) { return -1; }
 	StackObject_t* next = pop->next;
-	memcpy(obj, pop->obj, stack->objsize);
+	if (obj) { memcpy(obj, pop->obj, stack->objsize); }
 	free(pop->obj); free(pop);
 	stack->stack = next;
 	stack->numelem--;

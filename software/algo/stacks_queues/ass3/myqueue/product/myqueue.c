@@ -9,25 +9,46 @@
 
 
 QueueMeta_t *myqueue_create(int item_size) {
-	QueueMeta_t* handle;
-	return NULL;
+	QueueMeta_t* handle = calloc(1, sizeof(QueueMeta_t));
+	if (!handle) { return NULL; }
+	handle->item_size = item_size;
+	return handle;
 }
 
-void myqueue_delete(QueueMeta_t *queue)
-{
-	return;
+void myqueue_delete(QueueMeta_t *queue) {
+	if (!queue) { return; }
+	QueueObject_t *current, *next = queue->stack_in;
+	if (!next) { free(queue); return; }
+	do {
+		current = next;
+		next = current->next;
+		free(current);
+	} while (next);
+	free(queue);
 }
 
-int myqueue_enqueue(QueueMeta_t *que, void *obj)
-{
+int myqueue_enqueue(QueueMeta_t *queue, void *obj) {
+	if (!queue || !obj) { return -1; }
+	QueueObject_t* q_obj = calloc(1, sizeof(QueueObject_t));
+	if (!q_obj) { return -1; }
+	q_obj->obj = malloc(queue->item_size);
+	if (!q_obj->obj) { return -1; }
+	if (!queue->stack_out) { queue->stack_out = q_obj; }
+	if (queue->stack_in) { queue->stack_in->prev = q_obj; }
+	q_obj->next = queue->stack_in;
+	queue->stack_in = q_obj;
+	memcpy(q_obj->obj, obj, queue->item_size);
 	return 0;
 }
 
-int myqueue_dequeue(QueueMeta_t *queue, void *obj)
-{
+int myqueue_dequeue(QueueMeta_t *queue, void *obj) {
+	if (!queue) { return -1; }
+	if (!queue->stack_out) { return -1; }
+	if (obj) { memcpy(obj, queue->stack_out->obj, queue->item_size); }
+	QueueObject_t* out = queue->stack_out;
+	if (queue->stack_in == queue->stack_out) { queue->stack_in = NULL; }
+	queue->stack_out = out->prev;
+	free(out->obj);
+	free(out);
 	return 0;
 }
-
-
-
-
