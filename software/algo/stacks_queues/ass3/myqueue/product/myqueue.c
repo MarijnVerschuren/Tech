@@ -9,8 +9,10 @@
 
 
 QueueMeta_t *myqueue_create(int item_size) {
-	QueueMeta_t* handle = calloc(1, sizeof(QueueMeta_t));
+	QueueMeta_t* handle = malloc(sizeof(QueueMeta_t));
 	if (!handle) { return NULL; }
+	handle->stack_in = NULL;
+	handle->stack_out = NULL;
 	handle->item_size = item_size;
 	return handle;
 }
@@ -29,8 +31,9 @@ void myqueue_delete(QueueMeta_t *queue) {
 
 int myqueue_enqueue(QueueMeta_t *queue, void *obj) {
 	if (!queue || !obj) { return -1; }
-	QueueObject_t* q_obj = calloc(1, sizeof(QueueObject_t));
+	QueueObject_t* q_obj = malloc(sizeof(QueueObject_t));
 	if (!q_obj) { return -1; }
+	q_obj->prev = NULL;
 	q_obj->obj = malloc(queue->item_size);
 	if (!q_obj->obj) { return -1; }
 	if (!queue->stack_out) { queue->stack_out = q_obj; }
