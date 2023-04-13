@@ -9,6 +9,7 @@
 
 
 QueueMeta_t *myqueue_create(int item_size) {
+	if (item_size <= 0) { return NULL; }
 	QueueMeta_t* handle = malloc(sizeof(QueueMeta_t));
 	if (!handle) { return NULL; }
 	handle->stack_in = NULL;
@@ -24,6 +25,7 @@ void myqueue_delete(QueueMeta_t *queue) {
 	do {
 		current = next;
 		next = current->next;
+		free(current->obj);
 		free(current);
 	} while (next);
 	free(queue);
@@ -51,6 +53,7 @@ int myqueue_dequeue(QueueMeta_t *queue, void *obj) {
 	QueueObject_t* out = queue->stack_out;
 	if (queue->stack_in == queue->stack_out) { queue->stack_in = NULL; }
 	queue->stack_out = out->prev;
+	queue->stack_out->next = NULL;
 	free(out->obj);
 	free(out);
 	return 0;
