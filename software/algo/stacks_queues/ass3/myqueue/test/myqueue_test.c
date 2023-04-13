@@ -22,6 +22,9 @@ void tearDown(void) {
 }
 
 void test_queue_create_delete(void) {
+	QueueMeta_t* test_invalid = myqueue_create(0);
+	TEST_ASSERT_NULL((void*)test_invalid)
+
 	QueueMeta_t* test_queue = myqueue_create(sizeof(uint8_t));
 	TEST_ASSERT_NOT_EQUAL(NULL, test_queue)
 	TEST_ASSERT_NULL((void*)test_queue->stack_in)
