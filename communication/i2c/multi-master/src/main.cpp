@@ -75,6 +75,7 @@ void loop() {
 	oled.print(state->counter_b);
 	oled.display(); // Draw to the screen
 
+	delay(50);
 	I2C_send_state(PEER_ADDR);
-	// delay(20);  // TODO: remove
+	delay(50);  // TODO: remove
 }
