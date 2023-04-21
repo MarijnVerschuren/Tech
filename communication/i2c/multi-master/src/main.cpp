@@ -5,6 +5,10 @@
 #include "SFE_MicroOLED.h"
 
 
+#define RESET_PIN A0
+void(* SWRST)(void) = NULL;	// declare software reset function
+
+
 typedef struct {
 	uint32_t counter_a;
 	uint32_t counter_b;
@@ -49,11 +53,12 @@ void I2C_send_state(uint8_t peer) {  // hand token out to peer
 void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, LOW);
+	pinMode(RESET_PIN, INPUT_PULLUP);
 
 	Serial.begin(115200);
 
 	state = (state_t*)malloc(sizeof(state_t));
-	if (!state) { for(;;) { Serial.print("alloc error"); } }
+	if (!state) { Serial.print("alloc error"); SWRST(); }
 
 	Wire.begin(OWN_ADDR);  // start receiving as slave
 	Wire.onReceive(I2C_callback);
@@ -61,6 +66,8 @@ void setup() {
 }
 
 void loop() {
+	if (!digitalRead(RESET_PIN)) { SWRST(); }  // custom reset so that resetting mcu does not interfere with OLED
+
 	if (!I2C_master &&  (millis() - latest_master_mode) < MASTER_MODE_TIMEOUT) { return; }
 	latest_master_mode = millis();
 
