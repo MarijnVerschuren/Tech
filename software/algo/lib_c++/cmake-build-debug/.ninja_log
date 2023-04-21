@@ -1,0 +1,5 @@
+# ninja log v5
+1	278	1681996920912617510	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o	d7201752454fb6c4
+653	694	1681997048070899105	lib_c__	4f930050582c724c
+0	15	1682016069219587861	build.ninja	485c4f21750cfcca
+0	653	1681997048030899646	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o	b6f8f2055af292d2
