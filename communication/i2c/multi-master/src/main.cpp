@@ -70,14 +70,6 @@ class Tetris_Block {  // 2 bytes
 
 	inline uint32_t get_bitmap() { return tetris_blocks[this->rotation * 7 + this->block_id]; }
 
-	inline uint8_t get_height(uint32_t bitmap) {
-		if (bitmap & 0x08080808) { return 4; }
-		if (bitmap & 0x04040404) { return 3; }
-		if (bitmap & 0x02020202) { return 2; }
-		if (bitmap & 0x01010101) { return 1; }
-		return 0;
-	}
-
 	inline uint8_t *get_screen_buffer_offset(uint8_t screen_offset) {
 		uint8_t row = this->y / 8;
 		return (uint8_t *) &screen_buffer[x + screen_offset + (row * 64)];
@@ -93,7 +85,7 @@ class Tetris_Block {  // 2 bytes
 	}
 
 	inline uint8_t collide() {
-		uint8_t *ptr = get_screen_buffer_offset(SCREEN_POS);  // collisions are only on master
+		uint8_t *ptr = get_screen_buffer_offset(SCREEN_POS);  // a little hacky but collisions are only on master
 		uint32_t bitmap = get_bitmap();
 		int8_t offset = this->y % 8;
 		uint8_t height = get_height(bitmap);
@@ -108,6 +100,14 @@ class Tetris_Block {  // 2 bytes
 	}
 
 public:
+	inline uint8_t get_height(uint32_t bitmap) {
+		if (bitmap & 0x08080808) { return 4; }
+		if (bitmap & 0x04040404) { return 3; }
+		if (bitmap & 0x02020202) { return 2; }
+		if (bitmap & 0x01010101) { return 1; }
+		return 0;
+	}
+
 	void draw(uint8_t screen_offset) {
 		uint8_t *ptr = get_screen_buffer_offset(screen_offset);
 		uint32_t bitmap = get_bitmap();
@@ -150,15 +150,15 @@ public:
 };
 
 class Tetris {
+public:
 	Tetris_Block blocks[20];	// theoretical max block count (384)
 	uint32_t last_step = 0;
 	uint32_t step_delay = 1000;
 	uint16_t block_count = 0;
 	uint16_t cursor = 0;			// currently active block (equal to count if none)
 
-public:
 	void update() {  // image has to be drawn first!
-		// update active block TODO: add joystick
+		// update active block
 		if (this->cursor != this->block_count) { user_input(); }
 		else { new_block(); }
 	}
@@ -174,13 +174,10 @@ public:
 		// TODO joystick input
 	}
 	void new_block() {
-		if (this->blocks[this->block_count].set(random(7), random(32), 0, random(4))) { SWRST(); }  // game over
+		if (this->blocks[this->block_count].set(random(7), random(28), 0, random(4))) { SWRST(); }  // game over
 		this->cursor = this->block_count; this->block_count++;
 	}
 
-	uint16_t get_cursor() { return this->cursor; }
-	Tetris_Block get_block(uint16_t index) { return this->blocks[index]; }
-	void set_block(uint16_t index, Tetris_Block block) { this->blocks[index] = block; }
 	void reset() { this->block_count = 0; this->cursor = 0; }
 };
 
@@ -201,21 +198,23 @@ struct {
 void I2C_callback(int size) {  // function called when data is received
 	if (size < sizeof(packet)) { return; }
 	Wire.readBytes((uint8_t*)&packet, sizeof(packet));
-	PEER_GAME.set_block(packet.index, packet.block);
+	if (packet.index > PEER_GAME.cursor) {
+		PEER_GAME.block_count++;
+		PEER_GAME.cursor = packet.index;
+	} PEER_GAME.blocks[packet.index] = packet.block;
 	if (packet.new_game) { p1.reset(); p2.reset(); }
 	I2C_master = 1;
 }
 
 void I2C_send_state() {  // hand token out to peer
-	packet.index = OWN_GAME.get_cursor();
-	packet.block = OWN_GAME.get_block(packet.index);
+	packet.index = OWN_GAME.cursor;
+	packet.block = OWN_GAME.blocks[packet.index];
 	packet.new_game = new_game;
 	if (new_game) { new_game = false; }
-
 	Wire.beginTransmission(PEER_ADDR);
 	Wire.write((uint8_t*)&packet, sizeof(packet));
-	uint8_t ret = Wire.endTransmission();
-	I2C_master = ret == 0;
+	Wire.endTransmission();
+	I2C_master = 0;
 }
 
 
@@ -228,7 +227,7 @@ void setup() {
 	Serial.print("started on ");
 	Serial.println(OWN_ADDR, HEX);
 
-	screen_buffer = new uint8_t[384]();  // TODO: obtain reference to library internal buffer
+	screen_buffer = new uint8_t[384]();
 	if (!screen_buffer) { Serial.println("allocation error"); SWRST(); }
 	OWN_GAME.new_block();
 	new_game = true;
@@ -251,13 +250,14 @@ void loop() {
 	p1.draw(0);
 	p2.draw(32);
 	// updating game is done after drawing static blocks because the collisions are done by looking in the pixel buffer
-	OWN_GAME.update();  // TODO add joystick
+	OWN_GAME.update();
 	p1.draw_cursor(0);
 	p2.draw_cursor(32);
 
 	oled.drawBitmap(screen_buffer);
 	oled.display();  // Draw to the screen
-	// TODO: row deletion!!!!
 
 	I2C_send_state();
 }
+// TODO add joystick
+// TODO: row deletion!!!!
