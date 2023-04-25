@@ -11,18 +11,16 @@
 #define OWN_ADDR 0x50
 #define PEER_ADDR 0x51
 uint8_t I2C_master = 1;
-#define OWN_STATE p1
+#define OWN_GAME p1
+#define PEER_GAME p2
 #define SCREEN_POS 0
-#define PEER_STATE p2
-#define PEER_SCREEN_POS 32
 #else
 #define OWN_ADDR 0x51
 #define PEER_ADDR 0x50
 uint8_t I2C_master = 0;
-#define OWN_STATE p2
+#define OWN_GAME p2
+#define PEER_GAME p1
 #define SCREEN_POS 32
-#define PEER_STATE p1
-#define PEER_SCREEN_POS 0
 #endif
 #define MASTER_MODE_TIMEOUT 1000
 
@@ -95,7 +93,7 @@ class Tetris_Block {  // 2 bytes
 	}
 
 	inline uint8_t collide() {
-		uint8_t *ptr = get_screen_buffer_offset(SCREEN_POS);  // collisions only have to be done on host
+		uint8_t *ptr = get_screen_buffer_offset(SCREEN_POS);  // collisions are only on master
 		uint32_t bitmap = get_bitmap();
 		int8_t offset = this->y % 8;
 		uint8_t height = get_height(bitmap);
@@ -152,24 +150,22 @@ public:
 };
 
 class Tetris {
-	Tetris_Block blocks[255];	// theoretical max block count is 384 but i will go with 255 for convenience
+	Tetris_Block blocks[20];	// theoretical max block count (384)
 	uint32_t last_step = 0;
 	uint32_t step_delay = 1000;
-	uint8_t block_count = 0;
-	uint8_t cursor = 0;			// currently active block (equal to count if none)
+	uint16_t block_count = 0;
+	uint16_t cursor = 0;			// currently active block (equal to count if none)
 
 public:
-	void update_game() {
-		for (uint8_t i = 0; i < this->cursor; i++) { this->blocks[i].draw(SCREEN_POS); }  // draw all blocks except active
-		if (this->cursor != this->block_count) {
-			user_input();  // update active block TODO: add joystick
-			this->blocks[this->cursor].draw(SCREEN_POS);  // draw updated block
-		}
+	void update() {  // image has to be drawn first!
+		// update active block TODO: add joystick
+		if (this->cursor != this->block_count) { user_input(); }
 		else { new_block(); }
 	}
-	void draw() {  // update function for other player
-		for (uint8_t i = 0; i < this->block_count; i++) { this->blocks[i].draw(PEER_SCREEN_POS); }  // draw all blocks except active
+	void draw(uint8_t screen_offset) {
+		for (uint16_t i = 0; i < this->cursor; i++) { this->blocks[i].draw(screen_offset); }  // draw all blocks except active
 	}
+	void draw_cursor(uint8_t screen_offset) { this->blocks[this->cursor].draw(screen_offset); }
 	void user_input() {
 		if (millis() - this->last_step > this->step_delay) {
 			this->last_step = millis();
@@ -181,31 +177,45 @@ public:
 		if (this->blocks[this->block_count].set(random(7), random(32), 0, random(4))) { SWRST(); }  // game over
 		this->cursor = this->block_count; this->block_count++;
 	}
+
+	uint16_t get_cursor() { return this->cursor; }
+	Tetris_Block get_block(uint16_t index) { return this->blocks[index]; }
+	void set_block(uint16_t index, Tetris_Block block) { this->blocks[index] = block; }
+	void reset() { this->block_count = 0; this->cursor = 0; }
 };
-
-
-typedef struct {
-	Tetris p1;
-	Tetris p2;
-} state_t;
 
 
 MicroOLED oled;
 uint32_t latest_master_mode = 0;
-state_t* state;
+Tetris p1;
+Tetris p2;
 uint8_t new_game = false;
 
+struct {
+	Tetris_Block block;
+	uint16_t index		: 15;  // 384 is max
+	uint8_t new_game	: 1;
+} packet;
+
+
 void I2C_callback(int size) {  // function called when data is received
-	if (size < (int)sizeof(state_t)) { return; }
-	Wire.readBytes((uint8_t*)state, sizeof(state_t));
+	if (size < sizeof(packet)) { return; }
+	Wire.readBytes((uint8_t*)&packet, sizeof(packet));
+	PEER_GAME.set_block(packet.index, packet.block);
+	if (packet.new_game) { p1.reset(); p2.reset(); }
 	I2C_master = 1;
 }
 
-void I2C_send_state(uint8_t peer) {  // hand token out to peer
-	I2C_master = 0;
-	Wire.beginTransmission(peer);
-	Wire.write((uint8_t*)state, sizeof(state_t));
-	Wire.endTransmission();
+void I2C_send_state() {  // hand token out to peer
+	packet.index = OWN_GAME.get_cursor();
+	packet.block = OWN_GAME.get_block(packet.index);
+	packet.new_game = new_game;
+	if (new_game) { new_game = false; }
+
+	Wire.beginTransmission(PEER_ADDR);
+	Wire.write((uint8_t*)&packet, sizeof(packet));
+	uint8_t ret = Wire.endTransmission();
+	I2C_master = ret == 0;
 }
 
 
@@ -215,10 +225,13 @@ void setup() {
 	pinMode(RESET_PIN, INPUT_PULLUP);
 
 	Serial.begin(115200);
+	Serial.print("started on ");
+	Serial.println(OWN_ADDR, HEX);
 
-	screen_buffer = new uint8_t[384]();
-	state = new state_t;
-	state->OWN_STATE.new_block();
+	screen_buffer = new uint8_t[384]();  // TODO: obtain reference to library internal buffer
+	if (!screen_buffer) { Serial.println("allocation error"); SWRST(); }
+	OWN_GAME.new_block();
+	new_game = true;
 
 	Wire.begin(OWN_ADDR);  // start receiving as slave
 	Wire.onReceive(I2C_callback);
@@ -235,25 +248,16 @@ void loop() {
 	oled.clear(CMD_CLEAR);
 	memset(screen_buffer, 0x00, 384);  // reset screen buffer
 
-	state->OWN_STATE.update_game();  // TODO add joystick
-	state->PEER_STATE.draw();
+	p1.draw(0);
+	p2.draw(32);
+	// updating game is done after drawing static blocks because the collisions are done by looking in the pixel buffer
+	OWN_GAME.update();  // TODO add joystick
+	p1.draw_cursor(0);
+	p2.draw_cursor(32);
 
 	oled.drawBitmap(screen_buffer);
 	oled.display();  // Draw to the screen
 	// TODO: row deletion!!!!
 
-	I2C_send_state(PEER_ADDR);
+	I2C_send_state();
 }
-// TODO: get a second mega!!!
-
-
-
-/*for (uint8_t i = 0; i < 4; i++) {
-	((uint64_t*)screen_buffer)[(8 * i)] |= tetris_blocks[(7 * i)];
-	((uint64_t*)screen_buffer)[(8 * i) + 1] |= tetris_blocks[(7 * i) + 1];
-	((uint64_t*)screen_buffer)[(8 * i) + 2] |= tetris_blocks[(7 * i) + 2];
-	((uint64_t*)screen_buffer)[(8 * i) + 3] |= tetris_blocks[(7 * i) + 3];
-	((uint64_t*)screen_buffer)[(8 * i) + 4] |= tetris_blocks[(7 * i) + 4];
-	((uint64_t*)screen_buffer)[(8 * i) + 5] |= tetris_blocks[(7 * i) + 5];
-	((uint64_t*)screen_buffer)[(8 * i) + 6] |= tetris_blocks[(7 * i) + 6];
-}*/
