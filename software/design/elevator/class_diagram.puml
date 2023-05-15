@@ -1,0 +1,60 @@
+@startuml
+skinparam linetype ortho
+
+interface IDoor {
+	open
+
+	open()
+	close()
+	is_open()
+	is_obstructed()
+}
+interface IObstruction_Sensor {
+	obstructed
+
+	is_obstructed()
+}
+
+class Controller {
+
+}
+class Elevator {
+
+}
+class Door {
+
+}
+class Pressure_Sensor {
+
+}
+class Optical_Sensor {
+
+}
+class Tension_Sensor {
+
+}
+class Catch_Clamp {
+
+}
+class Floor_Indicator {
+
+}
+class Button {
+
+}
+
+Controller			"1" o--- "*"	Floor
+Controller			"1" o--- "*"	Elevator
+IDoor					<|..		Door
+Elevator			"1" o-- "1"	IDoor
+Floor				"1" o-- "1"	IDoor
+Door				"1" o-- "*"	IObstruction_Sensor
+IObstruction_Sensor		<|..		Pressure_Sensor
+IObstruction_Sensor		<|..		Optical_Sensor
+Elevator			"1" o-- "1"		Floor_Indicator
+Elevator			"1" o-- "*"		Button
+Floor				"1" o-- "*"		Button
+Elevator			"1" o-- "*"		Catch_Clamp
+Catch_Clamp			"1" o-- "1"		Tension_Sensor
+
+@enduml

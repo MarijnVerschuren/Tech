@@ -1,0 +1,28 @@
+@startuml
+object Controller
+object Elevator
+object Floor
+object IDoor
+object Door
+object IObstruction_Sensor
+object Pressure_Sensor
+object Optical_Sensor
+object Tension_Sensor
+object Catch_Clamp
+object Floor_Indicator
+object Button
+
+Controller --> Elevator
+Controller --> Floor
+Floor --> IDoor
+Elevator --> IDoor
+IDoor <|.. Door
+Elevator --> Button
+Elevator --> Floor_Indicator
+Elevator --> IObstruction_Sensor
+IObstruction_Sensor --> Pressure_Sensor
+IObstruction_Sensor --> Optical_Sensor
+Catch_Clamp --> Tension_Sensor
+Elevator --> Catch_Clamp
+
+@enduml
