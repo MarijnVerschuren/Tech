@@ -1,0 +1,69 @@
+@startuml
+skinparam linetype ortho
+
+
+enum Trafic_Light_States {
+	Green
+	Yellow
+	Red
+}
+
+class Control_Panel {
+	update()
+}
+class Controller {
+	water_level
+
+	change_water_level()
+	allow_sailing_in()
+	allow_sailing_out()
+	alarm_on()
+	alarm_off()
+}
+class Gate {
+	opened
+	frozen
+
+	open()
+	close()
+	is_open()
+	is_closed()
+	freeze()
+	unfreeze()
+}
+class Valve {
+	opened
+
+	open()
+	close()
+	is_open()
+	is_closed()
+}
+class Trafic_Light {
+	state : Trafic_Light_States
+
+	get_state()
+	turn_red()
+	turn_green()
+}
+class Pressure_Sensor {
+	is_pressed()
+}
+class Water_Sensor {
+	get_water_level()
+}
+class Button {
+	is_pressed()
+}
+
+Control_Panel	"1" o-- "5"		Button
+Control_Panel	"1" o-- "1"		Controller
+Controller		"1" o-- "*"		Gate
+Controller		"1" o-- "*"		Water_Sensor
+Controller		"1" o-- "*"		Trafic_Light
+Gate			"1" o-- "3"		Valve
+Gate			"1" o-- "1"		Pressure_Sensor
+Valve			"1" o-- "1"		Pressure_Sensor
+Trafic_Light		..>			Trafic_Light_States
+
+@enduml

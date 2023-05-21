@@ -1,0 +1,33 @@
+@startuml
+autonumber
+participant Control_Panel as CP
+participant Controller as C
+participant Gate as G
+participant Valve as V
+participant Pressure_Sensor as PS
+
+
+CP		->		C:		alarm_on
+C		->		G:		freeze
+note right
+Freezing will stop
+any movement of
+the Gate.
+end note
+G		->		G:		is_closed
+activate G
+G		->		PS:		is_pressed
+PS		-->		G:		yes / no
+deactivate G
+alt gate closed
+loop until valves are closed
+G		->		V:		close
+G		->		V:		is_closed
+V		-->		G:		yes / no
+end
+else gate not closed
+G		-->		C:		ok (exit loop)
+end
+G		-->		C:		ok
+C		-->		CP
+@enduml

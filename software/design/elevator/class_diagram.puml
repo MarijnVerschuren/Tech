@@ -39,6 +39,9 @@ class Catch_Clamp {
 class Floor_Indicator {
 
 }
+class Elevator_Sensor {
+
+}
 class Button {
 
 }
@@ -46,14 +49,16 @@ class Button {
 Controller			"1" o--- "*"	Floor
 Controller			"1" o--- "*"	Elevator
 IDoor					<|..		Door
-Elevator			"1" o-- "1"	IDoor
-Floor				"1" o-- "1"	IDoor
-Door				"1" o-- "*"	IObstruction_Sensor
+Elevator			"1" o-- "1"		IDoor
+Floor				"1" o-- "1"		IDoor
+Door				"1" o-- "*"		IObstruction_Sensor
 IObstruction_Sensor		<|..		Pressure_Sensor
 IObstruction_Sensor		<|..		Optical_Sensor
 Elevator			"1" o-- "1"		Floor_Indicator
+Floor				"1" o-- "1"		Floor_Indicator
 Elevator			"1" o-- "*"		Button
 Floor				"1" o-- "*"		Button
+Floor				"1" o-- "1"		Elevator_Sensor
 Elevator			"1" o-- "*"		Catch_Clamp
 Catch_Clamp			"1" o-- "1"		Tension_Sensor
 

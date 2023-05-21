@@ -10,19 +10,23 @@ object Optical_Sensor
 object Tension_Sensor
 object Catch_Clamp
 object Floor_Indicator
+object Elevator_Sensor
 object Button
 
-Controller --> Elevator
-Controller --> Floor
-Floor --> IDoor
-Elevator --> IDoor
-IDoor <|.. Door
-Elevator --> Button
-Elevator --> Floor_Indicator
-Elevator --> IObstruction_Sensor
-IObstruction_Sensor --> Pressure_Sensor
-IObstruction_Sensor --> Optical_Sensor
-Catch_Clamp --> Tension_Sensor
-Elevator --> Catch_Clamp
+Controller				<--		Elevator
+Controller				<--		Floor
+Floor					<--		IDoor
+Elevator				<--		IDoor
+IDoor					<|..	Door
+Elevator				<--		Button
+Floor					<--		Button
+Elevator				<--		Floor_Indicator
+Floor					<--		Floor_Indicator
+Floor					<--		Elevator_Sensor
+Door					<--		IObstruction_Sensor
+IObstruction_Sensor		<|..	Pressure_Sensor
+IObstruction_Sensor		<|..	Optical_Sensor
+Catch_Clamp				<--		Tension_Sensor
+Elevator				<--		Catch_Clamp
 
 @enduml

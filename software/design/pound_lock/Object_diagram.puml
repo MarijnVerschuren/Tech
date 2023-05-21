@@ -1,0 +1,20 @@
+@startuml
+object Control_Panel
+object Controller
+object Gate
+object Button
+object Valve
+object Trafic_Light
+object Pressure_Sensor
+object Water_Sensor
+
+Control_Panel		<-- 	Controller
+Control_Panel		<--		Button
+Controller			<--		Gate
+Controller			<--		Water_Sensor
+Controller			<--		Trafic_Light
+Gate				<--		Valve
+Gate				<-		Pressure_Sensor
+Valve				<-		Pressure_Sensor
+
+@enduml

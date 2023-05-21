@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+
+actor "Operator" as O
+
+package Pound_Lock {
+	usecase "Change water level" as UC1
+	usecase "Allow sailing in / out" as UC2
+	usecase "Alarm on / off" as UC3
+}
+O --> UC1
+O --> UC2
+O --> UC3
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+autonumber
+participant Control_Panel as CP
+participant Controller as C
+participant Gate as G
+participant Valve as V
+participant Pressure_Sensor as PS
+participant Traffic_Light as TF
+
+
+
+CP		->		C:		allow sailing in
+loop
+C		->		G:		is_open
+G		->		PS:		is_pressed
+PS		-->		G:		yes / no
+G		-->		C
+alt is open
+C		->		TF:		turn green
+C		-->		CP:		ok (exit loop)
+else is not open
+C		->		G:		open
+end
+end
+
+@enduml

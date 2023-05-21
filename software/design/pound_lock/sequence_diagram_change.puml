@@ -1,0 +1,65 @@
+@startuml
+autonumber
+participant Control_Panel as CP
+participant Controller as C
+participant Gate_A as GA
+participant Gate_B as GB
+participant Valve_A as VA
+participant Valve_B as VB
+participant Pressure_Sensor as PS
+participant Water_Sensor as WS
+
+note over VA, VB
+There are three valves per
+gate so Valve_A / B represent
+three valves each
+end note
+
+note over PS
+each object has its
+own Pressure_Sensor
+so this one instance
+represents them all
+end note
+
+CP		->		C:		change_water_level
+C		->		WS:		get_water_level
+WS		-->		C:		0, 1 or 2
+alt water_level == 0
+loop until gate is closed
+C		->		GB:		close
+loop until valves are closed
+GB		->		VB:		close
+GB		->		VB:		is_closed
+VB		->		PS:		is_pressed
+PS		-->		VB:		yes / no
+VB		-->		GB
+end
+C		->		GB:		is_closed
+GB		->		PS:		is_pressed
+PS		-->		GB:		yes / no
+GB		-->		C
+end
+loop until gate is open
+C		->		GA:		open
+loop until valves are open
+GA		->		VA:		open
+GA		->		VA:		is_open
+VA		->		PS:		is_pressed
+PS		-->		VA:		yes / no
+VA		-->		GA
+end
+C		->		GA:		is_open
+GA		->		PS:		is_pressed
+PS		-->		GA:		yes / no
+GA		-->		C:
+end
+else water_level == 1
+C		-->		CP:		change in progress
+else water_level == 2
+note over GA
+Here the code from water_level == 0 is repeated but with gates A and B flipped
+end note
+end
+
+@enduml
