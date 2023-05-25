@@ -7,45 +7,20 @@
 #include <vector>
 
 
-template<typename type>
-class Tree;
-template<typename type>
-class Tree_Path;
+/* definitions */
+template<typename type>	class Tree;
+template<typename type>	class Tree_Path;
 
-template<typename type>
-void print(const Tree<type>*, const std::string& = "");
-
-
-template<typename type>
-class Tree_Path {  // this class holds a constant path inside a tree
-private:
-	Tree<type>*				tree = nullptr;
-	std::vector<uint64_t>	path;  // array of child indices
-
-	explicit Tree_Path(Tree<type>* tree)	{ this->tree = tree; }
-	void add(uint64_t step)					{ this->path.push_back(step); }
-	void set(uint64_t index, uint64_t step)	{ this->path[index] = step; }
-
-public:
-	Tree_Path() = delete;  // path may not be created outside the context of a tree search algorithm
-
-	uint64_t step_count() const				{ return this->path.size(); }
-	const Tree<type>* traverse() const {
-		Tree<type>* tree = this->tree;
-		for (uint64_t step : this->path) {
-			if (!tree) { return (Tree<type>*)nullptr; }
-			tree = tree->get_child(step);
-		} return tree;
-	}
-
-	friend Tree_Path<type>* Tree<type>::DFS(type);
-	friend Tree_Path<type>* Tree<type>::BFS(type);
-	friend Tree_Path<type>* Tree<type>::PDFS(type);
-	friend Tree_Path<type>* Tree<type>::PBFS(type);
-	friend Tree_Path<type>* Tree<type>::dijkstra_search(type);
-};
+template<typename type>	void print(const Tree<type>*, const std::string& = "");
+template<typename type>	void print(const Tree_Path<type>*, const std::string& = "");
+template<typename type> Tree_Path<type>* DFS(const Tree<type>*, type);
+template<typename type> Tree_Path<type>* BFS(const Tree<type>*, type);
+template<typename type> Tree_Path<type>* PDFS(const Tree<type>*, type);
+template<typename type> Tree_Path<type>* PBFS(const Tree<type>*, type);
+template<typename type> Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
 
 
+/* classes */
 template<typename type>
 class Tree {
 private:
@@ -95,31 +70,53 @@ public:
 		return deepest_child;
 	}
 
-	Tree_Path<type>* DFS(type data) {
-		Tree_Path<type>* path = new Tree_Path<type>(this);
-		return path;
-	}
-	Tree_Path<type>* BFS(type data) {
-		Tree_Path<type>* path = new Tree_Path<type>(this);
-		return path;
-	}
-	Tree_Path<type>* PDFS(type data) {
-		Tree_Path<type>* path = new Tree_Path<type>(this);
-		return path;
-	}
-	Tree_Path<type>* PBFS(type data) {
-		Tree_Path<type>* path = new Tree_Path<type>(this);
-		return path;
-	}
-	Tree_Path<type>* dijkstra_search(type data) {
-		Tree_Path<type>* path = new Tree_Path<type>(this);
-		return path;
-	}
 
 	friend void print<type>(const Tree<type>*, const std::string&);
+
+	friend Tree_Path<type>* DFS(const Tree<type>*, type);
+	friend Tree_Path<type>* BFS(const Tree<type>*, type);
+	friend Tree_Path<type>* PDFS(const Tree<type>*, type);
+	friend Tree_Path<type>* PBFS(const Tree<type>*, type);
+	friend Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
 };
 
 
+template<typename type>
+class Tree_Path {  // this class holds a constant path inside a tree
+private:
+	const Tree<type>*		tree = nullptr;
+	std::vector<uint64_t>	path;  // array of child indices
+
+	explicit Tree_Path(const Tree<type>* tree)	{ this->tree = tree; }
+	void add(uint64_t step)						{ this->path.push_back(step); }
+	void set(uint64_t index, uint64_t step)		{ this->path[index] = step; }
+
+public:
+	Tree_Path() = delete;  // Tree_Path instance may not be created outside the context of a tree search algorithm though you may copy it
+	Tree_Path(Tree_Path&) = default;
+
+	uint64_t step_count() const					{ return this->path.size(); }
+	const uint64_t* steps(uint64_t* size) const { (*size) = this->path.size(); return &this->path[0]; }
+	const Tree<type>* traverse() const {
+		Tree<type>* tree = this->tree;
+		for (uint64_t step : this->path) {
+			if (!tree) { return (Tree<type>*)nullptr; }
+			tree = tree->get_child(step);
+		} return tree;
+	}
+
+
+	friend void print<type>(const Tree<type>*, const std::string&);
+
+	friend Tree_Path<type>* DFS(const Tree<type>*, type);
+	friend Tree_Path<type>* BFS(const Tree<type>*, type);
+	friend Tree_Path<type>* PDFS(const Tree<type>*, type);
+	friend Tree_Path<type>* PBFS(const Tree<type>*, type);
+	friend Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
+};
+
+
+/* friend functions */
 template<typename type>
 void print(const Tree<type>* tree, const std::string& before) {
 	std::cout << before << " - (" << tree->data << ")\n";
@@ -127,5 +124,42 @@ void print(const Tree<type>* tree, const std::string& before) {
 	for (auto child : tree->children) { print<type>(child, indent); }
 	if (before.empty()) { std::cout << "\n\n"; }  // root
 }
+
+template<typename type>
+void print(const Tree_Path<type>* tree, const std::string& before) {
+	// TODO
+}
+
+template<typename type>
+Tree_Path<type>* DFS(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// TODO
+	return path;
+}
+template<typename type>
+Tree_Path<type>* BFS(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// TODO
+	return path;
+}
+template<typename type>
+Tree_Path<type>* PDFS(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// TODO
+	return path;
+}
+template<typename type>
+Tree_Path<type>* PBFS(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// TODO
+	return path;
+}
+template<typename type>
+Tree_Path<type>* dijkstra_search(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// TODO
+	return path;
+}
+
 
 #endif //PROJECT_BINARY_TREE_H
