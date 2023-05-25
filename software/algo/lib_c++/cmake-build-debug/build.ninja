@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: lib_c__
+# Project: lib_c++
 # Configurations: Debug
 # =============================================================================
 
@@ -49,19 +49,19 @@ cmake_ninja_workdir = /home/marijn/Github/Tech/software/algo/lib_c++/cmake-build
 
 build cmake_object_order_depends_target_lib_c__: phony || CMakeFiles/lib_c__.dir
 
-build CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o: CXX_COMPILER__lib_c___Debug /home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/product/linkedList.cpp || cmake_object_order_depends_target_lib_c__
-  DEP_FILE = CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o.d
+build CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/product/linkedList.cpp.o: CXX_COMPILER__lib_c___Debug /home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/product/linkedList.cpp || cmake_object_order_depends_target_lib_c__
+  DEP_FILE = CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/product/linkedList.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu++14
-  INCLUDES = -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/product -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/test
+  INCLUDES = -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/product -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/test
   OBJECT_DIR = CMakeFiles/lib_c__.dir
-  OBJECT_FILE_DIR = CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product
+  OBJECT_FILE_DIR = CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/product
 
-build CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o: CXX_COMPILER__lib_c___Debug /home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/test/llTest.cpp || cmake_object_order_depends_target_lib_c__
-  DEP_FILE = CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o.d
+build CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/test/Test.cpp.o: CXX_COMPILER__lib_c___Debug /home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/test/Test.cpp || cmake_object_order_depends_target_lib_c__
+  DEP_FILE = CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/test/Test.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always -std=gnu++14
-  INCLUDES = -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/product -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/ll_cpp/test
+  INCLUDES = -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/product -I/home/marijn/Github/Tech/software/algo/lib_c++/ass4/LLExample/cpp/test
   OBJECT_DIR = CMakeFiles/lib_c__.dir
-  OBJECT_FILE_DIR = CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test
+  OBJECT_FILE_DIR = CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/test
 
 
 # =============================================================================
@@ -71,7 +71,7 @@ build CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o: CXX_COMPIL
 #############################################
 # Link the executable lib_c__
 
-build lib_c__: CXX_EXECUTABLE_LINKER__lib_c___Debug CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o
+build lib_c__: CXX_EXECUTABLE_LINKER__lib_c___Debug CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/product/linkedList.cpp.o CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/test/Test.cpp.o
   FLAGS = -g
   LINK_LIBRARIES = -lgtest  -lgmock_main  -lpthread  -lgmock
   OBJECT_DIR = CMakeFiles/lib_c__.dir

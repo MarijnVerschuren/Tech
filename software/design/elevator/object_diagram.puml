@@ -12,6 +12,7 @@ object Catch_Clamp
 object Floor_Indicator
 object Elevator_Sensor
 object Button
+object Speaker
 
 Controller				<--		Elevator
 Controller				<--		Floor
@@ -20,6 +21,7 @@ Elevator				<--		IDoor
 IDoor					<|..	Door
 Elevator				<--		Button
 Floor					<--		Button
+Floor					<--		Speaker
 Elevator				<--		Floor_Indicator
 Floor					<--		Floor_Indicator
 Floor					<--		Elevator_Sensor

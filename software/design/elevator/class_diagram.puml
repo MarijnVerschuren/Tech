@@ -2,48 +2,87 @@
 skinparam linetype ortho
 
 interface IDoor {
-	open
-
 	open()
 	close()
 	is_open()
 	is_obstructed()
 }
 interface IObstruction_Sensor {
-	obstructed
-
 	is_obstructed()
 }
 
 class Controller {
+	requests[]
 
+	move_elevator()
+	handle_request()
 }
 class Elevator {
+	current_floor
+	requested_floor
 
+	open()
+	close()
+	is_open()
+	move()
+	request_floor()
 }
+class Floor {
+	handle_elevator()
+	open()
+	close()
+	is_open()
+}
+note right
+Floor initializes an instance
+of Elevator_Sensor with
+handle_elevator as its callback.
+This callback is called once an
+elevator is detected.
+end note
 class Door {
+	state
 
+	open()
+	close()
+	is_open()
+	is_obstructed()
 }
 class Pressure_Sensor {
-
+	is_obstructed()
 }
 class Optical_Sensor {
-
+	is_obstructed()
 }
 class Tension_Sensor {
-
+	callback
+	Tension_Sensor(callback)
 }
 class Catch_Clamp {
-
+	initiate()
 }
+note left
+Catch_Clamp will initialize
+Tension_Sensor with initiate
+as callback. This callback
+is called once a change is
+detected. This system runs
+independently from the rest
+but can be read from controller.
+end note
 class Floor_Indicator {
-
+	update()
 }
 class Elevator_Sensor {
+	callback
 
+	Elevator_Sensor(callback)
 }
 class Button {
-
+	is_pressed()
+}
+class Speaker {
+	play_sound()
 }
 
 Controller			"1" o--- "*"	Floor
@@ -58,8 +97,9 @@ Elevator			"1" o-- "1"		Floor_Indicator
 Floor				"1" o-- "1"		Floor_Indicator
 Elevator			"1" o-- "*"		Button
 Floor				"1" o-- "*"		Button
-Floor				"1" o-- "1"		Elevator_Sensor
+Floor				"1" *-- "1"		Elevator_Sensor
+Floor				"1" o-- "1"		Speaker
 Elevator			"1" o-- "*"		Catch_Clamp
-Catch_Clamp			"1" o-- "1"		Tension_Sensor
+Catch_Clamp			"1" *-- "1"		Tension_Sensor
 
 @enduml

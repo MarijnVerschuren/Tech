@@ -1,8 +1,8 @@
 # ninja log v5
-1	278	1681996920912617510	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o	d7201752454fb6c4
-653	694	1681997048070899105	lib_c__	4f930050582c724c
-0	15	1682016069219587861	build.ninja	485c4f21750cfcca
-0	653	1681997048030899646	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o	b6f8f2055af292d2
-1	377	1683810014814328347	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o	d7201752454fb6c4
+0	265	1684703130448123729	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/product/linkedList.cpp.o	d7201752454fb6c4
+0	814	1684703130994783529	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/Test.cpp.o	67233b7c2102b662
+0	59	1684703418761155052	lib_c__	c0027aac54c219d6
+0	18	1684703511539980455	build.ninja	485c4f21750cfcca
+0	199	1684703313359153672	CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/product/linkedList.cpp.o	52a311a4cfc306fe
+0	691	1684703313849147487	CMakeFiles/lib_c__.dir/ass4/LLExample/cpp/test/Test.cpp.o	9ecea7fe490174d3
 1	857	1683810015294323560	CMakeFiles/lib_c__.dir/ass4/LLExample/ll_cpp/test/llTest.cpp.o	b6f8f2055af292d2
-857	951	1683810015387655962	lib_c__	4f930050582c724c
