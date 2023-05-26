@@ -12,12 +12,12 @@ template<typename type>	class Tree;
 template<typename type>	class Tree_Path;
 
 template<typename type>	void print(const Tree<type>*, const std::string& = "");
-template<typename type>	void print(const Tree_Path<type>*, const std::string& = "");
-template<typename type> Tree_Path<type>* DFS(const Tree<type>*, type);
-template<typename type> Tree_Path<type>* BFS(const Tree<type>*, type);
-template<typename type> Tree_Path<type>* PDFS(const Tree<type>*, type);
-template<typename type> Tree_Path<type>* PBFS(const Tree<type>*, type);
-template<typename type> Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
+template<typename type>	void print(const Tree_Path<type>*);
+template<typename type> const Tree_Path<type>* DFS(const Tree<type>*, type);
+template<typename type> const Tree_Path<type>* BFS(const Tree<type>*, type);
+template<typename type> const Tree_Path<type>* PDFS(const Tree<type>*, type);
+template<typename type> const Tree_Path<type>* PBFS(const Tree<type>*, type);
+template<typename type> const Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
 
 
 /* classes */
@@ -72,12 +72,13 @@ public:
 
 
 	friend void print<type>(const Tree<type>*, const std::string&);
+	friend void print<type>(const Tree_Path<type>*);
 
-	friend Tree_Path<type>* DFS(const Tree<type>*, type);
-	friend Tree_Path<type>* BFS(const Tree<type>*, type);
-	friend Tree_Path<type>* PDFS(const Tree<type>*, type);
-	friend Tree_Path<type>* PBFS(const Tree<type>*, type);
-	friend Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
+	friend const Tree_Path<type>* DFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* BFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* PDFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* PBFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* dijkstra_search<type>(const Tree<type>*, type);
 };
 
 
@@ -106,13 +107,13 @@ public:
 	}
 
 
-	friend void print<type>(const Tree<type>*, const std::string&);
+	friend void print<type>(const Tree_Path<type>*);
 
-	friend Tree_Path<type>* DFS(const Tree<type>*, type);
-	friend Tree_Path<type>* BFS(const Tree<type>*, type);
-	friend Tree_Path<type>* PDFS(const Tree<type>*, type);
-	friend Tree_Path<type>* PBFS(const Tree<type>*, type);
-	friend Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
+	friend const Tree_Path<type>* DFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* BFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* PDFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* PBFS<type>(const Tree<type>*, type);
+	friend const Tree_Path<type>* dijkstra_search<type>(const Tree<type>*, type);
 };
 
 
@@ -126,36 +127,45 @@ void print(const Tree<type>* tree, const std::string& before) {
 }
 
 template<typename type>
-void print(const Tree_Path<type>* tree, const std::string& before) {
-	// TODO
+void print(const Tree_Path<type>* path) {
+	const Tree<type>* tree = path->tree;
+	std::cout << "(" << tree->data << ")";
+	for (uint64_t step : path->path) {
+		tree = tree->get_child(step);
+		std::cout << " -> (" << tree->data << ")";
+	} std::cout << "\n";
 }
 
 template<typename type>
-Tree_Path<type>* DFS(const Tree<type>* tree, type data) {
+const Tree_Path<type>* DFS(const Tree<type>* tree, type data) {
+	Tree_Path<type>* path = new Tree_Path<type>(tree);
+	// 38400
+	// 115200
+	path->add(1);
+	path->add(0);
+	// TODO
+	return path;
+}
+template<typename type>
+const Tree_Path<type>* BFS(const Tree<type>* tree, type data) {
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
 	// TODO
 	return path;
 }
 template<typename type>
-Tree_Path<type>* BFS(const Tree<type>* tree, type data) {
+const Tree_Path<type>* PDFS(const Tree<type>* tree, type data) {
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
 	// TODO
 	return path;
 }
 template<typename type>
-Tree_Path<type>* PDFS(const Tree<type>* tree, type data) {
+const Tree_Path<type>* PBFS(const Tree<type>* tree, type data) {
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
 	// TODO
 	return path;
 }
 template<typename type>
-Tree_Path<type>* PBFS(const Tree<type>* tree, type data) {
-	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// TODO
-	return path;
-}
-template<typename type>
-Tree_Path<type>* dijkstra_search(const Tree<type>* tree, type data) {
+const Tree_Path<type>* dijkstra_search(const Tree<type>* tree, type data) {
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
 	// TODO
 	return path;

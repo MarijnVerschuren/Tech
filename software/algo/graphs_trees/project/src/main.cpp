@@ -11,6 +11,8 @@ int main() {
 	tree->add(3);
 
 	print(tree);
+	const Tree_Path<uint64_t>* path = DFS(tree, 0ul);
+	print(path);
 
 	return 0;
 }
