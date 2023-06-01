@@ -11,14 +11,17 @@ int main() {
 	branch->add(5);
 	branch->add(6);
 	branch = tree->add(2);
-	branch->add(4);
+	tree->add(branch->add(4));
 	tree->add(3);
-	tree->add(4);  // TODO: linking
+
+	// TODO: rename class to Graph!!!!
+
+	// TODO: auto link nodes when node is already present in tree (may not be needed!!)
+	// TODO: cin
 
 	print(tree);
 	path = DFS<uint64_t>(tree, 4ul); print(path);
-	path = BFS<uint64_t>(tree, 4ul);
-	print(path);
+	path = BFS<uint64_t>(tree, 4ul); print(path);
 
 	return 0;
 }
