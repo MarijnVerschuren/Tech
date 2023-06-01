@@ -13,8 +13,8 @@ template<typename type>	class Tree_Path;
 
 template<typename type>	void print(const Tree<type>*, const std::string& = "");
 template<typename type>	void print(const Tree_Path<type>*);
-template<typename type> const Tree_Path<type>* DFS(const Tree<type>*, type);
-template<typename type> const Tree_Path<type>* BFS(const Tree<type>*, type);
+template<typename type> Tree_Path<type>* DFS(const Tree<type>*, type, Tree_Path<type>* = nullptr);
+template<typename type> Tree_Path<type>* BFS(const Tree<type>*, type, Tree_Path<type>* = nullptr);
 template<typename type> const Tree_Path<type>* PDFS(const Tree<type>*, type);
 template<typename type> const Tree_Path<type>* PBFS(const Tree<type>*, type);
 template<typename type> const Tree_Path<type>* dijkstra_search(const Tree<type>*, type);
@@ -25,6 +25,7 @@ template<typename type>
 class Tree {
 private:
 	Tree<type>* parent = nullptr;
+	uint64_t child_index = -1;  // index at which this object is held in the parent
 	std::vector<Tree<type>*> children;
 	std::vector<Tree<type>*> siblings;
 	type data;
@@ -41,12 +42,15 @@ public:
 			new_child->add_sibling(child);
 			child->add_sibling(new_child);
 		}
+		uint64_t child_index = this->children.size();
 		this->children.push_back(new_child);
+		new_child->child_index = child_index;
 	}
 	Tree<type>* add(type data) {
 		Tree<type>* new_child = new Tree<type>(this, data);
 		this->add(new_child); return new_child;
 	}
+	Tree<type>* link(Tree<type>* tree) { return nullptr; }  // TODO
 	void add_sibling(Tree<type>* sibling)			{ this->siblings.push_back(sibling); }
 	Tree<type>* add_sibling(type data)				{ return this->parent->add(data); }
 
@@ -70,12 +74,13 @@ public:
 		return deepest_child;
 	}
 
+	// TODO: node removal
 
 	friend void print<type>(const Tree<type>*, const std::string&);
 	friend void print<type>(const Tree_Path<type>*);
 
-	friend const Tree_Path<type>* DFS<type>(const Tree<type>*, type);
-	friend const Tree_Path<type>* BFS<type>(const Tree<type>*, type);
+	friend Tree_Path<type>* DFS<type>(const Tree<type>*, type, Tree_Path<type>*);
+	friend Tree_Path<type>* BFS<type>(const Tree<type>*, type, Tree_Path<type>*);
 	friend const Tree_Path<type>* PDFS<type>(const Tree<type>*, type);
 	friend const Tree_Path<type>* PBFS<type>(const Tree<type>*, type);
 	friend const Tree_Path<type>* dijkstra_search<type>(const Tree<type>*, type);
@@ -88,13 +93,20 @@ private:
 	const Tree<type>*		tree = nullptr;
 	std::vector<uint64_t>	path;  // array of child indices
 
-	explicit Tree_Path(const Tree<type>* tree)	{ this->tree = tree; }
-	void add(uint64_t step)						{ this->path.push_back(step); }
-	void set(uint64_t index, uint64_t step)		{ this->path[index] = step; }
+	explicit Tree_Path(const Tree<type>* tree)				{ this->tree = tree; }
+	void push(uint64_t step)								{ this->path.push_back(step); }
+	void reserve() /* expand the step vector */				{ this->path.push_back(-1); }
+	void claim(uint64_t step) /* claim reserved space */	{ this->set(this->path.size() - 1, step); }
+	void set(uint64_t index, uint64_t step)					{ this->path[index] = step; }
+	void pop()												{ this->path.pop_back(); }
 
 public:
 	Tree_Path() = delete;  // Tree_Path instance may not be created outside the context of a tree search algorithm though you may copy it
-	Tree_Path(Tree_Path&) = default;
+	Tree_Path(Tree_Path& path) {
+		this->tree = path.tree;
+		for (auto step : path.path) { this->path.push_back(step); }
+	}
+	// tree is NOT deleted when deleting path
 
 	uint64_t step_count() const					{ return this->path.size(); }
 	const uint64_t* steps(uint64_t* size) const { (*size) = this->path.size(); return &this->path[0]; }
@@ -109,8 +121,8 @@ public:
 
 	friend void print<type>(const Tree_Path<type>*);
 
-	friend const Tree_Path<type>* DFS<type>(const Tree<type>*, type);
-	friend const Tree_Path<type>* BFS<type>(const Tree<type>*, type);
+	friend Tree_Path<type>* DFS<type>(const Tree<type>*, type, Tree_Path<type>*);
+	friend Tree_Path<type>* BFS<type>(const Tree<type>*, type, Tree_Path<type>*);
 	friend const Tree_Path<type>* PDFS<type>(const Tree<type>*, type);
 	friend const Tree_Path<type>* PBFS<type>(const Tree<type>*, type);
 	friend const Tree_Path<type>* dijkstra_search<type>(const Tree<type>*, type);
@@ -120,7 +132,10 @@ public:
 /* friend functions */
 template<typename type>
 void print(const Tree<type>* tree, const std::string& before) {
-	std::cout << before << " - (" << tree->data << ")\n";
+	std::cout << before << " - (" << tree->data << ")";
+	for (auto sibling : tree->siblings) {
+		std::cout << ", " << sibling->data;
+	} std::cout << "\n";
 	const std::string indent = before + " |";
 	for (auto child : tree->children) { print<type>(child, indent); }
 	if (before.empty()) { std::cout << "\n\n"; }  // root
@@ -128,6 +143,7 @@ void print(const Tree<type>* tree, const std::string& before) {
 
 template<typename type>
 void print(const Tree_Path<type>* path) {
+	if (!path) { return; }
 	const Tree<type>* tree = path->tree;
 	std::cout << "(" << tree->data << ")";
 	for (uint64_t step : path->path) {
@@ -137,37 +153,64 @@ void print(const Tree_Path<type>* path) {
 }
 
 template<typename type>
-const Tree_Path<type>* DFS(const Tree<type>* tree, type data) {
+Tree_Path<type>* DFS(const Tree<type>* tree, type data, Tree_Path<type>* path) {
+	if (!tree) { return nullptr; }
+	bool root = !path; if (root) { path = new Tree_Path<type>(tree); }
+	if (tree->data == data) { return path; }
+	path->reserve();  // add temporary entry which will be claimed
+	Tree<type>* child;  // loop variable for the tree children
+	Tree_Path<type>* final_path;  // returned path to data
+	for (uint64_t i = 0; i < tree->child_count(); i++) {
+		child = tree->get_child(i);
+		if (!child) { return nullptr; }  // error
+		path->claim(i);
+		if (child->data == data) { return path; }
+		final_path = DFS(child, data, path);
+		if (final_path) { return final_path; }
+	}
+	if (root) { delete path; }  // failed to construct successful path
+	else { path->pop(); }  // pop end of path because it holds a temporary step
+	return nullptr;  // not found
+}
+template<typename type>
+Tree_Path<type>* BFS(const Tree<type>* tree, type data, Tree_Path<type>* path) {
+	if (!tree) { return nullptr; }
+	bool root = !path; if (root) { path = new Tree_Path<type>(tree); }
+	if (tree->data == data) { return path; }
+	for (auto sibling : tree->siblings) {
+		if (!sibling) { return nullptr; }  // error
+		if (sibling->data == data) {
+			path->claim(sibling->child_index);
+			return path;
+		}
+	}
+	Tree<type>* child;  // loop variable for the tree children
+	Tree_Path<type>* final_path;  // returned path to data
+	path->reserve();  // add temporary entry which will be claimed
+	for (uint64_t i = 0; i < tree->child_count(); i++) {
+		child = tree->get_child(i);
+		if (!child) { return nullptr; }  // error
+		path->claim(i);
+		final_path = BFS(child, data, path);
+		if (final_path) { return final_path; }
+	}
+	path->pop();
+	if (root) { delete path; }  // failed to construct successful path
+	return nullptr;  // not found
+}
+template<typename type>
+const Tree_Path<type>* PDFS(const Tree<type>* tree, type data) {  // TODO
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// 38400
-	// 115200
-	path->add(1);
-	path->add(0);
-	// TODO
 	return path;
 }
 template<typename type>
-const Tree_Path<type>* BFS(const Tree<type>* tree, type data) {
+const Tree_Path<type>* PBFS(const Tree<type>* tree, type data) {  // TODO
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// TODO
 	return path;
 }
 template<typename type>
-const Tree_Path<type>* PDFS(const Tree<type>* tree, type data) {
+const Tree_Path<type>* dijkstra_search(const Tree<type>* tree, type data) {  // TODO
 	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// TODO
-	return path;
-}
-template<typename type>
-const Tree_Path<type>* PBFS(const Tree<type>* tree, type data) {
-	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// TODO
-	return path;
-}
-template<typename type>
-const Tree_Path<type>* dijkstra_search(const Tree<type>* tree, type data) {
-	Tree_Path<type>* path = new Tree_Path<type>(tree);
-	// TODO
 	return path;
 }
 
