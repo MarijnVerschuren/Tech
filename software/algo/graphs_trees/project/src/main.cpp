@@ -1,27 +1,26 @@
 #include <iostream>
 
-#include "tree.hpp"
+#include "graph.hpp"
 
 
 int main() {
-	Tree<uint64_t>* tree = new Tree<uint64_t>(0);
-	Tree<uint64_t>* branch;
-	Tree_Path<uint64_t>* path;
-	branch = tree->add(1);
+	Graph<uint64_t>* graph = new Graph<uint64_t>(0);
+	Graph<uint64_t>* branch;
+	Path<uint64_t>* path;
+	branch = graph->add(1);
 	branch->add(5);
 	branch->add(6);
-	branch = tree->add(2);
-	tree->add(branch->add(4));
-	tree->add(3);
-
-	// TODO: rename class to Graph!!!!
+	branch = graph->add(2);
+	graph->add(branch->add(4));
+	graph->add(3);
 
 	// TODO: auto link nodes when node is already present in tree (may not be needed!!)
+	// TODO: keep track of checked nodes so that no infinite loops can be created
 	// TODO: cin
 
-	print(tree);
-	path = DFS<uint64_t>(tree, 4ul); print(path);
-	path = BFS<uint64_t>(tree, 4ul); print(path);
+	print(graph);
+	path = DFS<uint64_t>(graph, 4ul); print(path);
+	path = BFS<uint64_t>(graph, 4ul); print(path);
 
 	return 0;
 }
