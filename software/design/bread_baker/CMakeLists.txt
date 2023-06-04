@@ -1,0 +1,62 @@
+cmake_minimum_required(VERSION 3.25)
+project(bread_baker)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(product)
+include_directories(product/interfaces)
+include_directories(test)
+
+add_executable(bread_baker
+        product/interfaces/IDisplay.h
+        product/interfaces/IEventGenerator.h
+        product/interfaces/IExtraIngredientsTray.h
+        product/interfaces/IKneadMotor.h
+        product/interfaces/IOven.h
+        product/interfaces/IOvenSimulator.h
+        product/interfaces/IStartButtonLed.h
+        product/interfaces/ITimer.h
+        product/interfaces/ITimerTimeout.h
+        product/interfaces/IUserActions.h
+        product/interfaces/IYeastTray.h
+        product/BreadBaker.cpp
+        product/BreadBaker.h
+        product/Display.cpp
+        product/Display.h
+        product/EventGenerator.cpp
+        product/EventGenerator.h
+        product/Events.h
+        product/ExtraIngredientsTray.cpp
+        product/ExtraIngredientsTray.h
+        product/KneadMotor.cpp
+        product/KneadMotor.h
+        product/Log.cpp
+        product/Log.h
+        product/main.cpp
+        product/menu.cpp
+        product/menu.h
+        product/Oven.cpp
+        product/Oven.h
+        product/Program.h
+        product/StartButtonLed.cpp
+        product/StartButtonLed.h
+        product/States.h
+        product/Tasks.h
+        product/TimeConstants.h
+        product/Timer.cpp
+        product/Timer.h
+        product/YeastTray.cpp
+        product/YeastTray.h
+        test/BrokenLog.h
+        test/MDisplay.h
+        test/MEventGenerator.h
+        test/MExtraIngredientsTray.h
+        test/MKneadMotor.h
+        test/MOven.h
+        test/MOvenSimulator.h
+        test/MStartButtonLed.h
+        test/MTimer.h
+        test/MTimerTimeout.h
+        test/MUserActions.h
+        test/MYeastTray.h
+        test/testStandbyState.cpp)
