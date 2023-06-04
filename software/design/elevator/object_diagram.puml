@@ -1,4 +1,6 @@
 @startuml
+'skinparam linetype ortho
+
 object Controller
 object Elevator
 object Floor
@@ -12,6 +14,7 @@ object Catch_Clamp
 object Floor_Indicator
 object Elevator_Sensor
 object Button
+object Numpad
 object Speaker
 
 Controller				<--		Elevator
@@ -19,7 +22,8 @@ Controller				<--		Floor
 Floor					<--		IDoor
 Elevator				<--		IDoor
 IDoor					<|..	Door
-Elevator				<--		Button
+Elevator				<--		Numpad
+Numpad					<--		Button
 Floor					<--		Button
 Floor					<--		Speaker
 Elevator				<--		Floor_Indicator

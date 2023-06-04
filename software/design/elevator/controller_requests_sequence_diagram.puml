@@ -1,0 +1,31 @@
+@startuml
+autonumber
+
+participant Controller as C
+participant Elevator as E
+participant Floor as F
+
+note over F
+reference to floor class
+is stored in 'current_floor'
+inside elevator
+end note
+
+loop while (1)
+C		->		C:		handle_requests
+activate C #ffffffff
+alt elevator path available
+C		->		E:		move
+loop until closed
+E		->		E:		close
+E		->		F:		close
+F		-->		E:		ok
+E		->		E:		is_open
+E		->		F:		is_open
+F		-->		E:		bool
+end
+E		-->		C:		ok
+end
+end
+
+@enduml

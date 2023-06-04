@@ -58,7 +58,7 @@ else water_level == 1
 C		-->		CP:		change in progress
 else water_level == 2
 note over GA
-Here the code from water_level == 0 is repeated but with gates A and B flipped
+Here the diagram from water_level == 0 is repeated but with gates A and B flipped
 end note
 end
 

@@ -1,0 +1,30 @@
+@startuml
+autonumber
+
+participant Elevator as E
+participant Numpad as N
+participant Button as B
+participant Controller as C
+
+note over B
+this instance represents
+all buttons
+end note
+
+E		->		N:		get_value
+N		->		B:		is_pressed
+note right
+this is done for all buttons
+on the numpad so that the
+value can be determined
+end note
+B		-->		N:		yes / no
+N		-->		E:		value
+alt value != null
+E		->		E:		request floor
+activate E #ffffffff
+E		->		C:		add_request
+C		-->		E:		ok
+end
+
+@enduml

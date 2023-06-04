@@ -1,0 +1,22 @@
+@startuml
+autonumber
+
+participant Floor as F
+participant Button as B
+participant Controller as C
+
+note over B
+this instance represents
+all buttons
+end note
+
+F		->		B:		is_presed
+B		-->		F:		yes / no
+alt is_presed
+F		->		F:		request_elevator
+activate F #ffffffff
+F		->		C:		add_request
+C		-->		F:		ok
+end
+
+@enduml

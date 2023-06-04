@@ -1,0 +1,30 @@
+@startuml
+autonumber
+
+participant Elevator_Sensor as ES
+participant Floor as F
+participant Elevator as E
+participant Speaker as S
+participant Floor_Indicator_floor as FIf
+participant Floor_Indicator_elevator as FIe
+
+ES		->		F:		handle_elevator
+F		->		S:		play_sound
+S		-->		F:		ok
+F		->		FIf:	update
+FIf		-->		F:		ok
+F		->		E:		set_floor
+E		->		FIe:	update
+FIe		-->		E:		ok
+E		-->		F:		ok
+...
+loop until floor and elevator are opened
+F		->		F:		open
+F		->		E:		open
+E		-->		F:		ok
+F		->		F:		is_open
+F		->		E:		is_open
+E		-->		F:		bool
+end
+
+@enduml

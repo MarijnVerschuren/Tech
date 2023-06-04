@@ -1,5 +1,5 @@
 @startuml
-skinparam linetype ortho
+'skinparam linetype ortho
 
 interface IDoor {
 	open()
@@ -14,8 +14,8 @@ interface IObstruction_Sensor {
 class Controller {
 	requests[]
 
-	move_elevator()
-	handle_request()
+	add_request(request)
+	handle_requests()
 }
 class Elevator {
 	current_floor
@@ -25,18 +25,21 @@ class Elevator {
 	close()
 	is_open()
 	move()
-	request_floor()
+	set_floor(floor)
+	request_floor(floor)
 }
 class Floor {
+	elevator
+
+	request_elevator()
 	handle_elevator()
 	open()
 	close()
 	is_open()
 }
 note right
-Floor initializes an instance
-of Elevator_Sensor with
-handle_elevator as its callback.
+Floor passes a handle_elevator
+as a callback function to Elevator_Sensor
 This callback is called once an
 elevator is detected.
 end note
@@ -56,12 +59,13 @@ class Optical_Sensor {
 }
 class Tension_Sensor {
 	callback
+
 	Tension_Sensor(callback)
 }
 class Catch_Clamp {
 	initiate()
 }
-note left
+note top
 Catch_Clamp will initialize
 Tension_Sensor with initiate
 as callback. This callback
@@ -71,7 +75,7 @@ independently from the rest
 but can be read from controller.
 end note
 class Floor_Indicator {
-	update()
+	update(value)
 }
 class Elevator_Sensor {
 	callback
@@ -80,6 +84,11 @@ class Elevator_Sensor {
 }
 class Button {
 	is_pressed()
+}
+class Numpad {
+	buttons[]
+
+	get_value()
 }
 class Speaker {
 	play_sound()
@@ -95,9 +104,10 @@ IObstruction_Sensor		<|..		Pressure_Sensor
 IObstruction_Sensor		<|..		Optical_Sensor
 Elevator			"1" o-- "1"		Floor_Indicator
 Floor				"1" o-- "1"		Floor_Indicator
-Elevator			"1" o-- "*"		Button
-Floor				"1" o-- "*"		Button
-Floor				"1" *-- "1"		Elevator_Sensor
+Elevator			"1" o-- "1"		Numpad
+Floor				"1" o- "*"		Button
+Numpad				"1" o-- "*"		Button
+Floor				"1" o-- "1"		Elevator_Sensor
 Floor				"1" o-- "1"		Speaker
 Elevator			"1" o-- "*"		Catch_Clamp
 Catch_Clamp			"1" *-- "1"		Tension_Sensor
