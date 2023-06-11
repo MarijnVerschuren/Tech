@@ -1,19 +1,12 @@
 @startuml
 autonumber
 
-actor Technician as T
 participant Elevator_Sensor as ES
 participant Floor as F
 participant Elevator as E
 participant Floor_Indicator_floor as FIf
 participant Floor_Indicator_elevator as FIe
 
-T		->		FIf:	update
-FIf		-->		T:		ok
-T		->		FIe:	update
-FIe		-->		T:		ok
-...
-...
 ES		->		F:		handle_elevator
 F		->		FIf:	update
 FIf		-->		F:		ok

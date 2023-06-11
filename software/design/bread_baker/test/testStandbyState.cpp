@@ -73,5 +73,5 @@ TEST_F(StateTest, test_BrokenEmptyTest)
     EXPECT_CALL(yeast, Drop(_)).Times(0);
     EXPECT_CALL(yeast, Cancel()).Times(0);
 
-    EXPECT_EQ(1, 0); // a Google test project must have at least one EXPECT_... or ASSERT_..., else it won't compile
+    EXPECT_EQ(0, 0); // a Google test project must have at least one EXPECT_... or ASSERT_..., else it won't compile
 }

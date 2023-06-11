@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -21,7 +21,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/1/ass6_1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/1/ass6_1.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/project/inc/graph.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/inc/graph.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/project/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/breadbake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/BreadBaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/TimeConstants.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/TimeConstants.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testStandbyState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/testStandbyState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/test_breadbake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../design.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../elevator/class_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/class_diagram.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../elevator/doc.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/doc.docx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../elevator/initiate_catch_clamp_sequence_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/initiate_catch_clamp_sequence_diagram.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../elevator/update_floor_indicator_sequence_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/update_floor_indicator_sequence_diagram.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,24 +65,19 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/marijn/Github/EEPROM_Programmer",
-    "settings.editor.selected.configurable": "configurable.group.tools"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/marijn/Github/EEPROM_Programmer&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Makefile Target.test">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
+}</component>
+  <component name="RunManager" selected="Makefile Target.all">
     <configuration name="bread_baker" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="bread_baker" TARGET_NAME="bread_baker" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="bread_baker" RUN_TARGET_NAME="bread_baker">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -91,8 +102,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Makefile Target.test" />
         <item itemvalue="Makefile Target.all" />
+        <item itemvalue="Makefile Target.test" />
       </list>
     </recent_temporary>
   </component>
@@ -104,8 +115,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685912979671</updated>
-      <workItem from="1685912980764" duration="82000" />
+      <workItem from="1685912980764" duration="755000" />
+      <workItem from="1685949066761" duration="7795000" />
+      <workItem from="1685963294779" duration="599000" />
+      <workItem from="1685974852722" duration="599000" />
+      <workItem from="1686035802371" duration="599000" />
+      <workItem from="1686249387756" duration="599000" />
+      <workItem from="1686310921435" duration="8675000" />
     </task>
     <servers />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticEditVcpkgJson value="false" />
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticFoundErrors value="true" />
   </component>
 </project>

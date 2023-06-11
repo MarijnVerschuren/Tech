@@ -1,9 +1,12 @@
-#include <iostream>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 #include "graph.hpp"
 
 
 int main() {
+	set_max_graph_nodes(10000);
 	Graph<uint64_t>* graph = new Graph<uint64_t>(0);
 	Graph<uint64_t>* branch;
 	Path<uint64_t>* path;
@@ -19,6 +22,8 @@ int main() {
 	// TODO: cin
 
 	print(graph);
+	debug_print(graph);
+
 	path = DFS<uint64_t>(graph, 4ul); print(path);
 	path = BFS<uint64_t>(graph, 4ul); print(path);
 

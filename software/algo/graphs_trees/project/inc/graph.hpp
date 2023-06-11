@@ -3,6 +3,7 @@
 //
 #ifndef PROJECT_GRAPH_H
 #define PROJECT_GRAPH_H
+#include <iostream>
 #include <cstdint>
 #include <vector>
 
@@ -12,9 +13,18 @@ template<typename type>	class Graph;
 template<typename type>	class Path;
 
 template<typename type>	void print(const Graph<type>*, const std::string& = "");
+template<typename type> void debug_print(const Graph<type>*, const std::string& = "");
 template<typename type>	void print(const Path<type>*);
-template<typename type> Path<type>* DFS(const Graph<type>*, type, Path<type>* = nullptr);
-template<typename type> Path<type>* BFS(const Graph<type>*, type, Path<type>* = nullptr, const Graph<type>* = nullptr);
+template<typename type> Path<type>* DFS(Graph<type>*, type, Path<type>* = nullptr);
+template<typename type> Path<type>* BFS(Graph<type>*, type, Path<type>* = nullptr, const Graph<type>* = nullptr);
+
+uint8_t* checked = nullptr;  // basically a bool array (can optimize to bit array if needed)
+uint64_t checked_size = 0;
+void set_max_graph_nodes(uint64_t count) {
+	if (checked) { delete[] checked; }
+	checked = (uint8_t*)calloc(count, 1);  // create array of zeroes
+	checked_size = count;
+}
 
 
 /* classes */
@@ -30,7 +40,7 @@ public:
 		this->parents.push_back(parent);
 		this->data = data;
 	}
-	~Graph() { for (auto child : this->children) 	{ delete child; } }
+	~Graph() { for (auto child : this->children) { delete child; } }
 
 	void add_parent(Graph<type>* parent) {
 		this->parents.push_back(parent);
@@ -50,12 +60,16 @@ public:
 	Graph<type>* get_parent(uint64_t index) const		{ return this->parents[index]; }
 
 	type get_data() const								{ return this->data; }
-	uint64_t depth() const								{ uint64_t depth; this->depth(&depth); return depth; }
+	uint64_t depth() const								{ uint64_t depth = 0; this->depth(&depth); return depth; }
 	Graph<type>* depth(uint64_t* const depth) const {
+		if (!checked || checked_size < this->data) { return nullptr; }
 		Graph<type>* deepest_child = nullptr;
-		(*depth) = 0; uint64_t child_depth;
+		uint64_t child_depth = 0;
 		for (auto child : this->children) {
+			std::cout << (*depth) << " ";
+			if (checked[child->data]) { continue; }
 			child_depth = child->depth();
+			checked[child->data] = 1;
 			if (child_depth > (*depth)) {
 				(*depth) = child_depth;
 				deepest_child = child;
@@ -68,20 +82,21 @@ public:
 
 
 	friend void print<type>(const Graph<type>*, const std::string&);
+	friend void debug_print<type>(const Graph<type>*, const std::string&);
 	friend void print<type>(const Path<type>*);
 
-	friend Path<type>* DFS<type>(const Graph<type>*, type, Path<type>*);
-	friend Path<type>* BFS<type>(const Graph<type>*, type, Path<type>*, const Graph<type>*);
+	friend Path<type>* DFS<type>(Graph<type>*, type, Path<type>*);
+	friend Path<type>* BFS<type>(Graph<type>*, type, Path<type>*, const Graph<type>*);
 };
 
 
 template<typename type>
 class Path {  // this class holds a path in a graph
 private:
-	const Graph<type>*		graph = nullptr;
+	Graph<type>*			graph = nullptr;
 	std::vector<uint64_t>	path;  // array of child indices
 
-	explicit Path(const Graph<type>* graph)					{ this->graph = graph; }
+	explicit Path(Graph<type>* graph)						{ this->graph = graph; }
 	void push(uint64_t step)								{ this->path.push_back(step); }
 	void reserve() /* expand the step vector */				{ this->path.push_back(-1); }
 	void claim(uint64_t step) /* claim reserved space */	{ this->set(this->path.size() - 1, step); }
@@ -98,7 +113,7 @@ public:
 
 	uint64_t step_count() const					{ return this->path.size(); }
 	const uint64_t* steps(uint64_t* size) const { (*size) = this->path.size(); return &this->path[0]; }
-	const Graph<type>* traverse() const {
+	Graph<type>* traverse() const {
 		Graph<type>* graph = this->graph;
 		for (uint64_t step : this->path) {
 			if (!graph) { return (Graph<type>*)nullptr; }
@@ -109,17 +124,29 @@ public:
 
 	friend void print<type>(const Path<type>*);
 
-	friend Path<type>* DFS<type>(const Graph<type>*, type, Path<type>*);
-	friend Path<type>* BFS<type>(const Graph<type>*, type, Path<type>*, const Graph<type>*);
+	friend Path<type>* DFS<type>(Graph<type>*, type, Path<type>*);
+	friend Path<type>* BFS<type>(Graph<type>*, type, Path<type>*, const Graph<type>*);
 };
 
 
 /* friend functions */
 template<typename type>
 void print(const Graph<type>* graph, const std::string& before) {
+	// TODO: implement checked
 	std::cout << before << " - (" << graph->data << ")\n";
 	const std::string indent = before + " |";
 	for (auto child : graph->children) { print(child, indent); }
+	if (before.empty()) { std::cout << "\n\n"; }  // root
+}
+
+template<typename type>
+void debug_print(const Graph<type>* graph, const std::string& before) {
+	// TODO: implement checked
+	std::cout << before << " - (" << graph->data << ", " << graph->children.size() << ") => [ ";
+	for (auto child : graph->children) { std::cout << std::hex << child << " "; }
+	std::cout << "]\n";
+	const std::string indent = before + " |";
+	for (auto child : graph->children) { debug_print(child, indent); }
 	if (before.empty()) { std::cout << "\n\n"; }  // root
 }
 
@@ -135,7 +162,8 @@ void print(const Path<type>* path) {
 }
 
 template<typename type>
-Path<type>* DFS(const Graph<type>* graph, type data, Path<type>* path) {
+Path<type>* DFS(Graph<type>* graph, type data, Path<type>* path) {
+	// TODO: implement checked
 	if (!graph) { return nullptr; }
 	bool root = !path; if (root) { path = new Path<type>(graph); }
 	if (graph->data == data) { return path; }
@@ -155,7 +183,8 @@ Path<type>* DFS(const Graph<type>* graph, type data, Path<type>* path) {
 	return nullptr;  // not found
 }
 template<typename type>
-Path<type>* BFS(const Graph<type>* graph, type data, Path<type>* path, const Graph<type>* parent) {
+Path<type>* BFS(Graph<type>* graph, type data, Path<type>* path, const Graph<type>* parent) {
+	// TODO: implement checked
 	if (!graph) { return nullptr; }
 	bool root = !path; if (root) { path = new Path<type>(graph); }
 	if (graph->data == data) { return path; }

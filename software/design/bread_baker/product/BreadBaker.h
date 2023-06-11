@@ -12,6 +12,8 @@
 #include "IYeastTray.h"
 #include "Log.h"
 #include "States.h"
+#include "TimeConstants.h"
+#include "Program.h"
 
 class BreadBaker
 {
@@ -43,6 +45,13 @@ private:
     IStartButtonLed& startButton;
     IEventGenerator& eventGenerator;
     Log& log;
+
+	Program program;
+	Tasks task = NO_INDICATOR;
+	Time program_time;
+	uint8_t program_type = 0;
+	uint32_t pre_start_wait = 0;
+	bool awake = false;
 };
 
 #endif

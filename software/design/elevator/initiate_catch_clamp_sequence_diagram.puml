@@ -1,11 +1,9 @@
 @startuml
 autonumber
 
-actor Technician as T
 participant Tension_Sensor as TS
 participant Catch_Clamp as CC
 
-TS		->		CC:		initiate
-T		->		CC:		initiate
+TS		->		CC:		initiat
 
 @enduml
