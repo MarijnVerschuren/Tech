@@ -21,23 +21,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/1/ass6_1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/1/ass6_1.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/project/inc/graph.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/inc/graph.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/project/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/src/main.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bread_baker_state.puml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/breadbake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product/BreadBaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product/TimeConstants.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/TimeConstants.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/testStandbyState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/testStandbyState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/test_breadbake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../design.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../elevator/class_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/class_diagram.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../elevator/doc.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/doc.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../elevator/initiate_catch_clamp_sequence_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/initiate_catch_clamp_sequence_diagram.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../elevator/update_floor_indicator_sequence_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/../elevator/update_floor_indicator_sequence_diagram.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +37,13 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="UML State" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
@@ -67,6 +63,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;DefaultPlantUmlFileTemplate&quot;: &quot;UML State&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -121,7 +118,8 @@
       <workItem from="1685974852722" duration="599000" />
       <workItem from="1686035802371" duration="599000" />
       <workItem from="1686249387756" duration="599000" />
-      <workItem from="1686310921435" duration="8675000" />
+      <workItem from="1686310921435" duration="20111000" />
+      <workItem from="1686642566697" duration="599000" />
     </task>
     <servers />
   </component>

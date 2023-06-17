@@ -3,66 +3,55 @@
 
 #define MIN *60000
 
-struct Time {
-	uint32_t time = 0;
-	uint32_t max_time = 0;
-	uint32_t additional_time = 0;
 
-	Time() = default;
-	Time(uint32_t t) {
-		time = t;
-		max_time = t;
-		additional_time = 0;
-	}
-	Time(uint32_t t, uint32_t t_max) {
-		time = t;
-		max_time = t_max;
-		additional_time = 0;
-	}
-	void get(uint32_t& hours, uint32_t& minutes) const {
-		hours = (time + additional_time) / 60;
-		minutes = (time + additional_time) % 60;
-	}
-	void get_max(uint32_t& hours, uint32_t& minutes) const {
-		hours = (max_time + additional_time) / 60;
-		minutes = (max_time + additional_time) % 60;
-	}
+const uint32_t rest_times[] = {
+		60,
+		60,
+		0,
+		40,
+		0xffffffff  // none
 };
-
-const Time rest_times[] = {
-		{60},
-		{60},
-		{0},
-		{40},
-		{0xffffffff}  // none
+const uint32_t knead_times[] = {
+		20,
+		20,
+		15,
+		20,
+		0xffffffff  // none
 };
-const Time knead_times[] = {
-		{20},
-		{20},
-		{15},
-		{20},
-		{0xffffffff}  // none
+const uint32_t yeast_times[] = {
+		10,
+		10,
+		8,
+		10,
+		0xffffffff  // none
 };
-const Time rise_times[] = {
-		{160},
-		{160},
-		{60},
-		{80},
-		{0xffffffff}  // none
+const uint32_t extra_times[] = {
+		0xffffffff,
+		15,
+		0xffffffff,
+		0xffffffff,
+		0xffffffff  // none
 };
-const Time bake_times[] = {
-		{50},
-		{50},
-		{40},
-		{0xffffffff},  // none
-		{30, 90}
+const uint32_t rise_times[] = {
+		160,
+		160,
+		60,
+		80,
+		0xffffffff  // none
 };
-const Time total_times[] = {
-		{290},
-		{290},
-		{115},
-		{140},
-		{30, 90}
+const uint32_t bake_times[] = {
+		50,
+		50,
+		40,
+		0xffffffff,  // none
+		30
+};
+const uint32_t total_times[] = {
+		290,
+		290,
+		115,
+		140,
+		30
 };
 
 #endif

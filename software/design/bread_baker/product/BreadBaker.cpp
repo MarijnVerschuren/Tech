@@ -45,17 +45,20 @@ void BreadBaker::HandleEvent(Events ev) {
 		} else {
 			program_type = (program_type + 1) % 5;
 		}
+		timer_max = program_type == 4 ? 60 : 12 * 60;  // timer can be 60m when bake only is selected otherwise it can be 12h
 		display.SetCurrentTask(task);
 		display.SetMenu(program_type);
 		program_time = total_times[program_type];
-		program_time.get(hours, minutes);
+		hours = (timer_time + program_time) / 60;
+		minutes = (timer_time + program_time) % 60;
 		display.SetTime(hours, minutes);
-		program.waiting = rest_times[program_type].time;
-		program.kneading = knead_times[program_type].time;
-		program.rising = rise_times[program_type].time;
-		program.baking = bake_times[program_type].time;
-		program.addYeast = false;  // TODO: recipes
-		program.addExtras = false;  // TODO: recipes
+		program.waiting = rest_times[program_type];
+		program.kneading = knead_times[program_type];
+		program.rising = rise_times[program_type];
+		program.baking = bake_times[program_type];
+		if (bake_times[program_type] == 0xffffffff) { program.baking = 0; }
+		program.addYeast = yeast_times[program_type] != 0xffffffff;
+		program.addExtras = extra_times[program_type] != 0xffffffff;
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case MENU_BUTTON_LONG_PRESSED:
@@ -68,16 +71,17 @@ void BreadBaker::HandleEvent(Events ev) {
 		awake = false;
 		break;
 	case TIMER_UP_BUTTON_PRESSED:
-		pre_start_wait = (pre_start_wait + 10) % (12 * 60 + 10);  // max is 12h (10 is added so that 12h is allowed)
-		program_time.additional_time = pre_start_wait;
-		program_time.get(hours, minutes);
+		timer_time = (timer_time + 10) % (timer_max + 10);  // inc is added to max to allow max as a setting
+		hours = (timer_time + program_time) / 60;
+		minutes = (timer_time + program_time) % 60;
 		display.SetTime(hours, minutes);
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case TIMER_DOWN_BUTTON_PRESSED:
-		pre_start_wait = pre_start_wait ? pre_start_wait - 10 : 12 * 60;
-		program_time.additional_time = pre_start_wait;
-		program_time.get(hours, minutes);
+		if (timer_time) { timer_time -= 10; }
+		else { timer_time = timer_max; }
+		hours = (timer_time + program_time) / 60;
+		minutes = (timer_time + program_time) % 60;
 		display.SetTime(hours, minutes);
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
@@ -88,26 +92,69 @@ void BreadBaker::HandleEvent(Events ev) {
 				std::this_thread::sleep_for(500ms);
 				startButton.LedOff();
 				std::this_thread::sleep_for(500ms);
-			}
-			break;
+			} break;
 		}
 		timer.Cancel();
-
-		// TODO: start everything
+		if (program_type == 4) {
+			task = BAKING;
+			timer.Set((program.baking + timer_time) MIN);
+		} else {
+			task = WAITING;
+			timer.Set((program.waiting + timer_time) MIN);  // set rest timer + time specified by user
+		}
 		break;
 	case OVEN_DONE:
-		// TODO: notify
+		// TODO: DONE
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case TIMER_TIMEOUT:
-		timer.Cancel();
-		oven.Cancel();
-		motor.Stop();
-		yeast.Cancel();
-		extras.Cancel();
-		display.DisplayOff();
-		awake = false;
-		break;
+		switch (task) {
+		case Tasks::NO_INDICATOR:
+			timer.Cancel();
+			oven.Cancel();
+			motor.Stop();
+			yeast.Cancel();
+			extras.Cancel();
+			display.DisplayOff();
+			awake = false;
+			break;
+		case Tasks::WAITING:
+			knead_cycles = 0;
+			motor.TurnLeft();
+			task = KNEADING;
+			if (program.addYeast) {
+				yeast.Drop(yeast_times[program_type] * 1000);  // schedule yeast addition (in ms?)
+			}
+			if (program.addExtras) {
+				extras.Drop(extra_times[program_type] MIN);  // schedule extras addition
+			}
+			timer.Set(1 MIN);  // kneading has to switch every minute
+			break;
+		case Tasks::KNEADING:
+			if (knead_cycles == program.kneading) {
+				task = RISING;
+				timer.Set(program.rising MIN);  // set rising timer
+				break;
+			}
+			motor.Stop();
+			knead_cycles % 2 ? motor.TurnLeft() : motor.TurnRight();
+			knead_cycles++;
+			timer.Set(1 MIN);  // reset kneading timer
+			break;
+		case Tasks::RISING:
+			if (!program.baking) {  // dough only
+				// TODO: DONE
+				break;
+			}
+			task = BAKING;
+			timer.Set(program.baking MIN);
+			break;
+		case Tasks::BAKING:
+			// TODO: DONE
+			break;
+		default:
+			break;
+		}
 	default:  // NO_EVENT_OCCURRED
 		break;
 	}
