@@ -21,12 +21,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/bread_baker_state.puml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bread_baker_state_diagram.puml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/breadbake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/BreadBaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/TimeConstants.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/TimeConstants.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +53,9 @@
     <option name="minorVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Ql0hU0HerowKI8TWuDkvdsExhK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="false" />
@@ -120,6 +120,9 @@
       <workItem from="1686249387756" duration="599000" />
       <workItem from="1686310921435" duration="20111000" />
       <workItem from="1686642566697" duration="599000" />
+      <workItem from="1687033744743" duration="4410000" />
+      <workItem from="1687111895169" duration="3258000" />
+      <workItem from="1687117390739" duration="6274000" />
     </task>
     <servers />
   </component>

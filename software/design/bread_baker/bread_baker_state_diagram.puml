@@ -1,0 +1,128 @@
+@startuml
+'skinparam linetype ortho
+
+
+' events!!
+' state exit and enter actions
+' programs selection
+' update screen
+' check oven temp
+' switch kneading direction
+' ingredient addition
+
+' look at the microwave project
+
+
+' TODO: add 'set timer' to all places!!!
+
+[*]										-->			standby							: power on
+standby									-->		selecting							: menu press event
+selecting								->		standby								: reset (timeout event)
+
+state running {
+	state start_timer {
+		state "start" as enable_start_timer
+		state "stop" as disable_start_timer
+		enable_start_timer				->			disable_start_timer				: timeout event generated
+	}
+	start_timer : time set by timer up/down events
+	[*]									-->			enable_start_timer
+	enable_start_timer					-->			wait
+	wait								-->			knead							: start kneading (timeout event)
+}
+
+state knead {
+	state knead_timer {
+		state "start" as enable_knead_timer
+		state "stop" as disable_knead_timer
+		enable_knead_timer				->			disable_knead_timer				: timeout event generated
+	}
+	state yeast_timer {
+		state "start" as enable_yeast_timer
+		state "stop" as disable_yeast_timer
+		enable_yeast_timer				-->			disable_yeast_timer				: add yeast
+	}
+	yeast_timer : yeast time (according to recipe)
+	state extras_timer {
+		state "start" as enable_extras_timer
+		state "stop" as disable_extras_timer
+		enable_extras_timer				-->			disable_extras_timer			: add extras
+	}
+	extras_timer : extras time (according to recipe)
+	state rise_timer {
+		state "start" as enable_rise_timer
+		state "stop" as disable_rise_timer
+		enable_rise_timer				->			disable_rise_timer				: timeout event generated
+	}
+	rise_timer : rise time (according to recipe)
+	state bake_timer {
+		state "start" as enable_bake_timer
+		state "stop" as disable_bake_timer
+		enable_bake_timer				-left->			disable_bake_timer			: timeout event generated
+	}
+	bake_timer : bake time (according to recipe)
+	state yeast_choice <<choice>>
+	state extras_choice <<choice>>
+	state rise_choice <<choice>>
+	state "wait" as rise_wait
+	state "wait" as bake_wait
+	[*]									->			yeast_choice
+	yeast_choice						->			enable_yeast_timer				: needs yeast
+	yeast_choice						--->		extras_choice
+	enable_yeast_timer					->			extras_choice
+	extras_choice						->			enable_extras_timer				: needs extras
+	extras_choice						-->			knead_left
+	enable_extras_timer					-->			knead_left
+	knead_left							->			knead_right						: (timeout event)
+	knead_right							->			knead_left
+	knead_left							-down->		enable_rise_timer
+	knead_right							-down->		enable_rise_timer
+	enable_rise_timer					-->			rise_wait
+	rise_wait							->			rise_choice
+	rise_choice							->			[*]								: program = dough only
+	rise_choice							->			enable_bake_timer
+	enable_bake_timer					-->			bake_wait
+	bake_wait							->			[*]								: done
+}
+
+state knead_left {
+	state knead_left_fork <<fork>>
+	[*]									->			knead_left_fork
+	knead_left_fork						-up->		enable_knead_timer
+	knead_left_fork						->			turn_motor_left
+}
+state knead_right{
+	state knead_right_fork <<fork>>
+	[*]									->			knead_right_fork
+	knead_right_fork					-up->		enable_knead_timer
+	knead_right_fork					->			turn_motor_right
+}
+
+state selecting {
+	state start_fork <<fork>>
+	state start_choice <<choice>>
+	state select_timeout_timer {
+		state "start" as enable_select_timeout_timer
+		state "reset" as reset_select_timeout_timer
+		state "stop" as disable_select_timeout_timer
+		enable_select_timeout_timer		-->			disable_select_timeout_timer	: timeout event generated
+	}
+	select_timeout_timer : 5 minute
+	selecting							-down->		reset_select_timeout_timer		: reset on any event
+	reset_select_timeout_timer			-up->		[H]								: continue
+	[*]									-->			enable_select_timeout_timer
+	enable_select_timeout_timer			-->			program_select					: load default state
+	program_select						->			program_select					: (next program) menu press event
+	program_select						-->			increase_timer					: timer up event
+	increase_timer						-->			program_select
+	program_select						-->			decrease_timer					: timer down event
+	decrease_timer						-->			program_select
+	program_select						-->			start_fork						: start press event
+	start_fork							-->			disable_select_timeout_timer	: disable select_timeout_timer
+	start_fork							-->			start_choice
+	start_choice						-->			enable_bake_timer				: program = bake only
+	start_choice						-->			running
+}
+
+
+@enduml

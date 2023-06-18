@@ -39,6 +39,7 @@ void BreadBaker::HandleEvent(Events ev) {
 	uint32_t hours, minutes;
 	switch (ev) {
 	case MENU_BUTTON_PRESSED:
+		// TODO: ignore when started
 		if (!awake) {
 			awake = true; // wake machine? TODO
 			program_type = 0;
@@ -71,6 +72,7 @@ void BreadBaker::HandleEvent(Events ev) {
 		awake = false;
 		break;
 	case TIMER_UP_BUTTON_PRESSED:
+		// TODO: ignore when started
 		timer_time = (timer_time + 10) % (timer_max + 10);  // inc is added to max to allow max as a setting
 		hours = (timer_time + program_time) / 60;
 		minutes = (timer_time + program_time) % 60;
@@ -78,6 +80,7 @@ void BreadBaker::HandleEvent(Events ev) {
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case TIMER_DOWN_BUTTON_PRESSED:
+		// TODO: ignore when started
 		if (timer_time) { timer_time -= 10; }
 		else { timer_time = timer_max; }
 		hours = (timer_time + program_time) / 60;
@@ -104,7 +107,7 @@ void BreadBaker::HandleEvent(Events ev) {
 		}
 		break;
 	case OVEN_DONE:
-		// TODO: DONE
+		// TODO: DONE (bake only)
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case TIMER_TIMEOUT:
@@ -143,7 +146,7 @@ void BreadBaker::HandleEvent(Events ev) {
 			break;
 		case Tasks::RISING:
 			if (!program.baking) {  // dough only
-				// TODO: DONE
+				// TODO: DONE (dough only)
 				break;
 			}
 			task = BAKING;
