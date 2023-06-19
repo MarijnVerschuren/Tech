@@ -45,15 +45,6 @@ private:
     IStartButtonLed& startButton;
     IEventGenerator& eventGenerator;
     Log& log;
-
-	Program program;
-	Tasks task = NO_INDICATOR;
-	uint32_t program_time;
-	uint8_t program_type = 0;
-	uint8_t knead_cycles = 0;
-	uint32_t timer_max = 0;
-	uint32_t timer_time = 0;
-	bool awake = false;
 };
 
 #endif

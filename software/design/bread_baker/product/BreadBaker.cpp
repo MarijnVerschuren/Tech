@@ -34,12 +34,20 @@ bool BreadBaker::Pulse() {
     return ev != std::nullopt;
 }
 
-// parameter name in comment to prevent compiler warning as it is unused for now
+void handle_idle_event(Events ev) {
+	(void)ev;
+}
+
 void BreadBaker::HandleEvent(Events ev) {
-	uint32_t hours, minutes;
+	(void)ev;
+	// current ev == idle ? -> handle_idle_event(ev);
+}
+
+/*
+int hours, minutes;
 	switch (ev) {
 	case MENU_BUTTON_PRESSED:
-		// TODO: ignore when started
+		if (started) { break; }
 		if (!awake) {
 			awake = true; // wake machine? TODO
 			program_type = 0;
@@ -57,9 +65,8 @@ void BreadBaker::HandleEvent(Events ev) {
 		program.kneading = knead_times[program_type];
 		program.rising = rise_times[program_type];
 		program.baking = bake_times[program_type];
-		if (bake_times[program_type] == 0xffffffff) { program.baking = 0; }
-		program.addYeast = yeast_times[program_type] != 0xffffffff;
-		program.addExtras = extra_times[program_type] != 0xffffffff;
+		program.addYeast = yeast_times[program_type] != -1;
+		program.addExtras = extra_times[program_type] != -1;
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case MENU_BUTTON_LONG_PRESSED:
@@ -69,10 +76,10 @@ void BreadBaker::HandleEvent(Events ev) {
 		yeast.Cancel();
 		extras.Cancel();
 		display.DisplayOff();
-		awake = false;
+		started = awake = false;
 		break;
 	case TIMER_UP_BUTTON_PRESSED:
-		// TODO: ignore when started
+		if (started) { break; }
 		timer_time = (timer_time + 10) % (timer_max + 10);  // inc is added to max to allow max as a setting
 		hours = (timer_time + program_time) / 60;
 		minutes = (timer_time + program_time) % 60;
@@ -80,7 +87,7 @@ void BreadBaker::HandleEvent(Events ev) {
 		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
 		break;
 	case TIMER_DOWN_BUTTON_PRESSED:
-		// TODO: ignore when started
+		if (started) { break; }
 		if (timer_time) { timer_time -= 10; }
 		else { timer_time = timer_max; }
 		hours = (timer_time + program_time) / 60;
@@ -98,6 +105,7 @@ void BreadBaker::HandleEvent(Events ev) {
 			} break;
 		}
 		timer.Cancel();
+		started = true;
 		if (program_type == 4) {
 			task = BAKING;
 			timer.Set((program.baking + timer_time) MIN);
@@ -107,8 +115,13 @@ void BreadBaker::HandleEvent(Events ev) {
 		}
 		break;
 	case OVEN_DONE:
-		// TODO: DONE (bake only)
-		timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
+		if (task == BAKING || program.baking == -1) {  // bake done or dough only
+			task = DONE;
+			timer.Cancel(); timer.Set(5 MIN);  // (re)set timeout timer
+			break;
+		}
+		task = BAKING;
+		oven.StartBake(program.baking);
 		break;
 	case TIMER_TIMEOUT:
 		switch (task) {
@@ -119,7 +132,7 @@ void BreadBaker::HandleEvent(Events ev) {
 			yeast.Cancel();
 			extras.Cancel();
 			display.DisplayOff();
-			awake = false;
+			started = awake = false;
 			break;
 		case Tasks::WAITING:
 			knead_cycles = 0;
@@ -136,7 +149,7 @@ void BreadBaker::HandleEvent(Events ev) {
 		case Tasks::KNEADING:
 			if (knead_cycles == program.kneading) {
 				task = RISING;
-				timer.Set(program.rising MIN);  // set rising timer
+				oven.StartRise(program.rising);
 				break;
 			}
 			motor.Stop();
@@ -144,16 +157,14 @@ void BreadBaker::HandleEvent(Events ev) {
 			knead_cycles++;
 			timer.Set(1 MIN);  // reset kneading timer
 			break;
-		case Tasks::RISING:
-			if (!program.baking) {  // dough only
-				// TODO: DONE (dough only)
-				break;
-			}
-			task = BAKING;
-			timer.Set(program.baking MIN);
-			break;
-		case Tasks::BAKING:
-			// TODO: DONE
+		case Tasks::DONE:
+			timer.Cancel();
+			oven.Cancel();
+			motor.Stop();
+			yeast.Cancel();
+			extras.Cancel();
+			display.DisplayOff();
+			started = awake = false;
 			break;
 		default:
 			break;
@@ -161,4 +172,4 @@ void BreadBaker::HandleEvent(Events ev) {
 	default:  // NO_EVENT_OCCURRED
 		break;
 	}
-}
+ */
