@@ -21,13 +21,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/doc/bread_baker_state_diagram.puml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bread_baker_state.puml" beforeDir="false" afterPath="$PROJECT_DIR$/doc/bread_baker_state.puml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bread_baker_state_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/bread_baker_state_diagram.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/BreadBaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/TimeConstants.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/TimeConstants.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/bread_baker_state.puml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/bread_baker_state_diagram.puml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +131,7 @@
       <workItem from="1687117390739" duration="12861000" />
       <workItem from="1687172737613" duration="599000" />
       <workItem from="1687176818860" duration="599000" />
-      <workItem from="1687205876537" duration="5351000" />
+      <workItem from="1687205876537" duration="7440000" />
     </task>
     <servers />
   </component>

@@ -20,18 +20,16 @@
 
 state standby
 standby : entry:
-standby : display_off()
+standby : display.off()
 standby : cancel_all()
-standby : load_default_program()
 standby : exit:
-standby : display_on()
+standby : load_default_program()
+standby : display.on()
 
 [*]						->			standby
 standby					->			selecting				: MENU_BUTTON_PRESSED
-selecting				-->			standby					: TIMER_TIMEOUT
-selecting				-->			standby					: MENU_BUTTON_LONG_PRESSED
+selecting				-->			standby					: TIMER_TIMEOUT \n MENU_BUTTON_LONG_PRESSED
 processing				-->			standby					: MENU_BUTTON_LONG_PRESSED
-
 
 state done {
 	state "wait" as done_wait
@@ -41,6 +39,8 @@ state done {
 	[*]					->			done_wait
 	done_wait			-->			standby					: TIMER_TIMEOUT
 }
+done : entry:
+done : display.set_current_task(DONE)
 
 state processing {
 	state kneading
@@ -51,6 +51,7 @@ state processing {
 	wait_resting : entry:
 	wait_resting : // set timer at time set by in/decrease_timer
 	wait_resting : set_timer(get_time())
+	wait_resting : display.set_current_task(WAITING)
 	state add_yeast
 	add_yeast : do:
 	add_yeast : schedule_yeast_addition(yeast_time)
@@ -79,19 +80,24 @@ state baking {
 	bake_wait : entry:
 	bake_wait : // add time set by in/decrease_timer
 	bake_wait : // to bake time if program = "bake"
-	bake_wait : set_timer(program.bake)
-	bake_wait : oven.on()
+	bake_wait : set_timer(program.bake [+ get_time()])
+	bake_wait : oven.start_bake()
 	bake_wait : exit:
-	bake_wait : oven.off()
+	bake_wait : oven.cancel()
 
 	[*]					->			bake_wait
 	bake_wait			-->			done					: TIMER_TIMEOUT
 }
+baking : entry:
+baking : display.set_current_task(BAKING)
 
 state rising {
 	state "wait" as rise_wait
 	rise_wait : entry:
 	rise_wait : set_timer(program.rising)
+	rise_wait : oven.start_rise()
+	rise_wait : exit:
+	rise_wait : oven.cancel()
 
 	state rise_choice <<choice>>
 
@@ -100,6 +106,8 @@ state rising {
 	rise_choice			-->			done					: [program == dough]
 	rise_choice			-->			baking
 }
+rising : entry:
+rising : display.set_current_task(RISING)
 
 state kneading {
 	state turn_left
@@ -122,14 +130,21 @@ state kneading {
 	[*]					-->			turn_left
 	turn_left			->			turn_right				: TIMER_TIMEOUT
 	turn_right			->			turn_left				: TIMER_TIMEOUT
-	turn_left			-->			rising					: [knead_cycles = program.kneading]
-	turn_right			-->			rising					: [knead_cycles = program.kneading]
+	turn_left			-->			rising					: TIMER_TIMEOUT \n [knead_cycles = program.kneading]
+	turn_right			-->			rising					: TIMER_TIMEOUT \n [knead_cycles = program.kneading]
 }
+kneading : entry:
+kneading : display.set_current_task(KNEADING)
 
 state selecting {
 	state program_select
 	program_select : entry:
 	program_select : start_timeout_timer(5 MIN)
+	program_select : do:
+	program_select : display.set_current_task(NO_INDICATOR)
+	program_select : display.set_menu_number(program)
+	program_select : display.set_time(program.time + get_time())  // this is split like so: (H, M)
+	program_select : // display updates remaining time automatically every minute
 	program_select : exit:
 	program_select : stop_timeout_timer()
 	state increase_timer
@@ -148,7 +163,7 @@ state selecting {
 	program_select		-->			decrease_timer			: TIMER_DOWN_BUTTON_PRESSED
 	decrease_timer		-->			program_select
 	program_select		-->			oven_check				: START_BUTTON_PRESSED
-	oven_check			-->			program_select			: [oven.GetTemperature() > max_temp]
+	oven_check			-->			program_select			: [oven.GetTemperature() > max_temp] \n /blink_led(10)
 	oven_check			-->			processing
 }
 
