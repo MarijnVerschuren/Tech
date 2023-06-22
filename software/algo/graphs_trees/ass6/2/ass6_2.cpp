@@ -22,8 +22,8 @@ int main(){
 		Path<uint64_t>* path = BFS(graphs[0], n);
 		if (!path) { cout << "not found\n"; continue; }
 		route_count = path->step_count();
-		cout << route_count << "\n";
-		//cout << "found (" << n << "): "; print(path);
+		cout << route_count << " ";
+		print(path);
 		delete graphs[0];
     }
 

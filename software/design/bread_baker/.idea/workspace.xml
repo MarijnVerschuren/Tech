@@ -21,15 +21,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/out.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bread_baker_state_diagram.puml" beforeDir="false" afterPath="$PROJECT_DIR$/bread_baker_state_diagram.puml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/breadbake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/BreadBaker.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/Program.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/Program.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/States.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/States.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/Tasks.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/Tasks.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product/TimeConstants.h" beforeDir="false" afterPath="$PROJECT_DIR$/product/TimeConstants.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +132,8 @@
       <workItem from="1687117390739" duration="12861000" />
       <workItem from="1687172737613" duration="599000" />
       <workItem from="1687176818860" duration="599000" />
-      <workItem from="1687205876537" duration="27067000" />
+      <workItem from="1687205876537" duration="27943000" />
+      <workItem from="1687455433003" duration="599000" />
     </task>
     <servers />
   </component>
