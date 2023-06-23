@@ -162,7 +162,7 @@ void BreadBaker::handle_rising_event(Events ev) {
 	if (ev != OVEN_DONE) { return; }
 	if (program_type == DOUGH) {
 		task = DONE; display.SetCurrentTask(task);
-		timer.Set(5 MIN);
+		timer.Set(5 MIN); return;
 	}
 	task = BAKING; display.SetCurrentTask(task);
 	oven.StartBake(program.baking);

@@ -21,11 +21,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3a5f6e8-cf59-457a-ac58-18e53a953b36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../algo/graphs_trees/project/img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/ass6_2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../algo/graphs_trees/ass6/2/out.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/BreadBaker.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/product/BreadBaker.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/testStandbyState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/testStandbyState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_breadbake" beforeDir="false" afterPath="$PROJECT_DIR$/test_breadbake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +71,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/marijn/Github/EEPROM_Programmer&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;
@@ -133,7 +134,8 @@
       <workItem from="1687172737613" duration="599000" />
       <workItem from="1687176818860" duration="599000" />
       <workItem from="1687205876537" duration="27943000" />
-      <workItem from="1687455433003" duration="599000" />
+      <workItem from="1687455433003" duration="5645000" />
+      <workItem from="1687518717861" duration="4997000" />
     </task>
     <servers />
   </component>
