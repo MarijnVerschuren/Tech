@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 int main(){
 	uint64_t t, n, m, x, y;
 	uint64_t route_count;
@@ -28,7 +29,6 @@ int main(){
     }
 
     return 0;
-
 }
 // FKIN seg fault on depth func
 // TODO: fix cyclic references

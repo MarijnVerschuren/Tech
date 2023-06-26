@@ -26,10 +26,28 @@ standby : exit:
 standby : load_default_program()
 standby : display.on()
 
+state program_select
+program_select : entry:
+program_select : start_timeout_timer(5 MIN)
+program_select : display.set_current_task(NO_INDICATOR)
+program_select : display.set_menu_number(program)
+program_select : display.set_time(program.time + get_time())  // this is split like so: (H, M)
+program_select : // display updates remaining time automatically every minute
+program_select : exit:
+program_select : stop_timeout_timer()
+state oven_check <<choice>>
+
 [*]						->			standby
-standby					->			selecting				: MENU_BUTTON_PRESSED
+standby					->			program_select			: MENU_BUTTON_PRESSED
 selecting				-->			standby					: TIMER_TIMEOUT \n MENU_BUTTON_LONG_PRESSED
 processing				-->			standby					: MENU_BUTTON_LONG_PRESSED
+
+program_select		->			program_select			: MENU_BUTTON_PRESSED/load_next_program()
+program_select		->			program_select			: TIMER_UP_BUTTON_PRESSED \n /increment_time() // by 10
+program_select		->			program_select			: TIMER_DOWN_BUTTON_PRESSED \n /decrement_time() // by 10
+program_select		-->			oven_check				: START_BUTTON_PRESSED
+oven_check			-->			program_select			: [oven.GetTemperature() > max_temp] \n /blink_led(10)
+oven_check			-->			processing
 
 
 state processing {
@@ -77,7 +95,6 @@ state kneading {
 	state turn_left
 	turn_left : entry:
 	turn_left : set_timer(1 MIN)
-	turn_left : do:
 	turn_left : knead_cycles++
 	turn_left : motor.turn_left()
 	turn_left : exit:
@@ -85,7 +102,6 @@ state kneading {
 	state turn_right
 	turn_right : entry:
 	turn_right : set_timer(1 MIN)
-	turn_right : do:
 	turn_right : knead_cycles++
 	turn_right : motor.turn_right()
 	turn_right : exit:
@@ -98,29 +114,6 @@ state kneading {
 }
 kneading : entry:
 kneading : display.set_current_task(KNEADING)
-
-state selecting {
-	state program_select
-	program_select : entry:
-	program_select : start_timeout_timer(5 MIN)
-	program_select : do:
-	program_select : display.set_current_task(NO_INDICATOR)
-	program_select : display.set_menu_number(program)
-	program_select : display.set_time(program.time + get_time())  // this is split like so: (H, M)
-	program_select : // display updates remaining time automatically every minute
-	program_select : exit:
-	program_select : stop_timeout_timer()
-
-	state oven_check <<choice>>
-
-	[*]					-->			program_select
-	program_select		->			program_select			: MENU_BUTTON_PRESSED/load_next_program()
-	program_select		->			program_select			: TIMER_UP_BUTTON_PRESSED \n /increment_time() // by 10
-	program_select		->			program_select			: TIMER_DOWN_BUTTON_PRESSED \n /decrement_time() // by 10
-	program_select		-->			oven_check				: START_BUTTON_PRESSED
-	oven_check			-->			program_select			: [oven.GetTemperature() > max_temp] \n /blink_led(10)
-	oven_check			-->			processing
-}
 
 state done
 done : entry:

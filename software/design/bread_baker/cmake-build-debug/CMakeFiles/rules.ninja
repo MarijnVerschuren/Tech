@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/marijn/Github/Tech/software/design/bread_baker -B/home/marijn/Github/Tech/software/design/bread_baker/cmake-build-debug
+  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.9161.40/bin/cmake/linux/x64/bin/cmake --regenerate-during-build -S/home/marijn/Github/Tech/software/design/bread_baker -B/home/marijn/Github/Tech/software/design/bread_baker/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 
@@ -51,7 +51,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/bin/ninja/linux/x64/ninja $FILE_ARG -t clean $TARGETS
+  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.9161.40/bin/ninja/linux/x64/ninja $FILE_ARG -t clean $TARGETS
   description = Cleaning all built files...
 
 
@@ -59,6 +59,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.8109.174/bin/ninja/linux/x64/ninja -t targets
+  command = /mnt/nvme/home/marijn/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/231.9161.40/bin/ninja/linux/x64/ninja -t targets
   description = All primary targets available:
 
