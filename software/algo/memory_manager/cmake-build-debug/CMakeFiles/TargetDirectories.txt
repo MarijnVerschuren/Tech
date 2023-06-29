@@ -1,3 +1,0 @@
-/home/marijn/Github/Tech/software/algo/memory_manager/cmake-build-debug/CMakeFiles/memory_manager.dir
-/home/marijn/Github/Tech/software/algo/memory_manager/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/marijn/Github/Tech/software/algo/memory_manager/cmake-build-debug/CMakeFiles/rebuild_cache.dir
