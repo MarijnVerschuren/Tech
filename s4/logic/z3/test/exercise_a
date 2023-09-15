@@ -1,0 +1,12 @@
+(declare-const x Int)
+(assert
+	(= 0
+		(+
+			(* x x)
+			(* x 115)
+			3066
+		)
+	)
+)
+(check-sat)
+(get-model)

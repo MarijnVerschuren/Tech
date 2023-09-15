@@ -1,0 +1,18 @@
+(declare-const p Int)
+(declare-const q Int)
+(assert (and
+	(= 37
+		(+
+			p
+			q
+		)
+	)
+	(= 286
+		(*
+			p
+			q
+		)
+	)
+))
+(check-sat)
+(get-model)
