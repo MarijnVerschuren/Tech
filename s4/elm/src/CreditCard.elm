@@ -167,6 +167,7 @@ creditcards = [
     ]
 
 
+-- DISPLAY
 my_results = [
         "calculations:",
         String.fromInt(check_list creditcards),

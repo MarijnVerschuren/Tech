@@ -38,12 +38,10 @@ candidates keywords msg = List.map (\i -> (i, decrypt i msg)) (List.filter (\i -
 
 
 -- DISPLAY
-print : List String
-print = [
-        String.fromChar(encode 4 'Y'),
-        String.fromChar(decode 4 'c'),
-        (encrypt 7 "hey hello hi"),
-        (decrypt 7 "OlssvDvysk"),
-        string_from_multi_tuple_1i1s(candidates ["Hey", "Hello", "H"] "OlfOlssvOp")
-    ]
-main = text (String.join ",\n" print)
+main = text (String.join ",\n" [
+       String.fromChar(encode 4 'Y'),
+       String.fromChar(decode 4 'c'),
+       (encrypt 7 "hey hello hi"),
+       (decrypt 7 "OlssvDvysk"),
+       string_from_multi_tuple_1i1s(candidates ["Hey", "Hello", "H"] "OlfOlssvOp")
+   ])

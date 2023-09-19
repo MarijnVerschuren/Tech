@@ -18,4 +18,18 @@ string_from_tuple_1i1s (i, s) = "(" ++ String.fromInt(i) ++ ", " ++ s ++ ")"
 string_from_multi_tuple_1i1s : List (Int, String) -> String
 string_from_multi_tuple_1i1s x = "[" ++ String.join ", " (List.map (\t -> string_from_tuple_1i1s t) x) ++ "]"
 
+
+foldl_rec : (a -> b -> b) -> b -> List a -> b
+foldl_rec func acc lst =
+    case lst of
+        [] -> acc
+        a :: rest -> foldl_rec func (func a acc) rest
+
+foldr_rec : (a -> b -> b) -> b -> List a -> b
+foldr_rec func acc lst =
+    case lst of
+        [] -> acc
+        a :: rest -> func a (foldr_rec func acc rest)
+
+
 main = text "main"
