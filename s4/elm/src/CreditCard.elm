@@ -1,7 +1,6 @@
 module CreditCard exposing (main)
 
-import Main exposing (..)
-import Html exposing (Html)
+import Main exposing (println)
 
 
 -- <template>
@@ -168,16 +167,8 @@ creditcards = [
 
 
 -- DISPLAY
-my_results = [
-        "calculations:",
-        String.fromInt(check_list creditcards),
-        String.fromInt(numValid (List.map String.fromInt creditcards)),
-        "-- end --"
+main = println [
+        "own implementation: " ++       String.fromInt(check_list creditcards),
+        "template implementation: " ++  String.fromInt(numValid (List.map String.fromInt creditcards))
     ]
-to_div my_value = 
-    Html.div [] [ my_value |> Html.text ]
-
-main = Html.div 
-        []
-        (List.map to_div my_results)
     

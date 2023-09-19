@@ -1,8 +1,7 @@
 module Caesar exposing (main)
 
-import Main exposing (..)
+import Main exposing (println, string_from_multi_tuple_1i1s)
 import Char exposing (isAlpha)
-import Html exposing (text)
 
 
 -- ASSIGNMENT 2     (caesar pt1)
@@ -38,10 +37,10 @@ candidates keywords msg = List.map (\i -> (i, decrypt i msg)) (List.filter (\i -
 
 
 -- DISPLAY
-main = text (String.join ",\n" [
+main = println [
        String.fromChar(encode 4 'Y'),
        String.fromChar(decode 4 'c'),
        (encrypt 7 "hey hello hi"),
        (decrypt 7 "OlssvDvysk"),
        string_from_multi_tuple_1i1s(candidates ["Hey", "Hello", "H"] "OlfOlssvOp")
-   ])
+   ]

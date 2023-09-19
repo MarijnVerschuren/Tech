@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (text)
+import Html exposing (Html, text)
 import String
 
 
@@ -17,6 +17,10 @@ string_from_tuple_1i1s : (Int, String) -> String
 string_from_tuple_1i1s (i, s) = "(" ++ String.fromInt(i) ++ ", " ++ s ++ ")"
 string_from_multi_tuple_1i1s : List (Int, String) -> String
 string_from_multi_tuple_1i1s x = "[" ++ String.join ", " (List.map (\t -> string_from_tuple_1i1s t) x) ++ "]"
+
+to_div x = Html.div [] x
+println : List String -> Html msg
+println x = to_div (List.map (\y -> to_div [Html.text y]) x)
 
 
 foldl_rec : (a -> b -> b) -> b -> List a -> b

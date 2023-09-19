@@ -1,7 +1,6 @@
 module Sort exposing (..)
 
-import Main exposing (..)
-import Html exposing (text)
+import Main exposing (println)
 
 
 split : List comparable -> (List comparable, List comparable)
@@ -44,7 +43,7 @@ list = [
 list_s: List Int
 list_s = msort list
 
-main = text (String.join ",\n" [
+main = println [
        "[" ++ String.join ", " (List.map (\t -> String.fromInt t) list) ++ "]",
        "[" ++ String.join ", " (List.map (\t -> String.fromInt t) list_s) ++ "]"
-   ])
+   ]

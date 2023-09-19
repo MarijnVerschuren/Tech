@@ -1,7 +1,9 @@
 module Pythagoras exposing (main)
 
-import Main exposing (..)
-import Html exposing (text)
+import Main exposing (
+        println, string_from_bool,
+        string_from_multi_tuple_3i
+    )
 
 
 -- ASSIGNMENT 3    (pythagoras pt1)
@@ -38,10 +40,10 @@ arePythTriplesRec list =
 
 
 -- DISPLAY
-main = text (String.join ",\n" [
+main = println [
        string_from_bool(isTripleTuple(pythTriple(8, 6))),
        string_from_multi_tuple_3i(pythTriplesMap [(5,4), (2,1), (35,7)]),
        string_from_multi_tuple_3i(pythTriplesRec [(5,4), (2,1), (35,7)]),
        string_from_multi_tuple_3i(arePythTriplesFilter [(9, 40, 41), (3, 4, 6), (1176, 490, 1274)]),
        string_from_multi_tuple_3i(arePythTriplesRec [(9, 40, 41), (3, 4, 5), (1176, 491, 1274)])
-   ])
+   ]
