@@ -157,7 +157,10 @@ textarea {
   }
 }
 
-
+#survey {
+	width: 100vw;
+	height: 100vh;
+}
 #survey div {
 	display: flex;
 }
@@ -165,7 +168,9 @@ textarea {
 	width: 50vw;
 	height: 100vh;
 }
-.servey_option img {}
+.servey_option img {
+
+}
 .survey_question {
 	background: #212121;
 	color: #ffffff;
