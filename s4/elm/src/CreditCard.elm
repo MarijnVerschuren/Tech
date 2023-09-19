@@ -3,6 +3,7 @@ module CreditCard exposing (main)
 import Main exposing (println)
 
 
+-- ASSIGNMENT 7     (validating credit card numbers)
 -- <template>
 toDigits: String -> List Int
 toDigits x = List.map (\c -> Maybe.withDefault 0 (String.toInt c)) (String.split "" x)
@@ -22,7 +23,6 @@ isValid x = (modBy 10 (sumDigits (doubleSecond (toDigitsRev x)))) == 0
 numValid: List String -> Int
 numValid xs = List.length (List.filter (\i -> isValid i) xs)
 -- </template>
-
 
 -- <own implementation>
 check_number: Int -> Bool
@@ -166,7 +166,7 @@ creditcards = [
     ]
 
 
--- DISPLAY
+-- VIEW
 main = println [
         "own implementation: " ++       String.fromInt(check_list creditcards),
         "template implementation: " ++  String.fromInt(numValid (List.map String.fromInt creditcards))

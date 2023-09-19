@@ -38,8 +38,7 @@ arePythTriplesRec list =
         first :: rest -> (if (isTripleTuple first) then [first] else []) ++ arePythTriplesRec rest
 
 
-
--- DISPLAY
+-- VIEW
 main = println [
        string_from_bool(isTripleTuple(pythTriple(8, 6))),
        string_from_multi_tuple_3i(pythTriplesMap [(5,4), (2,1), (35,7)]),

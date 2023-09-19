@@ -35,8 +35,7 @@ candidates: List String -> String -> List (Int, String)
 candidates keywords msg = List.map (\i -> (i, decrypt i msg)) (List.filter (\i -> decrypt_check keywords i msg) (List.range 1 25))
 
 
-
--- DISPLAY
+-- VIEW
 main = println [
        String.fromChar(encode 4 'Y'),
        String.fromChar(decode 4 'c'),

@@ -3,6 +3,7 @@ module Sort exposing (..)
 import Main exposing (println)
 
 
+-- ASSIGNMENT 8     (sorting)
 split : List comparable -> (List comparable, List comparable)
 split lst = split_helper lst True [] []
 
@@ -31,7 +32,7 @@ msort lst =
         _ -> let (halfOne, halfTwo) = split lst in merge (msort halfOne) (msort halfTwo)
 
 
--- DISPLAY
+-- VIEW
 list: List Int
 list = [
         34,

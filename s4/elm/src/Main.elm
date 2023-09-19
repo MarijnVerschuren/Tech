@@ -4,8 +4,6 @@ import Html exposing (Html, text)
 import String
 
 
--- Use correct function names / types
-
 -- HELPERS
 string_from_bool : Bool -> String
 string_from_bool x = if x then "True" else "False"
@@ -36,4 +34,9 @@ foldr_rec func acc lst =
         a :: rest -> func a (foldr_rec func acc rest)
 
 
+m_int : Maybe Int -> Int
+m_int = Maybe.withDefault 0
+
+
+-- VIEW
 main = text "main"
