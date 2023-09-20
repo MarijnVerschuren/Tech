@@ -1,0 +1,81 @@
+from flask import Flask, request, Response, jsonify, make_response
+from flask_cors import CORS
+
+from socket import socket, AF_INET, SOCK_DGRAM
+import sys
+import os
+
+from models import *
+
+
+# ================================================== #
+# global variables / functions						 #
+# ================================================== #
+server = Flask(
+	__name__,
+	template_folder=None,
+	static_folder=None
+)
+CORS(server, resources=r'/api/*')
+
+server.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+server.config["SQLALCHEMY_DATABASE_URI"] = rf"sqlite:///{os.path.dirname(__file__)}/db/servey.sqlite3"
+
+
+# ================================================== #
+# global variables / functions						 #
+# ================================================== #
+def start_server(host_ip: str, port: int = 80, debug: bool = False) -> None:
+	db.init_app(server)
+	with server.app_context():
+		db.create_all()
+
+	server.run(host=host_ip, port=port, debug=debug)
+
+
+# ================================================== #
+# global variables / functions						 #
+# ================================================== #
+@server.route("/api/submit", methods=["POST"])
+def submit_call():
+	print(request.json)
+
+	submission = Submission(request.json["value"])
+	db.session.add(submission)
+	db.session.commit()
+	# TODO: add more data to DB model
+
+	return make_response(
+		jsonify(success=True),
+		200  # success code
+	)
+
+
+# ================================================== #
+# global variables / functions						 #
+# ================================================== #
+if __name__ == "__main__":  # run server only
+	args = sys.argv[1:]
+
+	os.system("cls" if os.name in ["nt", "dos"] else "clear")
+	if "-help" in args: print(
+		"[-offline]\t\t-> run server on (127.0.0.1:80) instead of local ipv4",
+		"[-debug]\t\t-> run server in debug mode",
+		"[-quiet]\t\t-> run server without logging to the terminal",
+		sep="\n", end="\n\n"
+	)
+
+	port = 80
+	host_ip = "127.0.0.1"
+	if "-offline" not in args:
+		sock = socket(AF_INET, SOCK_DGRAM)
+		sock.connect(("8.8.8.8", 9699))
+		host_ip = sock.getsockname()[0]
+		sock.close()
+	if "-quiet" in args:
+		import logging
+		logging.getLogger('werkzeug').disabled = True
+		server.logger.disabled = True
+		print(f"\nserver: http://{host_ip}:{port}\n")
+
+	start_server(host_ip, port, "-debug" in args)

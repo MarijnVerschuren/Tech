@@ -62,8 +62,8 @@ window.onload = function() {
 		option_b.classList.add("survey_option");
 		option_a.style.background = colors[a];
 		option_b.style.background = colors[b];
-		option_a.onclick = () => { send_result(a); };
-		option_b.onclick = () => { send_result(b); };
+		option_a.onclick = async () => { await send_result(a); };
+		option_b.onclick = async () => { await send_result(b); };
 
 		container.appendChild(option_a);
 		container.appendChild(option_b);
@@ -74,9 +74,22 @@ window.onload = function() {
 };
 
 
-function send_result(result) {
+async function send_result(result) {
 	document.cookie = "\x60"	// update cookie to prevent resubmissions
-	// TODO: send result to the database
-	window.console.log(result);
+
+	await fetch("http://127.0.0.1:80/api/submit", {
+		method: "POST",
+		headers: {
+			"Accept":		"application/json",
+			"Content-Type":	"application/json"
+		},
+		body: JSON.stringify({
+			"value": result
+		})
+	})
+   .then(response => response.json())
+   .then(response => console.log(JSON.stringify(response)))
+	// TODO: timeout
+
 	location.reload();
 }
