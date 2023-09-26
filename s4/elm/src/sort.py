@@ -2,7 +2,7 @@ from typing import List
 
 
 # input helper
-def remove(x: str, *args : str) -> str:
+def remove(x: str, *args: str) -> str:
 	for arg in args:
 		x.replace(arg, "")
 	return x
