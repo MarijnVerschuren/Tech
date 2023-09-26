@@ -18,9 +18,9 @@ decode offset char = encode (offset * -1) char
 normalize : String -> String
 normalize msg = String.filter isAlpha msg
 encrypt : Int -> String -> String
-encrypt offset msg = String.map (\c -> encode offset c)(normalize msg)
+encrypt offset msg = String.map (encode offset) (normalize msg)
 decrypt : Int -> String -> String
-decrypt offset msg = String.map (\c -> decode offset c)(normalize msg)
+decrypt offset msg = String.map (decode offset) (normalize msg)
 
 
 -- ASSIGNMENT 6     (caesar pt3)

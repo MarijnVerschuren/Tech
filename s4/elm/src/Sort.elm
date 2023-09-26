@@ -45,6 +45,6 @@ list_s: List Int
 list_s = msort list
 
 main = println [
-       "[" ++ String.join ", " (List.map (\t -> String.fromInt t) list) ++ "]",
-       "[" ++ String.join ", " (List.map (\t -> String.fromInt t) list_s) ++ "]"
+       "[" ++ String.join ", " (List.map String.fromInt list) ++ "]",
+       "[" ++ String.join ", " (List.map String.fromInt list_s) ++ "]"
    ]

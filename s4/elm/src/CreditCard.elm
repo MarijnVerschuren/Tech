@@ -21,7 +21,7 @@ isValid: String -> Bool
 isValid x = (modBy 10 (sumDigits (doubleSecond (toDigitsRev x)))) == 0
 
 numValid: List String -> Int
-numValid xs = List.length (List.filter (\i -> isValid i) xs)
+numValid xs = List.length (List.filter isValid xs)
 -- </template>
 
 -- <own implementation>

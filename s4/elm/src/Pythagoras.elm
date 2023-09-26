@@ -23,7 +23,7 @@ pythTriple (x, y) = (leg1 x y, leg2 x y, hyp x y)
 
 -- ASSIGNMENT 5     (pythagoras pt2)
 pythTriplesMap : List (Int, Int) -> List (Int, Int, Int)
-pythTriplesMap list = List.map (\t -> pythTriple t) list
+pythTriplesMap list = List.map pythTriple list
 pythTriplesRec : List (Int, Int) -> List (Int, Int, Int)
 pythTriplesRec list =
     case list of
