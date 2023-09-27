@@ -1,14 +1,10 @@
-//
-// Created by marijn on 3/3/23.
-//
-
-#ifndef STD_LIB_SYS_H
-#define STD_LIB_SYS_H
+#ifndef SORT_SORT_H
+#define SORT_SORT_H
 
 #include "defs.h"
 
 
-extern void sort(int64_t* array, uint64_t size);
+extern void bubble_sort(int64_t* array, uint64_t size);
 
 
-#endif //STD_LIB_SYS_H
+#endif //SORT_SORT_H

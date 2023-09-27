@@ -3,21 +3,38 @@
 //
 #include <stdio.h>
 #include <malloc.h>
+#include <time.h>
 
 #include "../inc/sort.h"
+#include "../inc/test_array.h"
 
 
-void sort_test(void) {
-	int64_t array[10] = {0, 0,/*4, -8,*/ 23, 1, 9, 20, -12, -8, 12, -20};
-	sort(array, 10);
-	for (uint8_t i = 0; i < 10; i++) {
-		printf("%lld\n", array[i]);
+
+void sort_test(uint8_t print) {
+	clock_t start, end;
+	if(print) {
+		printf("before:\t["); for (uint64_t i = 0; i < SIZE; i++) {
+			printf("%lld", array[i]);
+			if (i < SIZE - 1) { printf(", "); }
+		} printf("]\n");
+	}
+
+	start = clock();			// start timer
+	bubble_sort(array, SIZE);
+	end = clock();				// stop timer
+	printf("time:\t%f\n", ((double)(end - start)) / CLOCKS_PER_SEC);
+
+	if(print) {
+		printf("before:\t["); for (uint64_t i = 0; i < SIZE; i++) {
+			printf("%lld", array[i]);
+			if (i < SIZE - 1) { printf(", "); }
+		} printf("]\n");
 	}
 }
 
 
 int main(int argc, char** argv) {
-	sort_test();
+	sort_test(0);
 
 	return 0;
 }
