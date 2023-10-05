@@ -1,13 +1,15 @@
 [bits 64]
 section .text
-	global linear_search
-	global binary_search
+	global linear_count
+	global linear_count_a
+	global binary_count_a
+	extern compare_words
 
 
 
 ; rdi	->	text
 ; rsi	->	word
-linear_search:
+linear_count:
 	xor rax, rax			; occurrence counter
 
 	xor rbx, rbx			; 0 constant
@@ -16,7 +18,7 @@ linear_search:
 	xor r8, r8				; word index
 	xor r9, r9				; conditional additive
 
-	loop_0:
+	lc_loop:
 	mov cl, [rdi]			; current char from text
 	mov dl, [rsi + r8]		; current char from word
 
@@ -36,14 +38,49 @@ linear_search:
 
 	inc rdi
 	test cl, cl
-	jnz loop_0
+	jnz lc_loop
 
 	ret
 
 
 
-; rdi	->	tree
-; rsi	->	word
-binary_search:
+; rdi	->	words		-> cmp func a
+; rsi	->	size		-> cmp func b
+; rdx	->	word
+
+; rax	->	cmp return
+; rbx	->	i
+; rcx	->	count
+; r8	->	words
+; r9	->	size
+; r10
+linear_count_a:
+	xor rbx, rbx			; set i to 0
+	xor rcx, rcx			; set count to 0
+	mov r8, rdi				; move word array into r8
+	mov r9, rsi				; move size into r9
+	mov rsi, rdx			; move word into rsi
+
+	lca_loop:
+	mov rdi, [r8 + 8 * rbx]	; load words[i] into rdi
+
+	call compare_words		; call compare words on rdi, rsi
+	test rax, rax			; test rax
+	setz r10b				; conditionally set r10 to 1
+	add rcx, r10			; add r10 to the count
+
+	inc rbx					; increment i
+	cmp rbx, r9				; test i < size
+	jl lca_loop
+
+	mov rax, rcx			; move count into rax
+	ret
+
+
+
+; rdi	->	words		-> cmp func a
+; rsi	->	size		-> cmp func b
+; rdx	->	word
+binary_count_a:
 	xor rax, rax
 	ret

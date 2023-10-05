@@ -13,10 +13,13 @@ INT = int/
 SRC = src/
 
 
-default: sort
-	$(LINK) --shared -o $(BIN)stdlib.so $(STATIC)search.o
-	$(LINK) --relocatable -o $(BIN)stdlib.o $(STATIC)search.o
+default: sort search
+	$(LINK) --relocatable -o $(BIN)stdlib.o $(STATIC)sort.o $(STATIC)search.o
 
 sort:
+	$(ASM) $(ASM_FLAGS) -o $(INT)sort.o $(SRC)sort.asm
+	$(LINK) --relocatable -o $(STATIC)sort.o $(INT)sort.o
+
+search:
 	$(ASM) $(ASM_FLAGS) -o $(INT)search.o $(SRC)search.asm
 	$(LINK) --relocatable -o $(STATIC)search.o $(INT)search.o

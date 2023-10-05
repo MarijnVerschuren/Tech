@@ -1,6 +1,7 @@
 /**
  * constants
  */
+const rounds = 12;
 const colors = [
 	"#d53e4f",
 	"#f46d43",
@@ -12,6 +13,14 @@ const colors = [
 	"#3288bd"
 ]
 
+
+/**
+ * helpers
+ */
+const timeout = (cb, interval) => () => new Promise(resolve => setTimeout(() => cb(resolve), interval))
+String.prototype.replaceAt = function(index, replacement) {
+	return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
 
 /**
  * html objects
@@ -28,23 +37,27 @@ const option_b = document.getElementById("option_b");
  */
 window.onload = function() {
 	// variables
-	let a, b;  // color indexes for the options
-	let lock;  // survey lock to prevent resubmissions
+	let cookie = document.cookie;
+	let a, b;  // color indexes
+	let rnd = 0;
 
 	// handle cookies
-	if (document.cookie.length === 0) {
-		do {  // create two unique numbers in range (0, 7)
+	if (cookie.length === 0) {
+		for (let _ = 0; _ < rounds; _++) {
 			a = Math.round(Math.random() * 0x7);
 			b = Math.round(Math.random() * 0x7);
-		} while (a === b);
-		document.cookie = String.fromCharCode(a | (b << 3) + 0x20);
-	} else {
-		let cookie = document.cookie.charCodeAt(0) - 0x20;
-		a = cookie & 0x7; b = (cookie >> 3) & 0x7; lock = (cookie >> 6) & 0x1;
+			if (a === b) { b = b + 1 % 0x7; }
+			cookie += String.fromCharCode(a | (b << 3) + 0x20);
+		} document.cookie = cookie;
+	}
+	for (let c = 0; rnd < rounds; rnd++) {
+		c = cookie.charCodeAt(rnd) - 0x20;
+		a = c & 0x7; b = (c >> 3) & 0x7;
+		if (!((c >> 6) & 0x1)) { break; }
 	}
 
 	// load page
-	if (lock) {
+	if (rnd === rounds) {
 		const msg = document.createElement("h1");
 		msg.classList.add("survey_message")
 		msg.innerHTML = "Thank You!";
@@ -71,25 +84,32 @@ window.onload = function() {
 		survey.appendChild(container);
 		// TODO: subject picture
 	}
+	// TODO: survey pt2.
+	// TODO: more data collection
 };
 
 
 async function send_result(result) {
-	document.cookie = "\x60"	// update cookie to prevent resubmissions
+	for (let i = 0; i < rounds; i++) {
+		if (((document.cookie.charCodeAt(i) - 0x20) >> 6) & 0x1) { continue; }
+		document.cookie = document.cookie.replaceAt(i, "\x60")
+		break;
+	}
 
 	await fetch("http://127.0.0.1:80/api/submit", {
-		method: "POST",
-		headers: {
-			"Accept":		"application/json",
-			"Content-Type":	"application/json"
-		},
-		body: JSON.stringify({
-			"value": result
+			method: "POST",
+			headers: {
+				"Accept":		"application/json",
+				"Content-Type":	"application/json"
+			},
+			body: JSON.stringify({
+				"value": result
+			})
 		})
-	})
-   .then(response => response.json())
-   .then(response => console.log(JSON.stringify(response)))
-	// TODO: timeout
+		.then(response => response.json())
+		.then(response => console.log(JSON.stringify(response)))
+		.catch((error) => {}
+	)
 
 	location.reload();
 }
