@@ -3,7 +3,7 @@
  */
 const rounds = 12;
 const colors = [
-	"#d53e4f",
+	"#d53e4fff",
 	"#f46d43",
 	"#fdae61",
 	"#fee08b",
@@ -43,6 +43,7 @@ window.onload = function() {
 
 	// handle cookies
 	if (cookie.length === 0) {
+		// TODO: add call to start for id
 		for (let _ = 0; _ < rounds; _++) {
 			a = Math.round(Math.random() * 0x7);
 			b = Math.round(Math.random() * 0x7);
@@ -75,8 +76,8 @@ window.onload = function() {
 		option_b.classList.add("survey_option");
 		option_a.style.background = colors[a];
 		option_b.style.background = colors[b];
-		option_a.onclick = async () => { await send_result(a); };
-		option_b.onclick = async () => { await send_result(b); };
+		option_a.onclick = async () => { await send_result(colors[a], colors[b], true); };
+		option_b.onclick = async () => { await send_result(colors[a], colors[b], false); };
 
 		container.appendChild(option_a);
 		container.appendChild(option_b);
@@ -89,21 +90,24 @@ window.onload = function() {
 };
 
 
-async function send_result(result) {
+async function send_result(a, b, result) {
 	for (let i = 0; i < rounds; i++) {
 		if (((document.cookie.charCodeAt(i) - 0x20) >> 6) & 0x1) { continue; }
 		document.cookie = document.cookie.replaceAt(i, "\x60")
 		break;
 	}
 
-	await fetch("http://127.0.0.1:80/api/submit", {
+	await fetch("http://127.0.0.1:80/api/submit_color", {
 			method: "POST",
 			headers: {
 				"Accept":		"application/json",
 				"Content-Type":	"application/json"
 			},
 			body: JSON.stringify({
-				"value": result
+				"id": 0,
+				"color_a": a,
+				"color_b": b,
+				"chose_a": result,
 			})
 		})
 		.then(response => response.json())

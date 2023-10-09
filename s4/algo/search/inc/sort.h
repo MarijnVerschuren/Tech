@@ -21,7 +21,7 @@ extern int8_t cmp_words(const str a, const str b);  // TODO: in assembly
 
 
 typedef int8_t (*comp_fn) (const void*, const void*);
-extern void bubble_sort(void* array, uint64_t size, comp_fn comp);
+extern void sort(void* array, uint64_t size, comp_fn comp);
 
 
 #endif //SORT_SORT_H

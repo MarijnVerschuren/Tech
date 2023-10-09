@@ -28,14 +28,14 @@ void sort_test() {
 	str* words;
 	uint64_t size = text_to_words("I'm trying to check if a a a value is zero in x86_64 assembly code zero zero zero", &words);
 	(void)words;
-	bubble_sort(words, size, (comp_fn)compare_words);
+	sort(words, size, (comp_fn)compare_words);
 	for (uint64_t i = 0; i < size; i++) { printf("%s\n", words[i]); } printf("\n\n");
-	printf("%lld\n", linear_count_a(words, size, "zero"));
-
+	printf("%lld\n", linear_count_a((const str*)words, size, "zero"));
 }
 
 
 int main(int argc, char** argv) {
+	//cmp_words("aaa", "abc");
 	sort_test();
 	//search_test();
 

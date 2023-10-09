@@ -1,6 +1,6 @@
 [bits 64]
 section .text
-	global bubble_sort
+	global sort
 	global cmp_words
 
 
@@ -15,7 +15,7 @@ section .text
 ; r10	->	length - j
 ; r11	->	cmp function (rbx is cleared after calling cmp function)
 
-bubble_sort:
+sort:
 	mov r8, rax				; move array to r8
 	mov r9, rsi				; move length into r9
 	mov r11, rdx			; move cmp function into r11
@@ -48,7 +48,12 @@ bubble_sort:
 	ret
 
 
-
+; rax	->
+; rdi	->	a
+; rsi	->	b
 cmp_words:
 	xor rax, rax
+	vmovdqu ymm0, [rdi]
+	vmovdqu ymm1, [rsi]
+	; TODO
 	ret

@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, request, Response, jsonify, make_response
 from flask_cors import CORS
 
@@ -36,14 +38,30 @@ def start_server(host_ip: str, port: int = 80, debug: bool = False) -> None:
 # ================================================== #
 # global variables / functions						 #
 # ================================================== #
-@server.route("/api/submit", methods=["POST"])
-def submit_call():
+@server.route("/api/start", methods=["GET"])
+def start_call():
+	voter = Voter(random.randint(0, 1) == 1)
+	db.session.add(voter)
+	db.session.commit()
+
+	return make_response(
+		jsonify(id=voter.id),
+		200  # success code
+	)
+
+
+@server.route("/api/submit_color", methods=["POST"])
+def submit_color_call():
 	print(request.json)
 
-	submission = Submission(request.json["value"])
-	db.session.add(submission)
+	color = Color_Submission(
+		request.json["id"],
+		request.json["color_a"],
+		request.json["color_b"],
+		request.json["chose_a"]
+	)
+	db.session.add(color)
 	db.session.commit()
-	# TODO: add more data to DB model
 
 	return make_response(
 		jsonify(success=True),
