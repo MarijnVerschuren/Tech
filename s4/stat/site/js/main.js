@@ -21,6 +21,9 @@ const timeout = (cb, interval) => () => new Promise(resolve => setTimeout(() => 
 String.prototype.replaceAt = function(index, replacement) {
 	return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
+function is_empty(obj) {
+  return Object.keys(obj).length === 0;
+}
 
 /**
  * html objects
@@ -35,31 +38,29 @@ const option_b = document.getElementById("option_b");
 /**
  * functions
  */
-window.onload = function() {
-	// variables
-	let cookie = document.cookie;
-	let a, b;  // color indexes
-	let rnd = 0;
-
+window.onload = async function() {
 	// handle cookies
-	if (cookie.length === 0) {
-		// TODO: add call to start for id (64 bit)
-		// TODO: split cookies into id and rounds
-		for (let _ = 0; _ < rounds; _++) {
-			a = Math.round(Math.random() * 0x7);
-			b = Math.round(Math.random() * 0x7);
-			if (a === b) { b = b + 1 % 0x7; }
-			cookie += String.fromCharCode(a | (b << 3) + 0x20);
-		} document.cookie = cookie;
+	let cookies = get_cookies();
+	window.console.log(cookies);
+	window.console.log(is_empty(cookies));
+
+	if (is_empty(cookies)) {
+		await start_session();
 	}
-	for (let c = 0; rnd < rounds; rnd++) {
-		c = cookie.charCodeAt(rnd) - 0x20;
+
+	// variables
+	let rnd = cookies["rnd"];
+	let a, b;  // color indexes
+	let round = 0;
+
+	for (let c = 0; round < rounds; round++) {
+		c = rnd.charCodeAt(round) - 0x20;
 		a = c & 0x7; b = (c >> 3) & 0x7;
 		if (!((c >> 6) & 0x1)) { break; }
 	}
 
 	// load page
-	if (rnd === rounds) {
+	if (round === rounds) {
 		const msg = document.createElement("h1");
 		msg.classList.add("survey_message")
 		msg.innerHTML = "Thank You!";
@@ -84,19 +85,67 @@ window.onload = function() {
 		container.appendChild(option_b);
 		survey.appendChild(question);
 		survey.appendChild(container);
-		// TODO: subject picture
 	}
 	// TODO: survey pt2.
-	// TODO: more data collection
 };
 
+function set_cookies(rnd, id, sf) {
+	document.cookie = "rnd=" + rnd;
+	document.cookie = "id=" + id;
+	document.cookie = "sf=" + sf;
+}
+
+function get_cookies() {
+	let decoded = decodeURIComponent(document.cookie).split("; ");
+	let dict = {};
+	let split;
+
+	decoded.forEach((x) => {
+		split = x.split("=");
+		if (split[0] === "" || split[1] === "") { return; }
+		dict[split[0]] = split[1];
+	})
+
+	return dict;
+}
+
+async function start_session() {
+	let session = await fetch("http://127.0.0.1:80/api/start", {
+			method: "GET",
+			headers: {
+				"Accept":		"application/json",
+				"Content-Type":	"application/json"
+			}
+		})
+		.then(response => response.json())
+		.catch((error) => {}
+	);
+
+	let rnd = "";
+	let a, b;  // color indexes
+
+	for (let _ = 0; _ < rounds; _++) {
+		a = Math.round(Math.random() * 0x7);
+		b = Math.round(Math.random() * 0x7);
+		if (a === b) { b = b + 1 % 0x7; }
+		rnd += String.fromCharCode(a | (b << 3) + 0x20);
+	}
+
+	set_cookies(rnd, session["id"], session["survey_first"]);
+}
 
 async function send_result(a, b, result) {
+	let cookies = get_cookies();
+	let rnd = cookies["rnd"];
+	let id = cookies["id"];
+
 	for (let i = 0; i < rounds; i++) {
-		if (((document.cookie.charCodeAt(i) - 0x20) >> 6) & 0x1) { continue; }
-		document.cookie = document.cookie.replaceAt(i, "\x60")
+		if (((rnd.charCodeAt(i) - 0x20) >> 6) & 0x1) { continue; }
+		rnd = rnd.replaceAt(i, "\x60")
 		break;
 	}
+
+	set_cookies(rnd, id, cookies["sf"]);
 
 	await fetch("http://127.0.0.1:80/api/submit_color", {
 			method: "POST",
@@ -105,7 +154,7 @@ async function send_result(a, b, result) {
 				"Content-Type":	"application/json"
 			},
 			body: JSON.stringify({
-				"id": 0,
+				"id": id,
 				"color_a": a,
 				"color_b": b,
 				"chose_a": result,
