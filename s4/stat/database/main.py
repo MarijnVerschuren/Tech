@@ -1,6 +1,6 @@
 import random
 
-from flask import Flask, request, Response, jsonify, make_response
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 
 from socket import socket, AF_INET, SOCK_DGRAM
@@ -52,15 +52,31 @@ def start_call():
 
 @server.route("/api/submit_color", methods=["POST"])
 def submit_color_call():
-	print(request.json)
-
-	color = Color_Submission(
+	submission = Color_Submission(
 		request.json["id"],
 		request.json["color_a"],
 		request.json["color_b"],
 		request.json["chose_a"]
 	)
-	db.session.add(color)
+	db.session.add(submission)
+	db.session.commit()
+
+	return make_response(
+		jsonify(success=True),
+		200  # success code
+	)
+
+
+@server.route("/api/submit_survey", methods=["POST"])
+def submit_survey_call():
+	submission = Survey_Submission(
+		request.json["id"],
+		request.json["age"],
+		request.json["male"],
+		request.json["student"],
+		request.json["occupation"]
+	)
+	db.session.add(submission)
 	db.session.commit()
 
 	return make_response(

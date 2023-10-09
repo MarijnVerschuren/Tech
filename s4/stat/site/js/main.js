@@ -43,7 +43,8 @@ window.onload = function() {
 
 	// handle cookies
 	if (cookie.length === 0) {
-		// TODO: add call to start for id
+		// TODO: add call to start for id (64 bit)
+		// TODO: split cookies into id and rounds
 		for (let _ = 0; _ < rounds; _++) {
 			a = Math.round(Math.random() * 0x7);
 			b = Math.round(Math.random() * 0x7);
