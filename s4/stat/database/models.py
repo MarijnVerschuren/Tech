@@ -69,25 +69,3 @@ class Survey_Submission(db.Model):
 def query_voters(**kwargs):             return Voter.query.filter_by(**kwargs)
 def query_color_submissions(**kwargs):  return Color_Submission.query.filter_by(**kwargs)
 def query_survey_submissions(**kwargs): return Survey_Submission.query.filter_by(**kwargs)
-
-
-"""
-Voters:
-	id              ->  int
-	survey_before   ->  bool
-
-ColorVotes:
-	id              -> int
-	voter_id        -> int
-	color_a         -> vchar[10] -> color_code
-	color_b         -> vchar[10] -> color_code
-	choice_a        -> bool
-
-SurveyResp:
-	id              -> int
-	voter_id        -> int
-	age             -> int
-	male            -> bool
-	student         -> bool
-	occupation      -> vchar[127]
-"""

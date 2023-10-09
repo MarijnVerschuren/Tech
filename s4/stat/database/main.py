@@ -45,7 +45,10 @@ def start_call():
 	db.session.commit()
 
 	return make_response(
-		jsonify(id=voter.id),
+		jsonify(
+			id=             voter.id,
+			survey_first=   voter.survey_first
+		),
 		200  # success code
 	)
 
