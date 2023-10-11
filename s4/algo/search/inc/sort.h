@@ -17,7 +17,7 @@ int8_t compare_words(const str a, const str b) {
 	if (!bc && ac) { return 1; }
 	return 0;
 }
-extern int8_t cmp_words(const str a, const str b);  // TODO: in assembly
+extern int8_t cmp_words(const str a, const str b);  // 4-5 * faster than the code above :)
 
 
 typedef int8_t (*comp_fn) (const void*, const void*);

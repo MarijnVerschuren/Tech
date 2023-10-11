@@ -14,7 +14,6 @@ section .text
 ; r9	->	length
 ; r10	->	length - j
 ; r11	->	cmp function (rbx is cleared after calling cmp function)
-
 sort:
 	mov r8, rax				; move array to r8
 	mov r9, rsi				; move length into r9
@@ -52,8 +51,115 @@ sort:
 ; rdi	->	a
 ; rsi	->	b
 cmp_words:
-	xor rax, rax
 	vmovdqu ymm0, [rdi]
 	vmovdqu ymm1, [rsi]
-	; TODO
+	vpminub ymm2, ymm0, ymm1
+	vpcmpeqb ymm0, ymm0, ymm2
+	vpcmpeqb ymm1, ymm1, ymm2
+	vpsubb ymm0, ymm0, ymm1
+	; vectorized code...
+	movq rax, xmm0
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+
+	pextrq rax, xmm0, 1
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+
+	vextracti128 xmm0, ymm0, 1
+	movq rax, xmm0
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+
+	pextrq rax, xmm0, 1
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+	test al, al
+	jnz cmp_loop_end
+	shr rax, 8
+
+	cmp_loop_end:
+	and rax, 0xff
 	ret
