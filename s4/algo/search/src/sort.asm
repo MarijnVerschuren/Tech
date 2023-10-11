@@ -51,115 +51,119 @@ sort:
 ; rdi	->	a
 ; rsi	->	b
 cmp_words:
-	vmovdqu ymm0, [rdi]
-	vmovdqu ymm1, [rsi]
-	vpminub ymm2, ymm0, ymm1
-	vpcmpeqb ymm0, ymm0, ymm2
-	vpcmpeqb ymm1, ymm1, ymm2
-	vpsubb ymm0, ymm0, ymm1
+	xor rax, rax					; clear return value in case of early return
+	test rdi, rsi					; test both a and b
+	jz cmp_end						; return if any is 0
+
+	vmovdqu ymm0, [rdi]				; load 32 bytes of a
+	vmovdqu ymm1, [rsi]				; load 32 bytes of b
+	vpminub ymm2, ymm0, ymm1		; |
+	vpcmpeqb ymm0, ymm0, ymm2		; | compare all individual bytes of ymm0 and ymm1
+	vpcmpeqb ymm1, ymm1, ymm2		; | result in ymm0 will contain 0xff if a < b, 0x00 if a == b and 0x01 if a > b
+	vpsubb ymm0, ymm0, ymm1			; |
 	; vectorized code...
 	movq rax, xmm0
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 
 	pextrq rax, xmm0, 1
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 
 	vextracti128 xmm0, ymm0, 1
 	movq rax, xmm0
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 
 	pextrq rax, xmm0, 1
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 	test al, al
-	jnz cmp_loop_end
+	jnz cmp_end
 	shr rax, 8
 
-	cmp_loop_end:
+	cmp_end:
 	and rax, 0xff
 	ret

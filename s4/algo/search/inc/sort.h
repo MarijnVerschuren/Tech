@@ -8,6 +8,7 @@
 // a == b	-> 0
 // a > b	-> 1
 int8_t compare_words(const str a, const str b) {
+	if (!a || !b) { return 0; }
 	char ac, bc;
 	for (uint8_t i = 0; ac = *(a + i), bc = *(b + i), ac && bc; i++) {
 		if (ac < bc) { return -1; }
