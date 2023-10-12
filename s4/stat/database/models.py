@@ -52,10 +52,12 @@ class Survey_Submission(db.Model):
 	age =                   db.Column("age",            db.Integer)
 	male =                  db.Column("male",           db.Boolean)
 	student =               db.Column("student",        db.Boolean)
+	name =                  db.Column("name",           db.String(127))
 	occupation =            db.Column("occupation",     db.String(127))
 
-	def __init__(self, voter_id: int, age: int, male: bool, student: bool, occupation: str) -> None:
+	def __init__(self, voter_id: int, name: str, age: int, male: bool, student: bool, occupation: str) -> None:
 		self.voter_id = voter_id
+		self.name = name
 		self.age = age
 		self.male = male
 		self.student = student

@@ -75,6 +75,7 @@ def submit_survey_call():
 	submission = Survey_Submission(
 		request.json["id"],
 		request.json["age"],
+		request.json["name"],
 		request.json["male"],
 		request.json["student"],
 		request.json["occupation"]
