@@ -53,15 +53,19 @@ class Survey_Submission(db.Model):
 	male =                  db.Column("male",           db.Boolean)
 	student =               db.Column("student",        db.Boolean)
 	name =                  db.Column("name",           db.String(127))
-	occupation =            db.Column("occupation",     db.String(127))
+	city =                  db.Column("city",           db.String(127))
+	street =                db.Column("street",         db.String(127))
+	zip =                   db.Column("zip",            db.String(16))
 
-	def __init__(self, voter_id: int, name: str, age: int, male: bool, student: bool, occupation: str) -> None:
+	def __init__(self, voter_id: int, name: str, age: int, male: bool, student: bool, city: str, street: str, zip: str) -> None:
 		self.voter_id = voter_id
 		self.name = name
 		self.age = age
 		self.male = male
 		self.student = student
-		self.occupation = occupation
+		self.city = city
+		self.street = street
+		self.zip = zip
 
 	@property
 	def voter(self) -> Voter:

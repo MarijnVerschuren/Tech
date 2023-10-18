@@ -61,6 +61,11 @@ window.onsubmit = async function (event) {
 			"student":		student_input.checked,
 			"occupation":	occupancy_input.value
 		})
+	})
+	.then(response => response.json())
+	.then(response => console.log(JSON.stringify(response)))
+	.catch((error) => {
+		console.log("...");
 	});
 	set_cookies(cookies["rnd"], cookies["id"], cookies["sf"], "Y");  //status === 200 ? "Y" : "N");
 }
