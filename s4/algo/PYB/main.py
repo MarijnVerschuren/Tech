@@ -198,7 +198,7 @@ if __name__ == '__main__':
 		seed = random.randrange(sys.maxsize)
 		print(f"random seed: {seed}")
 	random.seed(seed)
-	# 6281414130461314529
+	# 5868584935166441259
 
 	maze_0 = maze_gen(10, 10)		# 10 * 2^0
 	maze_1 = maze_gen(20, 20)		# 10 * 2^1
