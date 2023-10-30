@@ -187,8 +187,8 @@ if __name__ == '__main__':
 	maze_1 = maze_gen(20, 20)		# 10 * 2^1
 	maze_2 = maze_gen(40, 40)		# 10 * 2^2
 	maze_3 = maze_gen(80, 80)		# 10 * 2^3
-	maze_4 = maze_gen(160, 160)	# 10 * 2^4
-	maze_5 = maze_gen(320, 320)	# 10 * 2^5
+	maze_3_1 = maze_gen(100, 100)	# 10 * 2^3 + 10 * 2^1
+	maze_3_2 = maze_gen(120, 120)	# 10 * 2^3 + 10 ^ 2^2
 
 	start = time.time(); sol_0 = a_star(maze_0); time_0 = time.time() - start
 	print(f"maze_0 took: {round(time_0, 6)}", sol_0, sep="\n")
@@ -198,8 +198,8 @@ if __name__ == '__main__':
 	print(f"maze_2 took: {round(time_2, 6)},\tdt/dx: {round(time_2 / time_1, 6)}", sol_2, sep="\n")
 	start = time.time(); sol_3 = a_star(maze_3); time_3 = time.time() - start
 	print(f"maze_3 took: {round(time_3, 6)},\tdt/dx: {round(time_3 / time_2, 6)}", sol_3, sep="\n")
-	start = time.time(); sol_4 = a_star(maze_4); time_4 = time.time() - start
-	print(f"maze_4 took: {round(time_4, 6)},\tdt/dx: {round(time_4 / time_3, 6)}", sol_4, sep="\n")
-	start = time.time(); sol_5 = a_star(maze_5); time_5 = time.time() - start
-	print(f"maze_5 took: {round(time_5, 6)},\tdt/dx: {round(time_5 / time_4, 6)}", sol_5, sep="\n")
+	start = time.time(); sol_3_1 = a_star(maze_3_1); time_3_1 = time.time() - start
+	print(f"maze_3_1 took: {round(time_3_1, 6)},\tdt/dx: {round(time_3_1 / time_3, 6)}", sol_3_1, sep="\n")
+	start = time.time(); sol_3_2 = a_star(maze_3_2); time_3_2 = time.time() - start
+	print(f"maze_3_1 took: {round(time_3_2, 6)},\tdt/dx: {round(time_3_2 / time_3_1, 6)}", sol_3_2, sep="\n")
 
