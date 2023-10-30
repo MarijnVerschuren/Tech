@@ -1,6 +1,8 @@
 from typing import *
 import random
 import time
+import math
+import sys
 
 
 class node:
@@ -39,7 +41,7 @@ class node:
 
 
 class maze:
-	__CHAR_DEFAULTS = {0: "██", 1: "░░", 2: "▒▒", -1: "xx"}
+	__CHAR_DEFAULTS = {0: "██", 1: "░░", 2: "\033[91m▒▒\033[0m", -1: "xx"}
 
 	@staticmethod
 	def identify(data: List[List[int]]) -> Tuple[Tuple[int, int], Tuple[int, int]]:
@@ -174,15 +176,30 @@ def maze_gen(w: int, h: int) -> maze:
 			neighbors = find_neighbors(current)
 			randomly_add_nodes(neighbors)
 
-	m_set(random.randint(0, w-1), random.randint(0, h-1), ENTRANCE)
-	m_set(random.randint(0, w-1), random.randint(0, h-1), ENTRANCE)
-	#m_set(0, 0, ENTRANCE)
-	#m_set(w - 1, h - 1, ENTRANCE)
+	half_d = math.sqrt(w ** 2 + h ** 2) / 4
+	while True:
+		x0, y0 = random.randint(0, w - 1), random.randint(0, h - 1)
+		x1, y1 = random.randint(0, w - 1), random.randint(0, h - 1)
+		if	m_get(x0, y0) != WALL and m_get(x1, y1) != WALL \
+			and math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2) > half_d:
+			m_set(x0, y0, ENTRANCE)
+			m_set(x1, y1, ENTRANCE)
+			break
+
+
 	return maze(maze_data)
 
 
 
 if __name__ == '__main__':
+	if len(sys.argv) > 1:
+		seed = int(sys.argv[-1])
+	else:
+		seed = random.randrange(sys.maxsize)
+		print(f"random seed: {seed}")
+	random.seed(seed)
+	# 6281414130461314529
+
 	maze_0 = maze_gen(10, 10)		# 10 * 2^0
 	maze_1 = maze_gen(20, 20)		# 10 * 2^1
 	maze_2 = maze_gen(40, 40)		# 10 * 2^2
@@ -191,15 +208,15 @@ if __name__ == '__main__':
 	maze_3_2 = maze_gen(120, 120)	# 10 * 2^3 + 10 ^ 2^2
 
 	start = time.time(); sol_0 = a_star(maze_0); time_0 = time.time() - start
-	print(f"maze_0 took: {round(time_0, 6)}", sol_0, sep="\n")
+	print(f"maze_0 took: {round(time_0, 6)}", sol_0 if sol_0 else maze_0, sep="\n")
 	start = time.time(); sol_1 = a_star(maze_1); time_1 = time.time() - start
-	print(f"maze_1 took: {round(time_1, 6)},\tdt/dx: {round(time_1 / time_0, 6)}", sol_1, sep="\n")
+	print(f"maze_1 took: {round(time_1, 6)},\tdt/dx: {round(time_1 / time_0, 6)}", sol_1 if sol_1 else maze_1, sep="\n")
 	start = time.time(); sol_2 = a_star(maze_2); time_2 = time.time() - start
-	print(f"maze_2 took: {round(time_2, 6)},\tdt/dx: {round(time_2 / time_1, 6)}", sol_2, sep="\n")
+	print(f"maze_2 took: {round(time_2, 6)},\tdt/dx: {round(time_2 / time_1, 6)}", sol_2 if sol_2 else maze_2, sep="\n")
 	start = time.time(); sol_3 = a_star(maze_3); time_3 = time.time() - start
-	print(f"maze_3 took: {round(time_3, 6)},\tdt/dx: {round(time_3 / time_2, 6)}", sol_3, sep="\n")
+	print(f"maze_3 took: {round(time_3, 6)},\tdt/dx: {round(time_3 / time_2, 6)}", sol_3 if sol_3 else maze_3, sep="\n")
 	start = time.time(); sol_3_1 = a_star(maze_3_1); time_3_1 = time.time() - start
-	print(f"maze_3_1 took: {round(time_3_1, 6)},\tdt/dx: {round(time_3_1 / time_3, 6)}", sol_3_1, sep="\n")
+	print(f"maze_3_1 took: {round(time_3_1, 6)},\tdt/dx: {round(time_3_1 / time_3, 6)}", sol_3_1 if sol_3_1 else maze_3_1, sep="\n")
 	start = time.time(); sol_3_2 = a_star(maze_3_2); time_3_2 = time.time() - start
-	print(f"maze_3_1 took: {round(time_3_2, 6)},\tdt/dx: {round(time_3_2 / time_3_1, 6)}", sol_3_2, sep="\n")
+	print(f"maze_3_2 took: {round(time_3_2, 6)},\tdt/dx: {round(time_3_2 / time_3_1, 6)}", sol_3_2 if sol_3_2 else maze_3_2, sep="\n")
 
