@@ -19,6 +19,13 @@ class node:
 		self.f = 0
 
 	@property
+	def x(self) -> int:	return self.position[0]
+	@property
+	def y(self) -> int:	return self.position[1]
+	@property
+	def surrounding(self) -> List[Tuple[int, int]]:
+		return [node.add(self.position, direction) for direction in self.allowed_directions]
+	@property
 	def steps(self) -> List["node"]:
 		return [node(node.add(self.position, direction), node) for direction in self.allowed_directions]
 
@@ -109,13 +116,10 @@ def a_star(m: maze) -> path | None:
 	return None
 
 
-
-# BAD CODE!!!
-def maze_gen(w: int, h: int) -> maze:  # TODO: improve
+def maze_gen(w: int, h: int) -> maze:
 	WALL = 0
 	CELL = 1
 	ENTRANCE = 2
-	UNVISITED = -1
 
 	directions: Annotated[List[tuple[int, int]], 4] = [
 		         (0, -1),
@@ -127,56 +131,55 @@ def maze_gen(w: int, h: int) -> maze:  # TODO: improve
 	for _ in range(h):
 		row = []
 		for __ in range(w):
-			row.append(UNVISITED)  # set all cells as unvisited
+			row.append(CELL)
 		maze_data.append(row)
+
+	stack = []
+
 
 	m_get = lambda x, y: maze_data[y][x]
 	m_set = lambda x, y, z: maze_data[y].__setitem__(x, z)
 	t_add = lambda ta, tb: (ta[0] + tb[0], ta[1] + tb[1])
 
-	start = (	# with border of width 1
-		random.randint(1, w - 2),
-		random.randint(1, h - 2)
-	)
+	def validate_node(n: node) -> bool:
+		neighboring_walls = 0
+		for x, y in n.surrounding:
+			if 0 <= x < w and 0 <= y < h and maze_data[y][x] == WALL:
+				neighboring_walls += 1
+		return (neighboring_walls < 3) and m_get(*n.position) != WALL
 
-	m_set(*start, 0)
-	walls = [t_add(start, direction) for direction in directions]
-	for wall in walls: m_set(*wall, WALL)
-
-	while (walls):
-		rand_wall = random.choice(walls)
-		walls.remove(rand_wall)
-
-		cells = [
-			((x, y), m_get(x, y)) if 0 < x < w - 1 and 0 < y < h - 1 else (None, None)
-			for x, y in [t_add(rand_wall, direction) for direction in directions]
+	def find_neighbors(n: node) -> List[node]:
+		neighbors = []
+		positions = [
+			(x, y) for x, y in
+			[t_add(n.position, direction) for direction in directions]
+			if 0 <= x < w and 0 <= y < h
 		]
+		for pos in positions:
+			neighbors.append(node(pos, n))
+		return neighbors
 
-		if len([c for _, c in cells if c is not None and c == CELL]) < 2:
-			m_set(*rand_wall, CELL)
-			for p, d in cells:
-				if p is None or d == CELL: continue
-				m_set(*p, WALL)
-				if p not in walls: walls.append(p)
+	def randomly_add_nodes(nodes: List[node]):
+		while len(nodes):
+			n = random.choice(nodes)
+			nodes.remove(n)
+			stack.append(n)
 
 
-	for y in range(h):
-		for x in range(w):
-			if maze_data[y][x] == UNVISITED:
-				maze_data[y][x] = WALL
+	stack.append(node((0, 0)))
+	while len(stack):
+		current = stack.pop()
+		if validate_node(current):
+			m_set(*current.position, WALL)
+			neighbors = find_neighbors(current)
+			randomly_add_nodes(neighbors)
 
-	for x in range(w):
-		if maze_data[1][x] == CELL:
-			maze_data[0][x] = ENTRANCE
-			break
-
-	for x in range(w - 1, 0, -1):
-		if maze_data[h - 2][x] == CELL:
-			maze_data[h - 1][x] = ENTRANCE
-			break
-
+	m_set(random.randint(0, w-1), random.randint(0, h-1), ENTRANCE)
+	m_set(random.randint(0, w-1), random.randint(0, h-1), ENTRANCE)
+	#m_set(0, 0, ENTRANCE)
+	#m_set(w - 1, h - 1, ENTRANCE)
 	return maze(maze_data)
-# BAD CODE!!! ^^^
+
 
 
 if __name__ == '__main__':
@@ -187,18 +190,16 @@ if __name__ == '__main__':
 	maze_4 = maze_gen(160, 160)	# 10 * 2^4
 	maze_5 = maze_gen(320, 320)	# 10 * 2^5
 
-	print("maze generation done")
-
 	start = time.time(); sol_0 = a_star(maze_0); time_0 = time.time() - start
+	print(f"maze_0 took: {round(time_0, 6)}", sol_0, sep="\n")
 	start = time.time(); sol_1 = a_star(maze_1); time_1 = time.time() - start
+	print(f"maze_1 took: {round(time_1, 6)},\tdt/dx: {round(time_1 / time_0, 6)}", sol_1, sep="\n")
 	start = time.time(); sol_2 = a_star(maze_2); time_2 = time.time() - start
+	print(f"maze_2 took: {round(time_2, 6)},\tdt/dx: {round(time_2 / time_1, 6)}", sol_2, sep="\n")
 	start = time.time(); sol_3 = a_star(maze_3); time_3 = time.time() - start
+	print(f"maze_3 took: {round(time_3, 6)},\tdt/dx: {round(time_3 / time_2, 6)}", sol_3, sep="\n")
 	start = time.time(); sol_4 = a_star(maze_4); time_4 = time.time() - start
+	print(f"maze_4 took: {round(time_4, 6)},\tdt/dx: {round(time_4 / time_3, 6)}", sol_4, sep="\n")
 	start = time.time(); sol_5 = a_star(maze_5); time_5 = time.time() - start
+	print(f"maze_5 took: {round(time_5, 6)},\tdt/dx: {round(time_5 / time_4, 6)}", sol_5, sep="\n")
 
-	print(f"maze_0 took: {round(time_0, 6)}")
-	print(f"maze_1 took: {round(time_1, 6)},\tdt/dx: {round(time_1 / time_0, 6)}")
-	print(f"maze_2 took: {round(time_2, 6)},\tdt/dx: {round(time_2 / time_1, 6)}")
-	print(f"maze_3 took: {round(time_3, 6)},\tdt/dx: {round(time_3 / time_2, 6)}")
-	print(f"maze_4 took: {round(time_4, 6)},\tdt/dx: {round(time_4 / time_3, 6)}")
-	print(f"maze_5 took: {round(time_5, 6)},\tdt/dx: {round(time_5 / time_4, 6)}")
