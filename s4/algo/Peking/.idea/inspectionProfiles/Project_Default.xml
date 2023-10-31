@@ -1,0 +1,98 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E702" />
+          <option value="E701" />
+          <option value="E265" />
+          <option value="E222" />
+          <option value="E251" />
+          <option value="E272" />
+          <option value="E722" />
+          <option value="E501" />
+          <option value="E224" />
+          <option value="E274" />
+          <option value="E302" />
+          <option value="E301" />
+          <option value="E261" />
+          <option value="E303" />
+          <option value="E731" />
+          <option value="E273" />
+          <option value="E223" />
+          <option value="E127" />
+          <option value="E101" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="os._exit" />
+          <option value="object.__mail_account" />
+          <option value="object.__address" />
+          <option value="object.__age" />
+          <option value="object.__gender" />
+          <option value="object.__first_name" />
+          <option value="object.__last_name" />
+          <option value="object.last_name" />
+          <option value="object.first_name" />
+          <option value="object.name" />
+          <option value="object.gender" />
+          <option value="object.age" />
+          <option value="object.mail_account" />
+          <option value="object.address" />
+          <option value="object._id" />
+          <option value="object.auth_header" />
+          <option value="object.__domain" />
+          <option value="object.__username" />
+          <option value="object.__password" />
+          <option value="object.__id" />
+          <option value="object.__auth_header" />
+          <option value="object.__jwt" />
+          <option value="object.get_request" />
+          <option value="object.post_request" />
+          <option value="object.get_random_domain" />
+          <option value="object.update_domains" />
+          <option value="object.__from" />
+          <option value="object.__to" />
+          <option value="object.__subject" />
+          <option value="object.__intro" />
+          <option value="object.__text" />
+          <option value="object.__html" />
+          <option value="object.__data" />
+          <option value="object.id" />
+          <option value="object._from" />
+          <option value="object.to" />
+          <option value="object.subject" />
+          <option value="object.__province" />
+          <option value="object.__city" />
+          <option value="object.__street" />
+          <option value="object.__number" />
+          <option value="object.__zip_code" />
+          <option value="object.province" />
+          <option value="object.number" />
+          <option value="object.street" />
+          <option value="object.city" />
+          <option value="object.zip_code" />
+          <option value="object.NAME_TABLE" />
+          <option value="object.ADDRESS_GEN" />
+          <option value="object.__password_gen" />
+          <option value="object.__iban" />
+          <option value="object.IBAN_GEN" />
+          <option value="object.iban" />
+          <option value="object.__image_gen" />
+          <option value="object.dices" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
