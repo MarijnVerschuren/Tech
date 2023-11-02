@@ -1,0 +1,37 @@
+@startuml
+state player_type <<choice>>
+state move {
+    state analysis_choice <<choice>>
+    state on_c_node <<choice>>
+    state other_before_c_node <<choice>>
+
+    [*] -> lookup
+    note bottom
+    best path from current node to end is looked up
+    end note
+    lookup -> c_node_analysis
+    note top
+    move may be influenced by critical node opportunities
+    this is the possibility to take a critical node somewhere
+    in the fastest path before the other player (this should always be done)
+    end note
+    c_node_analysis --> analysis_choice
+    analysis_choice --> execute : opportunity found (move toward)
+    analysis_choice --> on_c_node : no opportunity found
+    analysis_choice --> lookup : look
+    on_c_node --> other_before_c_node : player is on c_node
+    other_before_c_node --> [*] : other player is before c_node (wait)
+
+    execute --> [*]
+}
+
+[*] --> player_type
+player_type -> move : white
+player_type -> wait : black
+wait -> move
+move -> wait
+
+
+
+
+@enduml
