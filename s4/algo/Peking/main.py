@@ -49,36 +49,35 @@ def get_path(from_node: int, shortest_paths: Dict[int, Tuple[Node, int]]) -> Lis
 
 def get_node(nodes: List[Node], num: int) -> Node: return nodes[nodes.index(num)]
 
-# Dijkstra
-#   Critical locations
-#   Budget
-def node_paths(nodes: List[Node], start: Node) -> Dict[int, Tuple[Node, int]]:  # Result: O((M+1)N)
-	shortest_paths = {node.num: (None, float('inf')) for node in nodes}  # Node: (from, cost). O(N)
-	shortest_paths[start.num] = (start.num, 0)
+
+def get_shortest_paths(nodes: List[Node], start: Node, budget: int) -> Dict[int, Tuple[Node, int]]:  # Result: O((M+1)N)
+	shortest_paths = {node.num: (None, float('inf'), float('inf')) for node in nodes}  # Node: (from, cost). O(N)
+	shortest_paths[start.num] = (start.num, 0, 0)
 
 	queue = [start]
 
 	while queue:  # Result: O(MN)
-		currentNode = queue.pop(0)  # O(N), since all elements have to be shifted.
+		current_node = queue.pop(0)  # O(N), since all elements have to be shifted.
 
-		for neighbor, cost in currentNode.neighbors:  # O(M)
-			newDist = shortest_paths[currentNode.num][1] + cost
+		for neighbor, cost in current_node.neighbors:  # O(M)
+			new_dist = shortest_paths[current_node.num][1] + 1
+			new_cost = shortest_paths[current_node.num][2] + cost
 
-			if newDist < shortest_paths[neighbor.num][1]:
-				shortest_paths[neighbor.num] = (currentNode, newDist)
+			if new_dist < shortest_paths[neighbor.num][1] and new_cost <= budget:
+				shortest_paths[neighbor.num] = (current_node, new_dist, new_cost)
 				queue.append(neighbor)
 
 	return shortest_paths
 
 
-def dijkstra(nodes: List[Node]) -> pd.DataFrame:  # Result: O((M+2)N)
-	results = pd.DataFrame(columns=['From', 'To', 'Path', 'Cost'])
+def dijkstra(nodes: List[Node], budget: int) -> pd.DataFrame:  # Result: O((M+2)N)
+	results = pd.DataFrame(columns=['From', 'To', 'Path', 'Distance', 'Cost'])
 
 	for start in nodes:
-		shortest_paths = node_paths(nodes, start)  # O((M+1)N)
+		shortest_paths = get_shortest_paths(nodes, start, budget)  # O((M+1)N)
 
-		for node, (fromNode, cost) in shortest_paths.items():  # O(N)
-			results.loc[len(results.index)] = [start.num, node, get_path(node, shortest_paths), cost]
+		for node, (from_node, dist, cost) in shortest_paths.items():  # O(N)
+			results.loc[len(results.index)] = [start.num, node, get_path(node, shortest_paths), dist, cost]
 
 	return results
 
@@ -110,7 +109,7 @@ if __name__ == '__main__':
 	print(f"white {white}")
 	print(f"white {black}")
 
-	print(dijkstra(nodes))
+	print(dijkstra(nodes, budget))
 
 	# if white:
 	#	if white can afford to reach the end:
