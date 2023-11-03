@@ -1,7 +1,7 @@
 {
 	"Locations": {
 		"number": 5,
-		"critical": [2]
+		"critical": [2, 4]
 	},
 	"Roads": {
 		"a":		[1, 2, 1, 4, 5],

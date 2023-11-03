@@ -1,8 +1,9 @@
+from operator import itemgetter
+from typing import *
+import pandas as pd
 import json
 import sys
-from typing import *
 
-import pandas as pd
 
 
 class InputError(Exception):
@@ -13,22 +14,45 @@ class Node:
 	def __init__(self, num: int, critical=False):
 		self.num = num
 		self.critical = critical
+		self.occupied = False
 		self.neighbors: List[Tuple["Node", int]] = []
 
-	def __str__(self) -> str:
-		return f"{'*' if self.critical else ''}({self.num})"
+	def __str__(self) -> str:	return f"{'*' if self.critical else ''}({self.num})"
+	def __repr__(self) -> str:	return str(self)
 
-	def __eq__(self, other: int) -> bool:
+	def __eq__(self, other: int or "Node") -> bool:
+		if type(other) == Node:
+			return self.num == other.num
 		return self.num == other
 
 
 class Player:
-	def __init__(self, budget: int, start: Node):
-		self.budget = budget
+	def __init__(self, start: Node, end: Node, lookup_fn: callable):
+		self.start = start
+		self.end = end
 		self.node = start
+		self.lookup = lookup_fn
 
-	def __str__(self) -> str:
-		return f"at {self.node} with budget of {self.budget}"
+		self.move_queue = self.lookup(self.start, self.end)[2][1:]
+		print(self.move_queue)
+
+	def move(self):
+		if not self.move_queue: return
+		next_node = self.move_queue[0]
+		if next_node.occupied and next_node.critical:
+			alts = [self.lookup(n, self.end) for n in next_node.neighbors]
+			alt = None
+			for a in alts:
+				if len(a) > len(self.move_queue): continue
+				if not alt or len(a) < len(alt):
+					alt = a
+			if alt: self.move_queue = alt
+		self.node.occupied = False
+		self.node = self.move_queue.pop(0)
+		self.node.occupied = True
+
+	def __str__(self) -> str:	return f"at {self.node} on path: {self.move_queue}"
+	def __repr__(self) -> str:	return str(self)
 
 
 def get_path(from_node: int, shortest_paths: Dict[int, Tuple[Node, int]]) -> List[Node]:
@@ -71,7 +95,7 @@ def get_shortest_paths(nodes: List[Node], start: Node, budget: int) -> Dict[int,
 
 
 def dijkstra(nodes: List[Node], budget: int) -> pd.DataFrame:  # Result: O((M+2)N)
-	results = pd.DataFrame(columns=['From', 'To', 'Path', 'Distance', 'Cost'])
+	results = pd.DataFrame(columns=['from', 'to', 'path', 'distance', 'cost'])
 
 	for start in nodes:
 		shortest_paths = get_shortest_paths(nodes, start, budget)  # O((M+1)N)
@@ -88,13 +112,15 @@ if __name__ == '__main__':
 	if not ("-white" or "-black" in sys.argv):
 		raise InputError("player not provided")
 	file = sys.argv[sys.argv.index("-file") + 1]
+	is_white = "-white" in sys.argv
 
 	try:
 		with open(file, "r") as file:
 			data = json.load(file)
 
-		locations, roads, start_node, budget = data.values()
+		locations, roads, start_node, budget = itemgetter("Locations", "Roads", "StartLocation", "Budget")(data)
 		nodes = [Node(n, n in locations["critical"]) for n in list(set(roads["a"] + roads["b"]))]
+		start_node = nodes[nodes.index(start_node)]; end = None
 		for start, end, price in zip(roads["a"], roads["b"], roads["price"]):
 			start = nodes[nodes.index(start)]
 			end = nodes[nodes.index(end)]
@@ -103,26 +129,23 @@ if __name__ == '__main__':
 	except:
 		raise InputError("input file has the wrong format")
 
-	white = Player(budget, start_node)
-	black = Player(budget, start_node)
-	you = white if "-white" in sys.argv else black
-	print(f"white {white}")
-	print(f"white {black}")
+	table = dijkstra(nodes, budget)
+	t_lookup = lambda x, y: table.loc[(table["from"] == x) & (table["to"] == y)].values[0]
+	n_lookup = lambda x: nodes[nodes.index(x)]
 
-	print(dijkstra(nodes, budget))
+	white = Player(start_node, end, t_lookup)
+	black = Player(start_node, end, t_lookup)
 
-	# if white:
-	#	if white can afford to reach the end:
-	#		head towards the end
-	#	if not on c_node or black is nearing next c_node in path:  TODO: black is nearing c_node if white can just about win the race towards it
-	#		head towards the c_node in path
-	#	else: wait on c_node for budget
-
-	# if black:
-	#	if black can afford to reach the end:
-	#		head towards the end
-	#	if not on c_node and black can reach before white:	TODO: white is nearing c_node if black can just about win the race towards it
-	#		head towards the c_node in path
-	#	elif not on c_node:
-	#		look for the fastes alternative path towards the next critical node in the fastest path
-	#		if this does not exist walk the best path from current node to end.
+	input(f"white: {white}\nblack: {black}\npress enter to start:")
+	while True:
+		if is_white:
+			white.move()
+			print(f"white: {white}")
+			while True:
+				try:
+					black.node = n_lookup(int(input("move for black: ")))
+					break
+				except: pass
+		else:
+			pass
+		input()
