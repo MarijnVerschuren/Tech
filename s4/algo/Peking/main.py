@@ -32,15 +32,15 @@ class Node:
 
 
 class Player:
-	def __init__(self, start: Node, end: Node, lookup_fn: callable, budget: int):
+	def __init__(self, start: Node, end: Node, lookup_fn: callable, budget: int, playable: bool = False):
 		self.start = start
 		self.end = end
 		self.node = start
 		self.lookup = lookup_fn
 		self.budget_left = budget
-
+		self.move_queue = None
+		if not playable: return
 		self.move_queue = self.lookup(self.start, self.end)[2][1:]
-		print(self.move_queue)
 
 	def is_move_illegal(self, to_node: Node) -> str:
 		if to_node.occupied and to_node.critical:
@@ -175,7 +175,7 @@ if __name__ == '__main__':
 	t_lookup = lambda x, y: table.loc[(table["from"] == x) & (table["to"] == y)].values[0]
 	n_lookup = lambda x: nodes[nodes.index(x)]
 
-	white = Player(start_node, end, t_lookup, budget)
+	white = Player(start_node, end, t_lookup, budget, True)
 	black = Player(start_node, end, t_lookup, budget)
 
 	input(f"white: {white}\nblack: {black}\npress enter to start:")
