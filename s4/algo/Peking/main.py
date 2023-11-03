@@ -17,6 +17,11 @@ class Node:
 		self.occupied = False
 		self.neighbors: List[Tuple["Node", int]] = []
 
+	def get_travel_cost(self, to: "Node") -> int:
+		if to_node := [n[1] for n in self.neighbors if n[0] == to]:
+			return to_node[0]
+		return 0
+
 	def __str__(self) -> str:	return f"{'*' if self.critical else ''}({self.num})"
 	def __repr__(self) -> str:	return str(self)
 
@@ -27,29 +32,66 @@ class Node:
 
 
 class Player:
-	def __init__(self, start: Node, end: Node, lookup_fn: callable):
+	def __init__(self, start: Node, end: Node, lookup_fn: callable, budget: int):
 		self.start = start
 		self.end = end
 		self.node = start
 		self.lookup = lookup_fn
+		self.budget_left = budget
 
 		self.move_queue = self.lookup(self.start, self.end)[2][1:]
 		print(self.move_queue)
 
-	def move(self):
-		if not self.move_queue: return
-		next_node = self.move_queue[0]
-		if next_node.occupied and next_node.critical:
-			alts = [self.lookup(n, self.end) for n in next_node.neighbors]
+	def is_move_illegal(self, to_node: Node) -> str:
+		if to_node.occupied and to_node.critical:
+			return "node is critical and occupied"
+
+		if to_node not in [n[0] for n in self.node.neighbors] + [self.node]:
+			return "node is unconnected to current"
+
+		if self.budget_left - self.node.get_travel_cost(to_node) < 0:
+			return "too expensive"
+
+		return ""
+
+
+	def move(self, to: Node = None) -> bool:
+		if to:
+			if reason := self.is_move_illegal(to):
+				print(f"Invalid move: {self.node.num} -> {to.num}: {reason}.")
+				return False
+
+			self.budget_left -= self.node.get_travel_cost(to)
+			self.node = to
+
+			return True
+
+		if not self.move_queue: return False
+		next_node = self.move_queue.pop(0)
+
+		if next_node == self.node:
+			return True
+
+		if self.is_move_illegal(next_node):
+			alts = [self.lookup(n, self.end) for n in self.node.neighbors]
 			alt = None
 			for a in alts:
 				if len(a) > len(self.move_queue): continue
 				if not alt or len(a) < len(alt):
 					alt = a
-			if alt: self.move_queue = alt
+			if alt:
+				self.move_queue = alt
+				next_node = self.move_queue.pop(0)
+			else: next_node = self.node
+
+
 		self.node.occupied = False
-		self.node = self.move_queue.pop(0)
+		self.budget_left -= self.node.get_travel_cost(next_node)
+		self.node = next_node
 		self.node.occupied = True
+
+		return True
+
 
 	def __str__(self) -> str:	return f"at {self.node} on path: {self.move_queue}"
 	def __repr__(self) -> str:	return str(self)
@@ -133,8 +175,8 @@ if __name__ == '__main__':
 	t_lookup = lambda x, y: table.loc[(table["from"] == x) & (table["to"] == y)].values[0]
 	n_lookup = lambda x: nodes[nodes.index(x)]
 
-	white = Player(start_node, end, t_lookup)
-	black = Player(start_node, end, t_lookup)
+	white = Player(start_node, end, t_lookup, budget)
+	black = Player(start_node, end, t_lookup, budget)
 
 	input(f"white: {white}\nblack: {black}\npress enter to start:")
 	while True:
@@ -142,10 +184,14 @@ if __name__ == '__main__':
 			white.move()
 			print(f"white: {white}")
 			while True:
-				try:
-					black.node = n_lookup(int(input("move for black: ")))
+				move = input("Move for black: ")
+
+				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
+					print("Node not found.")
+					continue
+
+				if black.move(n_lookup(int(move))):
 					break
-				except: pass
 		else:
 			pass
 		input()
