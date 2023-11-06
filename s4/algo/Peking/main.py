@@ -39,6 +39,8 @@ class Player:
 		self.lookup = lookup_fn
 		self.budget_left = budget
 		self.move_queue = None
+		self.finished = False
+
 		if not playable: return
 		self.move_queue = self.lookup(self.start, self.end)[2][1:]
 
@@ -57,6 +59,8 @@ class Player:
 			self.budget_left -= self.node.get_travel_cost(node)
 			self.node = node
 			self.node.occupied = True
+			self.finished = self.node == self.end
+
 
 		if to:
 			if reason := self.is_move_illegal(to):
@@ -68,26 +72,34 @@ class Player:
 		if not self.move_queue: return False
 		next_node = self.move_queue.pop(0)
 
+
 		if next_node == self.node:
 			return True
 
 		if self.is_move_illegal(next_node):
-			alts = [self.lookup(n, self.end) for n in self.node.neighbors]
+			self.move_queue.insert(0, next_node)
+			queue_length = len(self.move_queue)
+
+			alts = [self.lookup(n.num, self.end.num)[2] for n, dist in self.node.neighbors]
 			alt = None
 			for a in alts:
-				if len(a) > len(self.move_queue): continue
+				if len(a) > queue_length or self.is_move_illegal(a[0]): continue
 				if not alt or len(a) < len(alt):
 					alt = a
 			if alt:
 				self.move_queue = alt
 				next_node = self.move_queue.pop(0)
 			else:
+				print('ttest')
 				next_node = self.node
 
 		execute_move(next_node)
 		return True
 
-	def __str__(self) -> str:	return f"at {self.node} on path: {self.move_queue}"
+	def __str__(self) -> str:
+		string = f"at {self.node} on path: {self.move_queue}"
+		return ('\033[92m' if self.finished else '') + string + ('\033[0m' if self.finished else '')
+
 	def __repr__(self) -> str:	return str(self)
 
 
