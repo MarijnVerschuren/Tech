@@ -189,19 +189,21 @@ if __name__ == '__main__':
 		if is_white:
 			white.move()
 			print(f"white: {white}")
-			while True:
+			while not black.finished:
 				move = input("Move for black: ")
 				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
 					print("Node not found."); continue
 				if black.move(n_lookup(int(move))):
 					print(f"black: {black}"); break
+			else: input("continue:")
 
 		else:
-			while True:
+			while not white.finished:
 				move = input("Move for white: ")
 				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
 					print("Node not found."); continue
 				if white.move(n_lookup(int(move))):
 					print(f"white: {white}"); break
+			else: input("continue:")
 			black.move()
 			print(f"black: {black}")
