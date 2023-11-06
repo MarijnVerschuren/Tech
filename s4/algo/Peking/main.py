@@ -45,30 +45,27 @@ class Player:
 	def is_move_illegal(self, to_node: Node) -> str:
 		if to_node.occupied and to_node.critical:
 			return "node is critical and occupied"
-
 		if to_node not in [n[0] for n in self.node.neighbors] + [self.node]:
 			return "node is unconnected to current"
-
 		if self.budget_left - self.node.get_travel_cost(to_node) < 0:
 			return "too expensive"
-
 		return ""
 
 
 	def move(self, to: Node = None) -> bool:
 		if to:
+			print(id(to))
 			if reason := self.is_move_illegal(to):
 				print(f"Invalid move: {self.node.num} -> {to.num}: {reason}.")
 				return False
-
 			self.budget_left -= self.node.get_travel_cost(to)
 			self.node = to
-
 			return True
 
 		if not self.move_queue: return False
 		next_node = self.move_queue.pop(0)
 
+		print(id(next_node))
 		if next_node == self.node:
 			return True
 
@@ -175,8 +172,8 @@ if __name__ == '__main__':
 	t_lookup = lambda x, y: table.loc[(table["from"] == x) & (table["to"] == y)].values[0]
 	n_lookup = lambda x: nodes[nodes.index(x)]
 
-	white = Player(start_node, end, t_lookup, budget, True)
-	black = Player(start_node, end, t_lookup, budget)
+	white = Player(start_node, end, t_lookup, budget, is_white)
+	black = Player(start_node, end, t_lookup, budget, not is_white)
 
 	input(f"white: {white}\nblack: {black}\npress enter to start:")
 	while True:
@@ -185,13 +182,17 @@ if __name__ == '__main__':
 			print(f"white: {white}")
 			while True:
 				move = input("Move for black: ")
-
 				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
-					print("Node not found.")
-					continue
-
+					print("Node not found."); continue
 				if black.move(n_lookup(int(move))):
-					break
+					print(f"black: {black}"); break
+
 		else:
-			pass
-		input()
+			while True:
+				move = input("Move for white: ")
+				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
+					print("Node not found."); continue
+				if white.move(n_lookup(int(move))):
+					print(f"white: {white}"); break
+			black.move()
+			print(f"black: {black}")
