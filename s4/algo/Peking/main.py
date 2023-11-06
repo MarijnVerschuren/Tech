@@ -51,21 +51,23 @@ class Player:
 			return "too expensive"
 		return ""
 
-
 	def move(self, to: Node = None) -> bool:
+		def execute_move(node: Node) -> None:
+			self.node.occupied = False
+			self.budget_left -= self.node.get_travel_cost(node)
+			self.node = node
+			self.node.occupied = True
+
 		if to:
-			print(id(to))
 			if reason := self.is_move_illegal(to):
 				print(f"Invalid move: {self.node.num} -> {to.num}: {reason}.")
 				return False
-			self.budget_left -= self.node.get_travel_cost(to)
-			self.node = to
+			execute_move(to)
 			return True
 
 		if not self.move_queue: return False
 		next_node = self.move_queue.pop(0)
 
-		print(id(next_node))
 		if next_node == self.node:
 			return True
 
@@ -79,16 +81,11 @@ class Player:
 			if alt:
 				self.move_queue = alt
 				next_node = self.move_queue.pop(0)
-			else: next_node = self.node
+			else:
+				next_node = self.node
 
-
-		self.node.occupied = False
-		self.budget_left -= self.node.get_travel_cost(next_node)
-		self.node = next_node
-		self.node.occupied = True
-
+		execute_move(next_node)
 		return True
-
 
 	def __str__(self) -> str:	return f"at {self.node} on path: {self.move_queue}"
 	def __repr__(self) -> str:	return str(self)
