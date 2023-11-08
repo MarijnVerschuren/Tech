@@ -1,4 +1,5 @@
 ; trucks **
+
 ; each truck (1 - 6) can carry at most 8 pallets with a max weight of 8000kg
 ; the pallets (nuzzles prittles skipples crottles dupples) have different counts, weights and rules:
 ; nuzzles:
@@ -279,57 +280,39 @@
 
 ; check satisfied and print solution
 (check-sat)
-(get-value
-	(
-		(count truck_1 nuzzles)
-		(count truck_1 prittles)
-		(count truck_1 skipples)
-		(count truck_1 crottles)
-		(count truck_1 dupples)
-	)
-)
-(get-value
-	(
-		(count truck_2 nuzzles)
-		(count truck_2 prittles)
-		(count truck_2 skipples)
-		(count truck_2 crottles)
-		(count truck_2 dupples)
-	)
-)
-(get-value
-	(
-		(count truck_3 nuzzles)
-		(count truck_3 prittles)
-		(count truck_3 skipples)
-		(count truck_3 crottles)
-		(count truck_3 dupples)
-	)
-)
-(get-value
-	(
-		(count truck_4 nuzzles)
-		(count truck_4 prittles)
-		(count truck_4 skipples)
-		(count truck_4 crottles)
-		(count truck_4 dupples)
-	)
-)
-(get-value
-	(
-		(count truck_5 nuzzles)
-		(count truck_5 prittles)
-		(count truck_5 skipples)
-		(count truck_5 crottles)
-		(count truck_5 dupples)
-	)
-)
-(get-value
-	(
-		(count truck_6 nuzzles)
-		(count truck_6 prittles)
-		(count truck_6 skipples)
-		(count truck_6 crottles)
-		(count truck_6 dupples)
-	)
-)
+
+(get-value ((count truck_1 nuzzles)))
+(get-value ((count truck_1 prittles)))
+(get-value ((count truck_1 skipples)))
+(get-value ((count truck_1 crottles)))
+(get-value ((count truck_1 dupples)))
+
+(get-value ((count truck_2 nuzzles)))
+(get-value ((count truck_2 prittles)))
+(get-value ((count truck_2 skipples)))
+(get-value ((count truck_2 crottles)))
+(get-value ((count truck_2 dupples)))
+
+(get-value ((count truck_3 nuzzles)))
+(get-value ((count truck_3 prittles)))
+(get-value ((count truck_3 skipples)))
+(get-value ((count truck_3 crottles)))
+(get-value ((count truck_3 dupples)))
+
+(get-value ((count truck_4 nuzzles)))
+(get-value ((count truck_4 prittles)))
+(get-value ((count truck_4 skipples)))
+(get-value ((count truck_4 crottles)))
+(get-value ((count truck_4 dupples)))
+
+(get-value ((count truck_5 nuzzles)))
+(get-value ((count truck_5 prittles)))
+(get-value ((count truck_5 skipples)))
+(get-value ((count truck_5 crottles)))
+(get-value ((count truck_5 dupples)))
+
+(get-value ((count truck_6 nuzzles)))
+(get-value ((count truck_6 prittles)))
+(get-value ((count truck_6 skipples)))
+(get-value ((count truck_6 crottles)))
+(get-value ((count truck_6 dupples)))
