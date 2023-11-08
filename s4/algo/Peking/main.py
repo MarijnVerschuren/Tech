@@ -1,9 +1,10 @@
+import random
 from operator import itemgetter
 from typing import *
 import pandas as pd
 import json
 import sys
-
+import networkx as nx
 
 
 class InputError(Exception):
@@ -53,7 +54,7 @@ class Player:
 			return "too expensive"
 		return ""
 
-	def move(self, to: Node = None) -> bool:
+	def move(self, to: Node = None) -> str:
 		def execute_move(node: Node) -> None:
 			self.node.occupied = False
 			self.budget_left -= self.node.get_travel_cost(node)
@@ -61,20 +62,21 @@ class Player:
 			self.node.occupied = True
 			self.finished = self.node == self.end
 
-
 		if to:
 			if reason := self.is_move_illegal(to):
 				print(f"Invalid move: {self.node.num} -> {to.num}: {reason}.")
-				return False
+				return ""
+			budget_before = self.budget_left
 			execute_move(to)
-			return True
+			return f"{budget_before} -> {self.budget_left}"
 
-		if not self.move_queue: return False
+
+		if not self.move_queue: return ""
 		next_node = self.move_queue.pop(0)
 
-
 		if next_node == self.node:
-			return True
+			return f"{self.budget_left} -> {self.budget_left}"
+
 
 		if self.is_move_illegal(next_node):
 			self.move_queue.insert(0, next_node)
@@ -90,11 +92,12 @@ class Player:
 				self.move_queue = alt
 				next_node = self.move_queue.pop(0)
 			else:
-				print('ttest')
 				next_node = self.node
 
+		budget_before = self.budget_left
 		execute_move(next_node)
-		return True
+		return f"{budget_before} -> {self.budget_left}"
+
 
 	def __str__(self) -> str:
 		string = f"at {self.node} on path: {self.move_queue}"
@@ -168,7 +171,8 @@ if __name__ == '__main__':
 
 		locations, roads, start_node, budget = itemgetter("Locations", "Roads", "StartLocation", "Budget")(data)
 		nodes = [Node(n, n in locations["critical"]) for n in list(set(roads["a"] + roads["b"]))]
-		start_node = nodes[nodes.index(start_node)]; end = None
+		start_node = nodes[nodes.index(start_node)]
+		end_node = nodes[nodes.index(88)]
 		for start, end, price in zip(roads["a"], roads["b"], roads["price"]):
 			start = nodes[nodes.index(start)]
 			end = nodes[nodes.index(end)]
@@ -181,8 +185,8 @@ if __name__ == '__main__':
 	t_lookup = lambda x, y: table.loc[(table["from"] == x) & (table["to"] == y)].values[0]
 	n_lookup = lambda x: nodes[nodes.index(x)]
 
-	white = Player(start_node, end, t_lookup, budget, is_white)
-	black = Player(start_node, end, t_lookup, budget, not is_white)
+	white = Player(start_node, end_node, t_lookup, budget, is_white)
+	black = Player(start_node, end_node, t_lookup, budget, not is_white)
 
 	input(f"white: {white}\nblack: {black}\npress enter to start:")
 	while True:
@@ -193,8 +197,8 @@ if __name__ == '__main__':
 				move = input("Move for black: ")
 				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
 					print("Node not found."); continue
-				if black.move(n_lookup(int(move))):
-					print(f"black: {black}"); break
+				if budgetChange := black.move(n_lookup(int(move))):
+					print(f"black: {black} (budget: {budgetChange})"); break
 			else: input("continue:")
 
 		else:
@@ -202,8 +206,9 @@ if __name__ == '__main__':
 				move = input("Move for white: ")
 				if (not move.isnumeric()) or all([n != int(move) for n in nodes]):
 					print("Node not found."); continue
-				if white.move(n_lookup(int(move))):
-					print(f"white: {white}"); break
+
+				if budgetChange := white.move(n_lookup(int(move))):
+					print(f"white: {white} (budget: {budgetChange})"); break
 			else: input("continue:")
 			black.move()
 			print(f"black: {black}")
