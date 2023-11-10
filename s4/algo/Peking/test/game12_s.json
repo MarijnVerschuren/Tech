@@ -1,0 +1,1 @@
+{"Locations": {"number": 5, "critical": [3]}, "Roads": {"a": [1, 2, 3, 4, 1, 2, 1, 3, 2], "b": [2, 3, 4, 88, 4, 4, 3, 88, 88], "price": [2, 3, 2, 3, 4, 1, 2, 1, 4]}, "StartLocation": 1, "Budget": 13}
