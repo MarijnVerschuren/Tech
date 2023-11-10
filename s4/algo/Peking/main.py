@@ -30,6 +30,14 @@ class Node:
 		if type(other) == Node:
 			return self.num == other.num
 		return self.num == other
+	def __lt__(self, other: int or "Node") -> bool:
+		if type(other) == Node:
+			return self.num < other.num
+		return self.num < other
+	def __gt__(self, other: int or "Node") -> bool:
+		if type(other) == Node:
+			return self.num > other.num
+		return self.num > other
 
 
 class Player:
@@ -46,6 +54,7 @@ class Player:
 		self.move_queue = self.lookup(self.start, self.end)[2][1:]
 
 	def is_move_illegal(self, to_node: Node) -> str:
+		if to_node == self.node: return ""
 		if to_node.occupied and to_node.critical:
 			return "node is critical and occupied"
 		if to_node not in [n[0] for n in self.node.neighbors] + [self.node]:
@@ -172,7 +181,7 @@ if __name__ == '__main__':
 		locations, roads, start_node, budget = itemgetter("Locations", "Roads", "StartLocation", "Budget")(data)
 		nodes = [Node(n, n in locations["critical"]) for n in list(set(roads["a"] + roads["b"]))]
 		start_node = nodes[nodes.index(start_node)]
-		end_node = nodes[nodes.index(88)]
+		end_node = nodes[nodes.index(max(nodes))]
 		for start, end, price in zip(roads["a"], roads["b"], roads["price"]):
 			start = nodes[nodes.index(start)]
 			end = nodes[nodes.index(end)]
